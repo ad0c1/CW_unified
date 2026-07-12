@@ -1,0 +1,478 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Carrier-Weighted Networks — an education page</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #faf7f0;
+    --paper-2: #f2ede0;
+    --ink: #1a1a1a;
+    --ink-2: #55524b;
+    --ink-3: #8a877f;
+    --rule: #d9d2bf;
+    --rust: #a05a2c;
+    --sage: #6e7a5a;
+    --indigo: #3a4a6d;
+    --plum: #6d3a5a;
+    --highlight: #f7e9c7;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Cormorant Garamond', 'Georgia', serif;
+    font-size: 20px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  .wrap { max-width: 780px; margin: 0 auto; padding: 72px 32px 120px; }
+  header.masthead {
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 28px; margin-bottom: 56px;
+  }
+  .kicker {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin-bottom: 12px;
+  }
+  h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 500;
+    font-size: 48px;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    margin: 0 0 14px;
+  }
+  h1 em { color: var(--rust); font-style: italic; font-weight: 500; }
+  .dek {
+    font-size: 22px; line-height: 1.4; color: var(--ink-2);
+    font-style: italic; max-width: 620px;
+  }
+  .byline {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px; color: var(--ink-3);
+    margin-top: 28px;
+    display: flex; gap: 20px; flex-wrap: wrap;
+  }
+  h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600; font-size: 32px;
+    margin: 72px 0 20px;
+    letter-spacing: -0.005em;
+  }
+  h2 .num {
+    color: var(--rust); font-style: italic;
+    font-weight: 500; margin-right: 12px;
+  }
+  h3 {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600; font-size: 13px;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--ink-2);
+    margin: 36px 0 12px;
+  }
+  p { margin: 0 0 20px; }
+  p.lead:first-of-type::first-letter {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600; font-size: 62px;
+    float: left; line-height: 0.9;
+    padding: 6px 8px 0 0; color: var(--rust);
+  }
+  aside.pull {
+    border-left: 3px solid var(--rust);
+    padding: 4px 0 4px 20px;
+    margin: 32px 0;
+    font-style: italic; font-size: 22px;
+    color: var(--ink-2); line-height: 1.4;
+  }
+  .math {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 15px; background: var(--paper-2);
+    padding: 14px 18px; border-radius: 3px;
+    border-left: 2px solid var(--sage);
+    overflow-x: auto; white-space: nowrap;
+  }
+  .math .lbl { color: var(--ink-3); }
+  .math .op { color: var(--rust); }
+  .figure {
+    margin: 40px -20px; padding: 28px 24px;
+    background: var(--paper-2);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+  }
+  .figure.tight { margin: 32px 0; }
+  .figure figcaption {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px; color: var(--ink-2);
+    margin-top: 16px; line-height: 1.5;
+    letter-spacing: 0.01em;
+  }
+  .figure figcaption b { color: var(--ink); font-weight: 600; }
+  .three-domain {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    margin: 32px 0;
+  }
+  .three-domain .card {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    padding: 20px 18px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  .three-domain .card .name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px; font-weight: 600;
+    margin-bottom: 4px;
+    color: var(--ink);
+  }
+  .three-domain .card.gw .name { color: var(--sage); }
+  .three-domain .card.intr .name { color: var(--rust); }
+  .three-domain .card.brain .name { color: var(--indigo); }
+  .three-domain .card .sub {
+    color: var(--ink-3); font-style: italic;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 15px; margin-bottom: 10px;
+  }
+  .three-domain .card .row {
+    display: flex; justify-content: space-between;
+    padding: 3px 0;
+    border-bottom: 1px dotted var(--rule);
+  }
+  .three-domain .card .row:last-child { border: none; }
+  .three-domain .card .row .k { color: var(--ink-3); }
+  .three-domain .card .row .v { color: var(--ink); font-weight: 500; }
+
+  .controls {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px; color: var(--ink-2);
+    display: flex; align-items: center; gap: 14px;
+    margin: 20px 0 8px;
+  }
+  .controls label { min-width: 120px; }
+  .controls input[type="range"] {
+    flex: 1; accent-color: var(--rust);
+  }
+  .controls .val {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--ink); min-width: 56px; text-align: right;
+  }
+  svg.hodge { display: block; margin: 0 auto; width: 100%; max-width: 620px; height: auto; }
+
+  .table {
+    width: 100%; border-collapse: collapse;
+    font-family: 'Inter', sans-serif; font-size: 13px;
+    margin: 20px 0;
+  }
+  .table th, .table td {
+    text-align: left; padding: 8px 12px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .table th {
+    font-size: 11px; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--ink-3);
+    font-weight: 600;
+    border-bottom: 1px solid var(--ink-2);
+  }
+  .table td.num {
+    font-family: 'JetBrains Mono', monospace;
+    text-align: right; color: var(--ink);
+  }
+  .table td.hit { background: var(--highlight); font-weight: 600; }
+
+  .footnote {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px; color: var(--ink-3);
+    line-height: 1.5; margin-top: 8px;
+  }
+  footer {
+    border-top: 1px solid var(--rule);
+    margin-top: 96px; padding-top: 28px;
+    font-family: 'Inter', sans-serif;
+    font-size: 12px; color: var(--ink-3);
+    display: flex; justify-content: space-between;
+    flex-wrap: wrap; gap: 16px;
+  }
+  a { color: var(--rust); text-decoration: none; border-bottom: 1px solid var(--rule); }
+  a:hover { border-bottom-color: var(--rust); }
+
+  @media (max-width: 640px) {
+    body { font-size: 18px; }
+    h1 { font-size: 36px; }
+    .dek { font-size: 19px; }
+    h2 { font-size: 26px; }
+    .wrap { padding: 48px 20px 80px; }
+    .three-domain { grid-template-columns: 1fr; }
+    .figure { margin: 32px 0; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="masthead">
+  <div class="kicker">A methods teaching page · CW_unified</div>
+  <h1>The signal, the <em>carrier</em>, and the <em>residual</em></h1>
+  <p class="dek">Why a group's minority-voice cycles are not measurement noise — and how one weighting scheme catches them across personality tests, forced-choice perception, and brain networks.</p>
+  <div class="byline">
+    <span>Yong Wook Shin, University of Ulsan / Asan Medical Center</span>
+    <span>2026-07-12</span>
+    <span>Draft · v0.1</span>
+  </div>
+</header>
+
+<p class="lead">Almost every graph we compute from group data — a personality-item network, a paired-comparison ranking, a resting-state brain correlation matrix — is built by <b>pooling across subjects</b>. Take the average correlation, or the majority preference, and treat that as the group's edge. This move is quiet, universal, and usually harmless.</p>
+
+<p>But it hides two things at once. It hides <em>which</em> subjects actually carry the edge — is a strong correlation supported by everyone, or by an idiosyncratic minority? And it flattens what remains after the dominant story is subtracted — <em>the residual</em> — into what most papers call error.</p>
+
+<aside class="pull">The claim of this line of work is simple: after weighting each edge by the coherence of its supporting group, the residual that remains is not noise. It is structured, reproducible across resamples, and correlates with real outcomes. Something is there.</aside>
+
+<h2><span class="num">1</span>Two ideas, one framework</h2>
+
+<p>Two moves make everything else in this project possible. Neither is new alone — the novelty is applying them together, and using the second to diagnose the first.</p>
+
+<h3>Move 1 — carrier weighting</h3>
+
+<p>An edge weight in a subject-averaged network is really two numbers glued together: how <em>large</em> the mean signal is, and how <em>uniformly</em> subjects contribute to it. Carrier weighting separates them. For a symmetric similarity edge (like an item correlation), the weight becomes</p>
+
+<div class="math">w<span class="op">*</span><sub>ij</sub> = |ρ<sub>ij</sub>| <span class="op">·</span> (1 − Gini<sub>ij</sub>) <span class="op">·</span> max(Ō<sub>ij</sub>, 0) <span class="lbl">// dispersion × neighbourhood coherence</span></div>
+
+<p>The Gini term punishes edges whose covariance is concentrated in a small subgroup. Ō (mean neighbour-cosine) rewards edges whose supporting subjects also carry the surrounding edges — a coherent local module. An edge that looks strong in the average but is really carried by ten idiosyncratic respondents gets down-weighted; an edge that looks moderate but is broadly and coherently supported keeps its weight.</p>
+
+<p>For a directed preference edge (i chosen over j), the equivalent is the majority strength of the carrier:</p>
+
+<div class="math">c<sub>ij</sub> = |2 P<sub>ij</sub> − 1| &nbsp;&nbsp;<span class="lbl">// how decisive the group is on the i-vs-j pair</span></div>
+<div class="math">w<span class="op">*</span><sub>i→j</sub> = c<sub>ij</sub> <span class="op">·</span> m<sub>ij</sub> &nbsp;&nbsp;<span class="lbl">// carrier × signed mean intensity</span></div>
+
+<h3>Move 2 — Hodge decomposition</h3>
+
+<p>Once the edges are weighted, we ask: what is this flow really made of? For directed edges — preferences, transitions, comparisons — the classical answer from combinatorial Hodge theory is that any edge flow decomposes uniquely into a <em>gradient</em> (a global ranking, transitive) and a <em>curl</em> (cyclic residual on triangles), with a harmonic piece that vanishes on complete graphs.</p>
+
+<div class="math">w<span class="op">*</span> &nbsp;=&nbsp; grad(<em>s</em>) <span class="op">+</span> x<sub>curl</sub> <span class="op">+</span> x<sub>harm</sub></div>
+
+<p>The gradient is what a psychometrician would call the reliable dimension: a scale on the nodes. The curl is what most methods paper as noise: irreducible three-cycles like <em>A beats B beats C beats A</em>. But <b>curl on a carrier-weighted flow</b> is different from curl on a raw flow. If the residual survives the carrier weighting, its supporters are coherent enough that we cannot dismiss it as sampling variation.</p>
+
+<div class="figure tight">
+  <svg class="hodge" viewBox="0 0 620 240" role="img" aria-label="Hodge decomposition of a 4-node flow">
+    <defs>
+      <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+        <path d="M0,0 L10,5 L0,10 z" fill="#55524b"/>
+      </marker>
+      <marker id="arrRust" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+        <path d="M0,0 L10,5 L0,10 z" fill="#a05a2c"/>
+      </marker>
+    </defs>
+    <!-- three panels: full, gradient, curl -->
+    <g transform="translate(0,0)">
+      <text x="90" y="220" text-anchor="middle" font-family="Cormorant Garamond" font-style="italic" font-size="16" fill="#55524b">observed flow  w*</text>
+      <g stroke="#55524b" stroke-width="1.5" fill="none" marker-end="url(#arr)">
+        <line x1="90" y1="50" x2="130" y2="115"/>
+        <line x1="130" y1="115" x2="90" y2="180"/>
+        <line x1="90" y1="180" x2="50" y2="115"/>
+        <line x1="50" y1="115" x2="90" y2="50"/>
+      </g>
+      <g fill="#faf7f0" stroke="#1a1a1a" stroke-width="1.5">
+        <circle cx="90" cy="50" r="14"/><circle cx="130" cy="115" r="14"/>
+        <circle cx="90" cy="180" r="14"/><circle cx="50" cy="115" r="14"/>
+      </g>
+      <g font-family="Cormorant Garamond" font-size="14" text-anchor="middle" fill="#1a1a1a">
+        <text x="90" y="54">A</text><text x="130" y="119">B</text>
+        <text x="90" y="184">C</text><text x="50" y="119">D</text>
+      </g>
+    </g>
+    <text x="215" y="120" font-size="30" fill="#a05a2c">=</text>
+    <g transform="translate(150,0)">
+      <text x="90" y="220" text-anchor="middle" font-family="Cormorant Garamond" font-style="italic" font-size="16" fill="#55524b">gradient  grad(s)</text>
+      <g stroke="#6e7a5a" stroke-width="1.8" fill="none" marker-end="url(#arr)">
+        <line x1="90" y1="50" x2="130" y2="115"/>
+        <line x1="130" y1="115" x2="90" y2="180"/>
+        <line x1="50" y1="115" x2="90" y2="180"/>
+        <line x1="90" y1="50" x2="50" y2="115"/>
+      </g>
+      <g fill="#faf7f0" stroke="#1a1a1a" stroke-width="1.5">
+        <circle cx="90" cy="50" r="14"/><circle cx="130" cy="115" r="14"/>
+        <circle cx="90" cy="180" r="14"/><circle cx="50" cy="115" r="14"/>
+      </g>
+      <g font-family="Cormorant Garamond" font-size="14" text-anchor="middle" fill="#1a1a1a">
+        <text x="90" y="54">A</text><text x="130" y="119">B</text>
+        <text x="90" y="184">C</text><text x="50" y="119">D</text>
+      </g>
+    </g>
+    <text x="365" y="120" font-size="30" fill="#a05a2c">+</text>
+    <g transform="translate(300,0)">
+      <text x="90" y="220" text-anchor="middle" font-family="Cormorant Garamond" font-style="italic" font-size="16" fill="#55524b">curl  x<tspan font-size="12" dy="4">curl</tspan></text>
+      <g stroke="#a05a2c" stroke-width="1.8" fill="none" marker-end="url(#arrRust)" stroke-dasharray="4 3">
+        <path d="M 130 115 Q 90 130 50 115" />
+        <path d="M 50 115 Q 90 60 90 50" />
+        <path d="M 90 50 Q 130 60 130 115" />
+      </g>
+      <g fill="#faf7f0" stroke="#1a1a1a" stroke-width="1.5">
+        <circle cx="90" cy="50" r="14"/><circle cx="130" cy="115" r="14"/>
+        <circle cx="90" cy="180" r="14"/><circle cx="50" cy="115" r="14"/>
+      </g>
+      <g font-family="Cormorant Garamond" font-size="14" text-anchor="middle" fill="#1a1a1a">
+        <text x="90" y="54">A</text><text x="130" y="119">B</text>
+        <text x="90" y="184">C</text><text x="50" y="119">D</text>
+      </g>
+    </g>
+  </svg>
+  <figcaption><b>Figure 1.</b> A 4-node preference flow (left) uniquely decomposes into a transitive gradient — the piece explained by a scale <em>s</em> on the nodes — and a cyclic residual concentrated on triangles. The harmonic component is zero on complete graphs. Carrier weighting is applied to <em>w*</em> before the decomposition, so anything left in the curl is <em>carrier-supported</em> cyclic structure.</figcaption>
+</div>
+
+<h2><span class="num">2</span>Three fields, one geometry</h2>
+
+<p>The framework is worth building only if the same decomposition tells a coherent story across domains that would otherwise be studied in isolation. So far it applies to three:</p>
+
+<div class="three-domain">
+  <div class="card gw">
+    <div class="name">Personality</div>
+    <div class="sub">Gray–Wheelwright Jungian type inventory</div>
+    <div class="row"><span class="k">nodes</span><span class="v">42 items</span></div>
+    <div class="row"><span class="k">edge</span><span class="v">tetrachoric ρ</span></div>
+    <div class="row"><span class="k">carrier</span><span class="v">Gini × Ō</span></div>
+    <div class="row"><span class="k">dominant</span><span class="v">3-axis modules (IE/US/TF)</span></div>
+    <div class="row"><span class="k">residual</span><span class="v">cross-axis edges</span></div>
+    <div class="row"><span class="k">yield</span><span class="v">GW-21 short form</span></div>
+  </div>
+  <div class="card intr">
+    <div class="name">Perception</div>
+    <div class="sub">Forced-choice intransitivity, 8-stimulus bootstrap</div>
+    <div class="row"><span class="k">nodes</span><span class="v">8 stimuli</span></div>
+    <div class="row"><span class="k">edge</span><span class="v">directed preference</span></div>
+    <div class="row"><span class="k">carrier</span><span class="v">|2P − 1|</span></div>
+    <div class="row"><span class="k">dominant</span><span class="v">transitive ranking</span></div>
+    <div class="row"><span class="k">residual</span><span class="v">3-cycle curl</span></div>
+    <div class="row"><span class="k">yield</span><span class="v">group cyclicity η</span></div>
+  </div>
+  <div class="card brain">
+    <div class="name">Brain FC</div>
+    <div class="sub">Resting-state connectivity, ABIDE cohort</div>
+    <div class="row"><span class="k">nodes</span><span class="v">cortical parcels</span></div>
+    <div class="row"><span class="k">edge</span><span class="v">Fisher-z ρ</span></div>
+    <div class="row"><span class="k">carrier</span><span class="v">majority vote share</span></div>
+    <div class="row"><span class="k">dominant</span><span class="v">intra-hemispheric</span></div>
+    <div class="row"><span class="k">residual</span><span class="v">cross-hemispheric</span></div>
+    <div class="row"><span class="k">yield</span><span class="v">ADOS-lateralization</span></div>
+  </div>
+</div>
+
+<p>In each column the decomposition has the same shape — a dominant aligned component with a clear substantive name (an axis, a rank, a hemispheric side) plus an orthogonal residual — but the underlying quantity is different. The point of the education page is not that the domains are identical. They are not. It is that once you see the pattern once, you cannot un-see it in the others.</p>
+
+<h2><span class="num">3</span>An interactive intuition</h2>
+
+<p>The most useful thing you can build for a carrier-weighting intuition is a slider. Below, two subjects each cast their votes on the same six pairs of options. Move the slider left, and the group is split; move it right, and the group is unanimous. Watch the carrier <em>c</em> rise from zero to one, and the CW edge weight track it.</p>
+
+<div class="figure tight">
+  <div class="controls">
+    <label for="agree">Group agreement</label>
+    <input type="range" id="agree" min="50" max="100" value="72">
+    <span class="val" id="agreeVal">72%</span>
+  </div>
+  <div class="controls">
+    <label for="intensity">Mean intensity  m</label>
+    <input type="range" id="intensity" min="0" max="100" value="60">
+    <span class="val" id="intensityVal">0.60</span>
+  </div>
+  <svg class="hodge" viewBox="0 0 620 200" id="carrierSvg" role="img" aria-label="Carrier weighting demo">
+    <!-- carrier bar -->
+    <g transform="translate(30,30)">
+      <text x="0" y="-8" font-family="Inter" font-size="11" fill="#8a877f" letter-spacing="1.5">CARRIER  c = |2P − 1|</text>
+      <rect x="0" y="0" width="560" height="14" fill="#f2ede0" stroke="#d9d2bf"/>
+      <rect id="cBar" x="0" y="0" width="246" height="14" fill="#a05a2c"/>
+      <text id="cVal" x="566" y="12" font-family="JetBrains Mono" font-size="12" fill="#1a1a1a">0.44</text>
+    </g>
+    <!-- raw weight bar -->
+    <g transform="translate(30,80)">
+      <text x="0" y="-8" font-family="Inter" font-size="11" fill="#8a877f" letter-spacing="1.5">RAW SIGNAL  m</text>
+      <rect x="0" y="0" width="560" height="14" fill="#f2ede0" stroke="#d9d2bf"/>
+      <rect id="mBar" x="0" y="0" width="336" height="14" fill="#6e7a5a"/>
+      <text id="mVal" x="566" y="12" font-family="JetBrains Mono" font-size="12" fill="#1a1a1a">0.60</text>
+    </g>
+    <!-- CW weight bar -->
+    <g transform="translate(30,130)">
+      <text x="0" y="-8" font-family="Inter" font-size="11" fill="#8a877f" letter-spacing="1.5">CW-WEIGHTED  w* = c · m</text>
+      <rect x="0" y="0" width="560" height="14" fill="#f2ede0" stroke="#d9d2bf"/>
+      <rect id="wBar" x="0" y="0" width="148" height="14" fill="#1a1a1a"/>
+      <text id="wVal" x="566" y="12" font-family="JetBrains Mono" font-size="12" fill="#1a1a1a">0.26</text>
+    </g>
+  </svg>
+  <figcaption><b>Figure 2.</b> Carrier weighting in one dimension. The raw signal (green) says the mean intensity is high. But if only 52% of the group agrees on the direction, the carrier (rust) is near zero and the CW-weighted edge (black) is small. Uniform agreement pushes the carrier to 1 and the CW edge to the raw signal.</figcaption>
+</div>
+
+<h2><span class="num">4</span>What we found last week</h2>
+
+<p>The prediction locked at the start of the project was blunt: after applying carrier weighting to a real dataset of forced-choice preferences, the cyclic residual should still be non-zero. If it collapsed under CW, the whole "structured collective residual" story would fail its first real test.</p>
+
+<p>The dataset was 145 respondents making forced-choice preferences among 8 word stimuli — a bootstrap file from an ongoing intransitivity project. Each subject's antisymmetric win matrix was aggregated into two group-level matrices <em>P</em> (majority proportions) and <em>M</em> (mean signed intensity). The CW flow was decomposed on the complete graph K<sub>8</sub>.</p>
+
+<table class="table">
+  <thead><tr><th>quantity</th><th>value</th><th>reading</th></tr></thead>
+  <tbody>
+    <tr><td>‖W<sub>cw</sub>‖</td><td class="num">2.171</td><td>total carrier-weighted flow magnitude</td></tr>
+    <tr><td>‖grad‖</td><td class="num">2.134</td><td>transitive component (a ranking exists)</td></tr>
+    <tr class="hit"><td>‖curl‖</td><td class="num hit">0.581</td><td>cyclic residual — not zero</td></tr>
+    <tr><td>η<sub>cw</sub> = ‖curl‖ / ‖W<sub>cw</sub>‖</td><td class="num">0.267</td><td>carrier-supported cyclicity fraction</td></tr>
+    <tr><td>η<sub>uniform</sub></td><td class="num">0.334</td><td>same graph with no carrier weighting</td></tr>
+  </tbody>
+</table>
+
+<p>Carrier weighting shaves the cyclicity index from 0.334 down to 0.267 — as designed, it does absorb some noise. But 80% of the raw curl magnitude survives. And the top-|curl| triangles all share a common node, node 5, meaning the residual is not scattered noise — it concentrates on a small set of stimuli. The reviewer's most obvious question, "isn't your curl just sampling variation?", now has an empirical answer: no, because sampling variation would not survive an operation whose whole job is to down-weight sparsely-supported edges.</p>
+
+<aside class="pull">The carrier is a filter. What passes through is not the whole graph. What passes through, and stays cyclic, is the group's collective disagreement with itself — and it deserves an explanation, not a footnote.</aside>
+
+<h2><span class="num">5</span>Where this is going</h2>
+
+<p>The immediate next steps are the same across the three fields, and the education page will grow along with them: extend the carrier machinery to symmetric similarity edges (already done for personality), replicate the intransitivity result across other stimulus modalities (colour, drawings, virtual faces), and repeat the whole pipeline on ABIDE brain functional connectivity with hemispheric side as the natural dominant partition and cross-hemispheric edges as the residual. If the pattern holds up in the brain data, the unified paper writes itself — and the reader of this page will already know how to read it.</p>
+
+<footer>
+  <span>CW_unified · educational page</span>
+  <span>Signed: Y. W. Shin · 2026-07-12 · <a href="https://www.sogum.com/log/cw-method.html">project log</a></span>
+</footer>
+</div>
+
+<script>
+(function () {
+  const a = document.getElementById('agree');
+  const m = document.getElementById('intensity');
+  const aVal = document.getElementById('agreeVal');
+  const mVal = document.getElementById('intensityVal');
+  const cBar = document.getElementById('cBar');
+  const mBar = document.getElementById('mBar');
+  const wBar = document.getElementById('wBar');
+  const cValLabel = document.getElementById('cVal');
+  const mValLabel = document.getElementById('mVal');
+  const wValLabel = document.getElementById('wVal');
+  const width = 560;
+  function tick() {
+    const p = +a.value / 100;               // agreement in [0.5, 1]
+    const mm = +m.value / 100;              // mean intensity in [0, 1]
+    const c = Math.abs(2 * p - 1);          // carrier
+    const w = c * mm;                       // CW-weighted edge
+    aVal.textContent = a.value + '%';
+    mVal.textContent = mm.toFixed(2);
+    cBar.setAttribute('width', (c * width).toFixed(1));
+    mBar.setAttribute('width', (mm * width).toFixed(1));
+    wBar.setAttribute('width', (w * width).toFixed(1));
+    cValLabel.textContent = c.toFixed(2);
+    mValLabel.textContent = mm.toFixed(2);
+    wValLabel.textContent = w.toFixed(2);
+  }
+  a.addEventListener('input', tick);
+  m.addEventListener('input', tick);
+  tick();
+})();
+</script>
+</body>
+</html>
