@@ -247,14 +247,95 @@
 
 <p>An edge weight in a subject-averaged network is really two numbers glued together: how <em>large</em> the mean signal is, and how <em>uniformly</em> subjects contribute to it. Carrier weighting separates them. For a symmetric similarity edge (like an item correlation), the weight becomes</p>
 
-<div class="math">w<span class="op">*</span><sub>ij</sub> = |ρ<sub>ij</sub>| <span class="op">·</span> (1 − Gini<sub>ij</sub>) <span class="op">·</span> max(Ō<sub>ij</sub>, 0) <span class="lbl">// dispersion × neighbourhood coherence</span></div>
+<div class="math">w<span class="op">*</span><sub>ij</sub> = |ρ<sub>ij</sub>| <span class="op">·</span> (1 − Gini<sub>ij</sub>) <span class="op">·</span> max(Ō<sub>ij</sub>, 0)</div>
 
-<p>The Gini term punishes edges whose covariance is concentrated in a small subgroup. Ō (mean neighbour-cosine) rewards edges whose supporting subjects also carry the surrounding edges — a coherent local module. An edge that looks strong in the average but is really carried by ten idiosyncratic respondents gets down-weighted; an edge that looks moderate but is broadly and coherently supported keeps its weight.</p>
+<p>Three factors, each a different question about the same edge. Read them left to right.</p>
 
-<p>For a directed preference edge (i chosen over j), the equivalent is the majority strength of the carrier:</p>
+<h3 style="margin-top:32px">Factor 1 · |ρ<sub>ij</sub>| — the raw signal</h3>
 
-<div class="math">c<sub>ij</sub> = |2 P<sub>ij</sub> − 1| &nbsp;&nbsp;<span class="lbl">// how decisive the group is on the i-vs-j pair</span></div>
+<p>The absolute value of the correlation between items <em>i</em> and <em>j</em>, computed on the group. For binary/ordinal item responses we use the tetrachoric (or polychoric) estimator, not Pearson, so that a 0/1 dichotomy does not attenuate the coefficient. This factor is what a naïve pooled network uses <em>and stops there</em>. It answers only: on average, how tightly do these two items co-vary? It does not ask <em>who</em> was co-varying. The next two factors do.</p>
+
+<h3 style="margin-top:32px">Factor 2 · (1 − Gini<sub>ij</sub>) — dispersion of the carrier</h3>
+
+<p>The carrier of an edge is the subject-by-subject vector of centered products <em>S<sub>ij</sub>(s) = (x<sub>i,s</sub> − x̄<sub>i</sub>)(x<sub>j,s</sub> − x̄<sub>j</sub>)</em>. This is the atomic contribution each respondent makes to that particular edge's covariance. Some subjects contribute a lot, some contribute nothing, some contribute in the opposite direction. Averaging <em>S</em> across subjects gives you the covariance. But averaging hides <em>how</em> the average was made.</p>
+
+<p>The Gini coefficient of <em>|S|</em> measures inequality among the contributors — the same tool an economist uses on incomes. Gini = 0 means every subject contributes exactly the same magnitude; Gini = 1 means one subject contributes everything and the rest contribute nothing.</p>
+
+<div class="math">Gini(|S<sub>ij</sub>|) → 0 &nbsp; carrier is <em>broad</em> — everyone chips in equally &nbsp; ⟹ (1 − Gini) ≈ 1 &nbsp; keep the edge</div>
+<div class="math">Gini(|S<sub>ij</sub>|) → 1 &nbsp; carrier is <em>concentrated</em> — one clique carries it &nbsp; ⟹ (1 − Gini) ≈ 0 &nbsp; shrink the edge</div>
+
+<p>Why this is the right thing to punish: a covariance sustained by a small handful of respondents is precisely the kind of edge that will not replicate in a fresh sample, because the underlying subgroup is not guaranteed to reappear. Molenaar's ergodicity–non-ergodicity gap is the formal name — the group-level statistic (the correlation) fails to describe most of the individuals it is computed from. The <em>1 − Gini</em> multiplier is a direct penalty for that gap: broadly-carried edges keep their signal, narrowly-carried edges lose it.</p>
+
+<h3 style="margin-top:32px">A toy example, in eight subjects</h3>
+
+<p>Concrete numbers make the arithmetic obvious. Eight subjects rate two items on a 1–5 Likert scale. Both item means come out to exactly 3.0, so the centered scores <em>d</em> are just the raw ratings minus 3.</p>
+
+<table class="table">
+  <thead><tr>
+    <th>subject</th><th>x<sub>i</sub></th><th>x<sub>j</sub></th>
+    <th>d<sub>i</sub></th><th>d<sub>j</sub></th>
+    <th>S<sub>ij</sub>(s)</th>
+    <th>alt S<sub>ij</sub>(s)</th>
+  </tr></thead>
+  <tbody>
+    <tr><td>A</td><td class="num">1</td><td class="num">2</td><td class="num">−2</td><td class="num">−1</td><td class="num">2</td><td class="num">1</td></tr>
+    <tr><td>B</td><td class="num">2</td><td class="num">1</td><td class="num">−1</td><td class="num">−2</td><td class="num">2</td><td class="num">1</td></tr>
+    <tr><td>C</td><td class="num">2</td><td class="num">3</td><td class="num">−1</td><td class="num">0</td><td class="num">0</td><td class="num">1</td></tr>
+    <tr><td>D</td><td class="num">3</td><td class="num">3</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">1</td></tr>
+    <tr><td>E</td><td class="num">3</td><td class="num">3</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">1</td></tr>
+    <tr><td>F</td><td class="num">4</td><td class="num">4</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td class="num">1</td></tr>
+    <tr><td>G</td><td class="num">4</td><td class="num">3</td><td class="num">1</td><td class="num">0</td><td class="num">0</td><td class="num">1</td></tr>
+    <tr><td>H</td><td class="num">5</td><td class="num">5</td><td class="num">2</td><td class="num">2</td><td class="num hit">4</td><td class="num">2</td></tr>
+    <tr><td colspan="5" style="text-align:right"><b>sum</b></td><td class="num">9</td><td class="num">9</td></tr>
+    <tr><td colspan="5" style="text-align:right"><b>mean (Cov)</b></td><td class="num">1.125</td><td class="num">1.125</td></tr>
+  </tbody>
+</table>
+
+<p>The column <b>S<sub>ij</sub>(s)</b> is the actual carrier of the observed data. Nearly half of it — subject H alone contributing 4 out of 9 — comes from a single respondent at the extreme corner (5, 5). Compute Gini on the sorted <em>|S|</em> vector [0, 0, 0, 0, 1, 2, 2, 4]:</p>
+
+<div class="math">Gini(|S<sub>ij</sub>|) = <b>0.625</b> &nbsp; ⟹ &nbsp; 1 − Gini = <b>0.375</b> &nbsp;<span class="lbl">// concentrated carrier</span></div>
+
+<p>The <b>alt S<sub>ij</sub>(s)</b> column shows an alternative distribution with the <em>same</em> mean covariance of 1.125, but spread almost evenly across all eight subjects. Its Gini is a completely different world:</p>
+
+<div class="math">Gini(|alt S|) ≈ <b>0.097</b> &nbsp; ⟹ &nbsp; 1 − Gini ≈ <b>0.903</b> &nbsp;<span class="lbl">// broad carrier</span></div>
+
+<p>Same raw covariance. Same tetrachoric ρ would come out equal after standardisation. But the CW factor differs by <b>2.4×</b> — the first edge would shrink to roughly 40% of its raw weight, while the second would keep 90%. That gap is what Pearson-thresholded networks throw away when they treat both edges as identical, and it is exactly what Gini catches. In the actual eight-subject data above, subject H is a single respondent whose absence would flatten the correlation entirely; treating that edge as a robust group property would be a replication trap. The <em>1 − Gini</em> factor sees the trap before the walktrap does.</p>
+
+<h3 style="margin-top:32px">Factor 3 · max(Ō<sub>ij</sub>, 0) — neighbourhood coherence</h3>
+
+<p>The last factor asks a subtler question. Not <em>how</em> many subjects carry this edge, but whether <em>the same subjects</em> also carry the surrounding edges. For every edge <em>e' </em> that shares a node with <em>e = (i,j)</em>, compute the cosine similarity between the two carrier vectors <em>S<sub>e</sub></em> and <em>S<sub>e'</sub></em>. Then Ō<sub>ij</sub> is the mean of those cosines.</p>
+
+<div class="math">Ō<sub>ij</sub> = mean<sub>e' shares a node with (i,j)</sub> &nbsp; cos( S<sub>ij</sub>, S<sub>e'</sub> )</div>
+
+<p>Ō ≈ 1 means the respondents who carry <em>this</em> edge are also the respondents who carry the neighbouring edges: a coherent local module of subjects supports a coherent local module of edges. Ō ≈ 0 means this edge is carried by a different crowd than its neighbours — it may still be strong on average, but it is <em>orthogonal</em> to the module it sits inside, and the walktrap community structure will not know what to do with it.</p>
+
+<p>The <em>max(Ō, 0)</em> clip is deliberate. A negative Ō means this edge's carrier vector points <em>opposite</em> to its neighbourhood — that is, the same respondents who carry the local module actively push against this edge. Rather than let that fight negatively-weight the edge into the graph (which would corrupt walktrap on |w*|), we hard-zero it. If your edge is anti-coherent with its neighbourhood, it does not belong in this planar module at all.</p>
+
+<h3 style="margin-top:32px">The three factors together</h3>
+
+<p>Multiplying gives an edge weight that fires only when all three conditions are met: <b>the raw signal is real</b> (|ρ| is not near zero), <b>the carrier is broad</b> (Gini is small), and <b>the carrier is coherent with its neighbourhood</b> (Ō is positive). Any one of the three going to zero zeros the edge. This is a strict AND, not a soft weighted sum — the strictness is what gives CW-TMFG its selectivity.</p>
+
+<p>A worked example clarifies. Suppose two edges have the same tetrachoric ρ = 0.45.</p>
+
+<table class="table">
+  <thead><tr><th>edge</th><th>|ρ|</th><th>Gini</th><th>1 − Gini</th><th>Ō</th><th>w*</th><th>reading</th></tr></thead>
+  <tbody>
+    <tr><td>e<sub>A</sub></td><td class="num">0.45</td><td class="num">0.09</td><td class="num">0.91</td><td class="num">0.08</td><td class="num hit">0.033</td><td>broad + coherent → survives</td></tr>
+    <tr><td>e<sub>B</sub></td><td class="num">0.45</td><td class="num">0.72</td><td class="num">0.28</td><td class="num">0.05</td><td class="num">0.006</td><td>concentrated → shrinks 5×</td></tr>
+    <tr><td>e<sub>C</sub></td><td class="num">0.45</td><td class="num">0.15</td><td class="num">0.85</td><td class="num">−0.03</td><td class="num">0.000</td><td>anti-coherent → zeroed</td></tr>
+  </tbody>
+</table>
+
+<p>Same raw correlation, three completely different verdicts. That is the point of the formula: it lets you keep the ρ = 0.45 that reflects a real, broadly-supported, community-consistent relationship, and refuse the ρ = 0.45 that reflects a small idiosyncratic subgroup or an edge fighting its own neighbourhood. Row A is the case where a classical Pearson-thresholded network and CW-TMFG agree; rows B and C are the cases where they diverge — and where CW-TMFG earns its keep by not being fooled.</p>
+
+<h3 style="margin-top:32px">The directed-edge cousin</h3>
+
+<p>For a directed preference edge (i chosen over j), the same idea takes a simpler form because we have discrete win/lose choices instead of continuous covariances:</p>
+
+<div class="math">c<sub>ij</sub> = |2 P<sub>ij</sub> − 1| &nbsp;&nbsp;<span class="lbl">// carrier = decisiveness of the majority</span></div>
 <div class="math">w<span class="op">*</span><sub>i→j</sub> = c<sub>ij</sub> <span class="op">·</span> m<sub>ij</sub> &nbsp;&nbsp;<span class="lbl">// carrier × signed mean intensity</span></div>
+
+<p>Here the carrier <em>c<sub>ij</sub></em> collapses the Gini + Ō machinery into one number, because a directed edge has only two states (i beats j, or j beats i). The carrier is 0 when the group is split 50-50 and 1 when the group is unanimous. Factor 3 (neighbourhood coherence) is not needed at the edge level — instead, its work reappears in the Hodge <em>curl</em> component after decomposition, which is exactly the topic of Move 2.</p>
 
 <h3>Move 2 — Hodge decomposition</h3>
 
