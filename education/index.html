@@ -400,6 +400,60 @@
 
 <p>The <em>max(Ō, 0)</em> clip is deliberate. A negative Ō means this edge's carrier vector points <em>opposite</em> to its neighbourhood — that is, the same respondents who carry the local module actively push against this edge. Rather than let that fight negatively-weight the edge into the graph (which would corrupt walktrap on |w*|), we hard-zero it. If your edge is anti-coherent with its neighbourhood, it does not belong in this planar module at all.</p>
 
+<h3 style="margin-top:32px">A three-item toy for Ō</h3>
+
+<p>Extend the eight-subject example by adding a third item <em>k</em>. There are now three edges — (i, j), (i, k), (j, k) — and the edge we focus on, e = (i, j), has two neighbours that share a node with it: (i, k) shares node i, and (j, k) shares node j. Ō<sub>ij</sub> is the mean of two cosines.</p>
+
+<p>We try two versions of item <em>k</em>. In <b>version A</b> the responses on <em>k</em> co-vary with i and j (a coherent local module). In <b>version B</b> the responses on <em>k</em> move in the opposite direction from i and j (an anti-coherent, cross-axis item). All three item means come out to 3.0 either way, so <em>d = x − 3</em>.</p>
+
+<table class="table">
+  <thead><tr>
+    <th>subject</th><th>x<sub>i</sub></th><th>x<sub>j</sub></th>
+    <th>x<sub>k</sub><br>version A</th><th>x<sub>k</sub><br>version B</th>
+    <th>S<sub>ij</sub></th>
+    <th>S<sub>ik</sub><sup>A</sup></th><th>S<sub>jk</sub><sup>A</sup></th>
+    <th>S<sub>ik</sub><sup>B</sup></th><th>S<sub>jk</sub><sup>B</sup></th>
+  </tr></thead>
+  <tbody>
+    <tr><td>A</td><td class="num">1</td><td class="num">2</td><td class="num">1</td><td class="num">5</td><td class="num">2</td><td class="num">4</td><td class="num">2</td><td class="num">−4</td><td class="num">−2</td></tr>
+    <tr><td>B</td><td class="num">2</td><td class="num">1</td><td class="num">2</td><td class="num">4</td><td class="num">2</td><td class="num">1</td><td class="num">2</td><td class="num">−1</td><td class="num">−2</td></tr>
+    <tr><td>C</td><td class="num">2</td><td class="num">3</td><td class="num">3</td><td class="num">3</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td></tr>
+    <tr><td>D</td><td class="num">3</td><td class="num">3</td><td class="num">3</td><td class="num">3</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td></tr>
+    <tr><td>E</td><td class="num">3</td><td class="num">3</td><td class="num">3</td><td class="num">3</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td></tr>
+    <tr><td>F</td><td class="num">4</td><td class="num">4</td><td class="num">4</td><td class="num">3</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td class="num">0</td><td class="num">0</td></tr>
+    <tr><td>G</td><td class="num">4</td><td class="num">3</td><td class="num">4</td><td class="num">2</td><td class="num">0</td><td class="num">1</td><td class="num">0</td><td class="num">−1</td><td class="num">0</td></tr>
+    <tr><td>H</td><td class="num">5</td><td class="num">5</td><td class="num">4</td><td class="num">1</td><td class="num hit">4</td><td class="num">2</td><td class="num">2</td><td class="num">−4</td><td class="num">−4</td></tr>
+  </tbody>
+</table>
+
+<p>Now compute the cosine between the focal carrier vector S<sub>ij</sub> and each of its two neighbours. Cosine here is just the standard dot-product-over-norms:</p>
+
+<div class="math">cos(a, b) &nbsp;=&nbsp; (a · b) / (‖a‖ · ‖b‖)</div>
+
+<p>With ‖S<sub>ij</sub>‖ = 5.000, the arithmetic for the two versions is:</p>
+
+<table class="table">
+  <thead><tr>
+    <th>quantity</th><th>version A (coherent)</th><th>version B (anti-coherent)</th>
+  </tr></thead>
+  <tbody>
+    <tr><td>S<sub>ij</sub> · S<sub>ik</sub></td><td class="num">+19</td><td class="num">−26</td></tr>
+    <tr><td>‖S<sub>ik</sub>‖</td><td class="num">4.796</td><td class="num">5.831</td></tr>
+    <tr><td>cos(S<sub>ij</sub>, S<sub>ik</sub>)</td><td class="num">+0.792</td><td class="num">−0.892</td></tr>
+    <tr><td>S<sub>ij</sub> · S<sub>jk</sub></td><td class="num">+17</td><td class="num">−24</td></tr>
+    <tr><td>‖S<sub>jk</sub>‖</td><td class="num">3.606</td><td class="num">4.899</td></tr>
+    <tr><td>cos(S<sub>ij</sub>, S<sub>jk</sub>)</td><td class="num">+0.943</td><td class="num">−0.980</td></tr>
+    <tr><td><b>Ō<sub>ij</sub> = mean of the two cosines</b></td><td class="num hit">+0.868</td><td class="num">−0.936</td></tr>
+    <tr><td><b>max(Ō<sub>ij</sub>, 0)</b> — the Factor-3 gate</td><td class="num hit">0.868</td><td class="num hit">0.000</td></tr>
+  </tbody>
+</table>
+
+<p>Read this table row by row and the meaning of Factor 3 becomes concrete. In <b>version A</b> the subjects who carry (i, j) — chiefly H, and to a lesser extent A, B, F — also carry (i, k) and (j, k). The three carrier vectors all point roughly in the same direction; their cosines land around +0.87, and Ō stays positive and large. The edge (i, j) is embedded inside a coherent little module, and the factor keeps 87% of its weight.</p>
+
+<p>In <b>version B</b>, the same subjects who carry (i, j) push in the <em>opposite</em> direction on the (i, k) and (j, k) edges — subject H, who piled a +4 contribution on (i, j), now contributes −4 to both neighbouring edges. The two cosines flip to around −0.94, Ō is deeply negative, and the max(·, 0) clip zeroes the edge entirely. The (i, j) edge might still be strong on the group correlation matrix (ρ was 0.82), but it does not belong in the same local module as its neighbours — it is a cross-axis edge, and Factor 3 refuses to let it join the walktrap community that (i, k) and (j, k) form.</p>
+
+<p>This is exactly the mechanism that catches "borderline" items in the GW-21 short form: q40 sits at 12.5% cross-axis edge share in the network — barely under the 20% Stage-1 cutoff — precisely because its Ō is small but not negative. Items with negative Ō get zeroed out by Factor 3 before Stage-1 even sees them.</p>
+
 <h3 style="margin-top:32px">The three factors together</h3>
 
 <p>Multiplying gives an edge weight that fires only when all three conditions are met: <b>the raw signal is real</b> (|ρ| is not near zero), <b>the carrier is broad</b> (Gini is small), and <b>the carrier is coherent with its neighbourhood</b> (Ō is positive). Any one of the three going to zero zeros the edge. This is a strict AND, not a soft weighted sum — the strictness is what gives CW-TMFG its selectivity.</p>
