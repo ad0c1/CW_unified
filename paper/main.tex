@@ -45,8 +45,8 @@ correlations matched by calibrated design, the estimator separated
 minority-carried community edges from incoherent distractors with AUROC
 $0.985$ versus $0.469$ for raw correlations (paired difference $+0.516$,
 $95\%$ CI $[+0.506,+0.526]$), while a concentration-only ablation remained at
-chance --- confirming that coherence, not concentration, is the
-discriminating signal. End-to-end community recovery showed no improvement at
+chance and an overlap-only ablation matched the full estimator --- the
+separation is carried by the coherence factor alone. End-to-end community recovery showed no improvement at
 $n=600$; the preregistered diagnosis attributes this to candidate-edge
 selection, not the carrier statistic, and we report it as such.
 \end{abstract}
@@ -78,9 +78,9 @@ pooled fit statistics: the network that results is internally consistent and
 wrong.
 
 This paper contributes a label-free, edge-level estimator of carrier
-coherence that \emph{detects} minority-supported structure invisible to
-pooled psychometric networks, while remaining a drop-in weight inside the
-standard bootEGA pipeline \citep{christensen2021}. The estimator requires no
+coherence that separates coherent minority-carried structure from
+incoherent edges of matched pooled correlation, while remaining a drop-in
+weight inside the standard bootEGA pipeline \citep{christensen2021}. The estimator requires no
 grouping variable, no mixture model, and no change to the downstream
 community-detection machinery: it re-expresses each retained edge weight and
 nothing else.
@@ -108,7 +108,17 @@ S_{re} \;=\; (x_{rj}-\bar{x}_j)\,(x_{rk}-\bar{x}_k),
 \end{equation}
 the $r$-th summand of the covariance. The vector
 $S_{\cdot e}=(S_{1e},\dots,S_{ne})$ is the \emph{carrier profile} of the
-edge: it records who supplies the association. Pooling collapses this vector
+edge: it records who supplies the association. Because the summand is
+centred, the profile is a signed contribution vector, not an endorsement
+indicator: a respondent endorsing both items and a respondent endorsing
+neither both contribute positively (the $(0,0)$ cell contributes
+$\bar{x}_j\bar{x}_k$). ``Carrier'' is a mnemonic for the respondents whose
+contributions dominate the positive mass of this vector; every quantity
+below is computed from the full signed profile, never from a thresholded
+carrier set. The estimator is deliberately hybrid in scale: the magnitude
+factor uses the tetrachoric $\rho_e$ (latent scale), while the profile is
+computed on the observed binary responses, where the respondent dimension
+still exists. Pooling collapses this vector
 to its mean; everything the present method does is done before that collapse.
 
 \subsection{Two carrier components}
@@ -365,7 +375,14 @@ paired-bootstrap difference of $+0.516$ with $95\%$ CI $[+0.506,+0.526]$.
 Rule~2 \emph{failed}: the ARI difference $+0.0034$ $[+0.0001,+0.0067]$
 excludes zero, but the exact-C difference $+0.0020$ $[-0.0080,+0.0120]$
 does not. Rule~3 passed: false $k{=}3$ rates were $0.295$ (raw) and
-$0.308$ (CW), a difference of $+0.013$. Rule~4 passed: pooled $|\rho|$ was
+$0.308$ (CW), a difference of $+0.013$. The absolute rates warrant a
+comment the rule itself does not require: with the C loadings set to
+zero, the six distractor pairs remain in the data, and the
+candidate-selection and community-detection stages shared by both
+pipelines assemble a spurious third community in roughly $30\%$ of null
+replicates. That rate is a property of TMFG-plus-walktrap on null data,
+essentially unchanged by reweighting; the rule targets the increment,
+which is the only quantity the estimator could affect. Rule~4 passed: pooled $|\rho|$ was
 matched (C $.169$, distractor $.176$), Gini did \emph{not} separate the
 classes ($.172$ / $.165$), and $\Obar$ did ($.102$ / $-.003$).
 
@@ -453,12 +470,12 @@ the next preregistered simulation. No post-result tuning was performed.
 
 The preregistered secondary analyses --- the $36$-cell generalization grid
 over sample size, minority prevalence, and loading, and the bootstrap
-stability outcomes --- are not reported here; the primary condition shows
+stability outcomes --- were not executed; the primary condition shows
 that end-to-end differences cannot emerge where raw recovery is already at
 ceiling, and the grid's informative region (smaller $n$, lower $\pi_C$) is
 deferred together with the carrier-aware selection study.
-% PI DECISION 2-3 (open): grid appendix vs defer (current text = defer);
-% bootstrap secondary include vs defer (current text = defer).
+% PI DECISION 2-3 resolved 2026-08-27: grid + bootstrap deferred, wording
+% changed to "were not executed" (external review flagged ambiguity).
 
 \begin{figure}[!htb]
 \centering
@@ -484,8 +501,10 @@ The estimator originated in a concrete measurement problem: the
 Gray--Wheelwright Jungian Type Survey, whose thinking--feeling axis is the
 least well established of its three
 \citep[p.~228]{mattoon1995}. In the pilot application that motivated this
-paper, replacing raw edge weights with Eq.~\eqref{eq:cw} inside an
-otherwise unchanged bootstrap EGA pipeline raised the bootstrap probability
+paper ($n=747$ respondents, $77$ binary items, tetrachoric correlations,
+EBICglasso candidate graph, $B=1{,}000$ bootstrap resamples), replacing raw
+edge weights with Eq.~\eqref{eq:cw} inside an otherwise unchanged bootstrap
+EGA pipeline raised the bootstrap probability
 of recovering the theoretically expected three-community solution from
 $3.4\%$ to $18.9\%$ --- precisely the behaviour expected if part of the
 axis structure is carried coherently by a minority of respondents and
@@ -498,12 +517,14 @@ estimator's target phenomenon occurs in real data.
 \section{Discussion}\label{sec:discussion}
 What the simulation establishes is deliberately narrow and, within that
 scope, unambiguous. At the estimator level, carrier coherence separates
-minority-carried structure from matched incoherent distractors essentially
-perfectly, the mechanism operates exactly as the wedge argument predicts,
+minority-carried structure from matched incoherent distractors at AUROC
+$.985$, with $73$--$74\%$ of replicates at exactly $1.00$; the mechanism
+operates exactly as the wedge argument predicts,
 and the separation is attributable to the coherence factor alone: the
 Gini-only ablation sits at chance. What the simulation does \emph{not}
 establish is an end-to-end recovery advantage at $n=600$ --- rule 2 failed,
-and the paper's title claims detection, not recovery, for that reason.
+and the paper claims edge-level separation, not end-to-end recovery, for
+that reason.
 
 The ablation result also disciplines the formula itself. Overlap-only
 performed indistinguishably from CW-full, which licenses discussion --- not
