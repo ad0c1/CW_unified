@@ -418,15 +418,17 @@ only the Monte Carlo budget.}
 \centering
 \includegraphics[width=.72\textwidth]{figs/fig4_ablation.pdf}
 \caption{Ablation, estimator-level AUROC (C edges versus distractors) over
-1{,}000 replicates; axis labels give each arm's scoring formula. Each
-point is one replicate (horizontal jitter only), violins show the
-boundary-corrected density, and white dots mark medians. The Gini
+1{,}000 replicates; axis labels give each arm's scoring formula. AUROC
+over the $10\times6$ C--distractor pairs is discrete (grid $1/60$), so
+each horizontal bar marks one attained value, with bar width
+proportional to the number of replicates at that value (normalized
+within arm); white dots mark medians. The Gini
 ablation $|\rho|(1-G)$ is at chance (mean $.464$); the coherence-gate
 ablation $|\rho|\max(\Obar,0)$ carries the effect ($.985$); the full
 $\wstar$ matches it ($.985$) --- the a-priori prediction of
-Section~\ref{sec:wedge}. The right-hand distributions pile at ceiling
-(73--74\% of replicates at AUROC exactly $1.00$, annotated), which is
-why their densities compress into the solid band at the top. The oracle subgroup comparator (mean AUROC
+Section~\ref{sec:wedge}. The right-hand distributions collapse onto a
+single dominant bar at ceiling (73--74\% of replicates at AUROC exactly
+$1.00$, annotated) with a short tail below. The oracle subgroup comparator (mean AUROC
 $.002$, inverted) is reported in the text as a diagnostic.}
 \label{fig:ablation}
 \end{figure}

@@ -180,30 +180,35 @@ lab_ab <- c(raw  = "'|'*rho*'|'",
             over = "'|'*rho*'|'~'max('*bar(O)*', 0)'",
             cw   = "italic(w)^'*'~(full)")
 oracle_mu <- mean(prim$auroc[prim$method == "oracle"], na.rm = TRUE)
-# format matched to the mechanism figure (PI 2026-08-26): same violin
-# aesthetics + white median dot; numeric means live in the prose, not here.
-# The two right violins degenerate to a ceiling sliver (73%/74% of
-# replicates at AUROC = 1.00 exactly) — annotate the point mass so the
-# collapsed shape is not misread as a rendering artefact
+# Presentation (PI 2026-08-26, 3rd iteration): AUROC on 60 C-x-distractor
+# pairs is DISCRETE (grid 1/60; over/cw have only 18/17 attained values,
+# 73%/74% of replicates exactly at 1.00). A KDE violin cannot represent a
+# point mass, so the violin is replaced by its exact discrete analogue:
+# one horizontal bar per attained AUROC value, bar width proportional to
+# the number of replicates at that value (normalized within arm, as
+# scale = "width" does for the violins of the mechanism figure). raw/gini
+# occupy ~52 grid points and read as violins; over/cw read as one dominant
+# full-width bar at 1.00 plus a short tail — which is the true shape.
 ceil_ab <- aggregate(auroc ~ method, ab, function(x) mean(x == 1))
 ceil_ab <- ceil_ab[ceil_ab$auroc > .5, ]
 ceil_ab$lab <- sprintf("%.0f%% at 1.00", 100 * ceil_ab$auroc)
-f4 <- ggplot(ab, aes(method, auroc, fill = method)) +
+cnt <- aggregate(seed ~ method + auroc, ab, length); names(cnt)[3] <- "n"
+cnt$w <- ave(cnt$n, cnt$method, FUN = function(z) z / max(z)) * 0.82
+med_ab <- aggregate(auroc ~ method, ab, median)
+f4 <- ggplot(cnt, aes(as.numeric(method), auroc)) +
   geom_hline(yintercept = 0.5, linetype = "22", linewidth = 0.3, color = "grey55") +
-  geom_violin(color = NA, alpha = 0.55, width = 0.9, scale = "width",
-              bounds = c(0, 1), adjust = 1.6) +
-  geom_jitter(aes(color = method), width = 0.30, height = 0,
-              size = 0.35, alpha = 0.18, show.legend = FALSE) +
-  scale_color_manual(values = c(col_gray, "#d6a137", "#5aae61", col_C)) +
-  stat_summary(fun = median, geom = "point", size = 1.4, color = "white") +
+  geom_tile(aes(width = w, fill = method), height = 1 / 72, alpha = 0.85) +
+  geom_point(data = med_ab, aes(as.numeric(method), auroc),
+             size = 1.4, color = "white") +
   annotate("text", x = 4.45, y = 0.53, hjust = 1, label = "chance",
            size = 2.4, color = "grey55") +
-  geom_text(data = ceil_ab, aes(method, 1.055, label = lab),
+  geom_text(data = ceil_ab, aes(as.numeric(method), 1.055, label = lab),
             inherit.aes = FALSE, size = 2.3, color = "grey40") +
   scale_fill_manual(values = c(col_gray, "#d6a137", "#5aae61", col_C)) +
-  scale_x_discrete(labels = function(x) parse(text = lab_ab[x])) +
-  scale_y_continuous(limits = c(0, 1.09),
-                     breaks = c(0, 0.25, 0.5, 0.75, 1)) +
+  scale_x_continuous(breaks = 1:4, labels = parse(text = lab_ab),
+                     limits = c(0.45, 4.55), expand = c(0, 0)) +
+  scale_y_continuous(limits = c(-1 / 144, 1.09),   # half a bar height below 0:
+                     breaks = c(0, 0.25, 0.5, 0.75, 1)) + # gini attains 0.000
   labs(x = NULL, y = "AUROC  (C edges vs distractors)") +
   base_theme + theme(legend.position = "none")
 ggsave("paper/figs/fig4_ablation.pdf", f4, width = 4.6, height = 2.6, device = cairo_pdf)
