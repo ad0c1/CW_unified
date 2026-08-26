@@ -4,3 +4,10 @@ __pycache__/
 paper/main.aux
 paper/main.log
 paper/main.out
+
+# internal — not for public repo
+drafts/
+gw/
+brain/
+viz/
+paper/cw-method_paper.pdf
