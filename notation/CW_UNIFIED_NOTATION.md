@@ -181,6 +181,28 @@ w^{*}_{\text{grad}}=A\hat{s},\qquad w^{*}_{\text{cyc}}=w^{*}-w^{*}_{\text{grad}}
 
 By construction \(A^{\top}w^{*}_{\text{cyc}}=0\), so \(w^{*}_{\text{cyc}}\in\ker(A^{\top})\), the cycle space of the complete graph.
 
+### 6.1 Norm convention (mandatory)
+
+All reported Hodge norms use the vector of the \(m=\binom{n}{2}\) uniquely oriented edges:
+
+\[
+\|w\|_E=\left(\sum_{i<j}w_{ij}^2\right)^{1/2}.
+\]
+
+Do not mix this with the Frobenius norm of the full antisymmetric matrix \(W\). Because \(W_{ji}=-W_{ij}\),
+
+\[
+\|W\|_F=\sqrt{2}\,\|w\|_E.
+\]
+
+Every run must assert the orthogonal identity
+
+\[
+\left|\|w^*\|_E^2-\|w^*_{\mathrm{grad}}\|_E^2-\|w^*_{\mathrm{cyc}}\|_E^2\right|<10^{-10}.
+\]
+
+The July 2026 teaching-page result mixed an edge-vector norm for the total and gradient with a full-matrix Frobenius norm for the curl. Its curl and cyclicity ratios were therefore inflated by \(\sqrt{2}\); the page now records that correction explicitly.
+
 This is the ordinary combinatorial Hodge decomposition (Jiang, Lim, Yao, & Ye 2011) applied to the CW-weighted flow instead of the raw flow. **The novelty is not in the decomposition itself but in the choice of the flow on which it is applied.** The raw flow \(\bar{x}\) mixes group-mean magnitude with individual noise; the CW flow \(w^{*}\) suppresses accidental agreements (low \(c_{ij}\)) and amplifies structurally shared cycles (high \(c_{ij}\) with cyclic Hodge component).
 
 ---
@@ -192,7 +214,7 @@ For each domain and each observation unit \(k\), the following scalars are repor
 - **Global rank strength / alignment**: \(G^{(k)}=\|w^{*(k)}_{\text{grad}}\|_{2}\) (Hodge) or \(\sum_{\text{aligned}}w^{*(k)}_{ij}\) (partition-based).
 - **Residual magnitude**: \(R^{(k)}=\|w^{*(k)}_{\text{res}}\|_{2}\).
 - **Residual energy fraction**: \(\rho^{(k)}_{\text{res}}=\|w^{*(k)}_{\text{res}}\|_{2}^{2}/\|w^{*(k)}\|_{2}^{2}\).
-- **Carrier-weighted residual survival**: \(S^{(k)}=\|w^{*(k)}_{\text{res}}\|_{2}/\|\bar{x}^{(k)}_{\text{res}}\|_{2}\), the ratio of CW-weighted residual magnitude to raw residual magnitude. Values close to 1 indicate that the residual is not attenuated by carrier weighting, i.e., the residual is a **structured collective signal**, not accidental disagreement.
+- **Carrier-weighted residual survival**: \(S^{(k)}=\|w^{*(k)}_{\text{res}}\|_{E}/\|\bar{x}^{(k)}_{\text{res}}\|_{E}\), the ratio of CW-weighted residual magnitude to raw residual magnitude, using the same edge-vector norm in numerator and denominator. Values close to 1 show attenuation resistance; they do not, by themselves, distinguish structure from sampling variation.
 
 The central empirical prediction of the CW-unified framework is that in each of the three domains, \(S^{(k)}\) is bounded away from zero at the group level and correlates with meaningful individual-difference or clinical outcomes (typology axis identity; individual intransitivity indices; ADOS scores).
 
@@ -207,6 +229,8 @@ For each domain we obtain a bootstrap distribution over \(B\) resamples of the g
 \]
 
 where "present" is defined by the domain-specific structural criterion (TMFG edge survival, majority-voting inclusion, or non-zero Hodge cyclic contribution above a threshold). \(\tau_{ij}\) is the **empirical carrier** at the topology level.
+
+For the antisymmetric Hodge application, inference must recompute the entire pipeline inside every respondent-level resample: \(P^{(b)}\), \(M^{(b)}\), the carrier, \(w^{*(b)}\), and its Hodge decomposition. Report a percentile or BCa interval for \(\eta_{\mathrm{cw}}^{(b)}\). A permutation null should additionally break coherent carrier structure while preserving the marginal choice rate of every edge. A non-zero point estimate, or concentration of large triangle circulations around one node, is descriptive and cannot alone reject sampling variation.
 
 ---
 

@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>The Carrier-Weighted Method — Theory &amp; Algorithm</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600;9..144,700;9..144,900&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script>
+MathJax = {
+  tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']], tags: 'none' },
+  chtml: { scale: 0.98 }
+};
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+<style>
+:root{
+  --paper:#f6f1e3;
+  --paper-deep:#efe7d2;
+  --card:#fdfaf1;
+  --ink:#221e17;
+  --ink-soft:#5c5546;
+  --rule:#cfc4a6;
+  --oxblood:#7c2d26;
+  --oxblood-deep:#5e211c;
+  --slate:#3c5266;
+  --gold:#a8842c;
+  --gold-wash:#f5e9c9;
+  --shadow:rgba(60,48,25,.14);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:'Spectral',Georgia,serif;
+  font-weight:400;
+  font-size:17.5px;
+  line-height:1.72;
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(168,132,44,.07), transparent 60%),
+    repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(60,48,25,.012) 3px, rgba(60,48,25,.012) 4px);
+}
+/* ---------- masthead ---------- */
+.masthead{
+  border-bottom:3px double var(--rule);
+  padding:64px 24px 40px;
+  text-align:center;
+  position:relative;
+}
+.masthead .eyebrow{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:11.5px;
+  letter-spacing:.32em;
+  text-transform:uppercase;
+  color:var(--oxblood);
+  margin-bottom:26px;
+}
+.masthead .eyebrow::before,.masthead .eyebrow::after{content:"—";color:var(--rule);margin:0 14px}
+.masthead h1{
+  font-family:'Fraunces',serif;
+  font-optical-sizing:auto;
+  font-weight:900;
+  font-size:clamp(38px,6.4vw,72px);
+  line-height:1.04;
+  letter-spacing:-.015em;
+  max-width:820px;
+  margin:0 auto 10px;
+}
+.masthead h1 .thin{font-weight:300;font-style:italic}
+.masthead .sub{
+  font-family:'Fraunces',serif;
+  font-style:italic;
+  font-weight:300;
+  font-size:clamp(17px,2.4vw,22px);
+  color:var(--ink-soft);
+  max-width:640px;
+  margin:14px auto 0;
+  line-height:1.5;
+}
+.masthead .meta{
+  margin-top:34px;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:12.5px;
+  color:var(--ink-soft);
+  display:flex;
+  gap:26px;
+  justify-content:center;
+  flex-wrap:wrap;
+}
+.masthead .meta b{color:var(--ink);font-weight:600}
+.companions{
+  display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:26px;
+}
+.companions a{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:12px;
+  text-decoration:none;
+  color:var(--slate);
+  border:1px solid var(--rule);
+  background:var(--card);
+  padding:7px 16px;
+  border-radius:999px;
+  transition:all .18s ease;
+}
+.companions a:hover{border-color:var(--slate);background:#fff;transform:translateY(-1px)}
+.companions a span{color:var(--oxblood);margin-right:6px}
+/* ---------- layout ---------- */
+.wrap{max-width:1060px;margin:0 auto;padding:0 24px}
+main{padding-bottom:40px}
+section{
+  display:grid;
+  grid-template-columns:minmax(0,660px) 280px;
+  gap:0 56px;
+  justify-content:center;
+  padding:58px 0 6px;
+}
+section > *{grid-column:1}
+section aside{grid-column:2}
+@media(max-width:1020px){
+  section{grid-template-columns:minmax(0,660px)}
+  section aside{grid-column:1;margin:18px 0}
+}
+/* ---------- section headers ---------- */
+.secnum{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:12px;
+  letter-spacing:.28em;
+  color:var(--gold);
+  text-transform:uppercase;
+  margin-bottom:10px;
+}
+h2{
+  font-family:'Fraunces',serif;
+  font-weight:700;
+  font-size:clamp(26px,3.6vw,36px);
+  line-height:1.16;
+  letter-spacing:-.01em;
+  margin-bottom:22px;
+}
+h3{
+  font-family:'Fraunces',serif;
+  font-weight:600;
+  font-size:21px;
+  margin:34px 0 12px;
+}
+p{margin-bottom:18px;text-wrap:pretty}
+p.lede{font-size:20px;line-height:1.6;color:var(--ink)}
+em{font-style:italic}
+strong{font-weight:600}
+a{color:var(--slate)}
+/* ---------- margin notes ---------- */
+aside.note{
+  align-self:start;
+  font-size:14px;
+  line-height:1.62;
+  color:var(--ink-soft);
+  border-top:2px solid var(--oxblood);
+  padding-top:12px;
+  position:sticky;top:28px;
+}
+aside.note .tag{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10.5px;
+  letter-spacing:.22em;
+  text-transform:uppercase;
+  color:var(--oxblood);
+  display:block;
+  margin-bottom:8px;
+}
+aside.note p{margin-bottom:10px}
+/* ---------- boxes ---------- */
+.defbox{
+  background:var(--card);
+  border:1px solid var(--rule);
+  border-left:4px solid var(--oxblood);
+  border-radius:4px;
+  padding:24px 28px 12px;
+  margin:26px 0 30px;
+  box-shadow:0 2px 14px var(--shadow);
+}
+.defbox .dtag{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:11px;
+  letter-spacing:.26em;
+  text-transform:uppercase;
+  color:var(--oxblood);
+  margin-bottom:10px;
+}
+.defbox p:last-child{margin-bottom:12px}
+.rulebox{
+  background:var(--gold-wash);
+  border:1px solid #dcc78e;
+  border-radius:4px;
+  padding:22px 26px 10px;
+  margin:26px 0 30px;
+}
+.rulebox .dtag{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:11px;letter-spacing:.26em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:10px;
+}
+.warnbox{
+  background:#f9ece9;
+  border:1px solid #dcb3aa;
+  border-left:4px solid var(--oxblood);
+  border-radius:4px;
+  padding:22px 26px 10px;
+  margin:26px 0 30px;
+}
+.warnbox .dtag{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:11px;letter-spacing:.26em;text-transform:uppercase;
+  color:var(--oxblood);margin-bottom:10px;
+}
+/* ---------- tables ---------- */
+table{
+  width:100%;
+  border-collapse:collapse;
+  margin:24px 0 30px;
+  font-size:15px;
+  background:var(--card);
+  box-shadow:0 2px 12px var(--shadow);
+}
+th{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:11.5px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  text-align:left;
+  color:var(--card);
+  background:var(--ink);
+  padding:10px 14px;
+  font-weight:500;
+}
+td{
+  padding:11px 14px;
+  border-bottom:1px solid var(--rule);
+  vertical-align:top;
+}
+tr:last-child td{border-bottom:none}
+td:first-child{font-weight:600}
+/* ---------- algorithm ---------- */
+.algo{
+  background:var(--ink);
+  color:#efe9da;
+  border-radius:6px;
+  padding:30px 0 26px;
+  margin:28px 0 34px;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:13.8px;
+  line-height:1.85;
+  box-shadow:0 10px 34px rgba(34,30,23,.35);
+  overflow-x:auto;
+}
+.algo .ahead{
+  padding:0 30px 16px;
+  border-bottom:1px solid rgba(239,233,218,.16);
+  margin-bottom:18px;
+  display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px;
+}
+.algo .ahead .aname{
+  color:#e9c46a;font-weight:600;font-size:14.5px;letter-spacing:.04em;
+}
+.algo .ahead .aio{color:#8fa3b0;font-size:12px}
+.algo ol{
+  counter-reset:astep;
+  list-style:none;
+  padding:0 30px;
+}
+.algo ol li{
+  counter-increment:astep;
+  padding-left:44px;
+  position:relative;
+  margin-bottom:6px;
+  white-space:nowrap;
+}
+.algo ol li::before{
+  content:counter(astep,decimal-leading-zero);
+  position:absolute;left:0;top:0;
+  color:#a8842c;
+  font-size:11.5px;
+  letter-spacing:.06em;
+}
+.algo .cm{color:#8a9186;font-style:italic}
+.algo .kw{color:#d98f6e}
+.algo .fn{color:#9ec49a}
+.algo .indent{padding-left:72px}
+.algo .indent::before{left:28px}
+/* ---------- inline code ---------- */
+code{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:.85em;
+  background:var(--paper-deep);
+  border:1px solid var(--rule);
+  border-radius:3px;
+  padding:1px 6px;
+}
+/* ---------- numbered claims ---------- */
+.claims{counter-reset:clm;margin:20px 0 26px}
+.claims .claim{
+  counter-increment:clm;
+  position:relative;
+  padding:16px 20px 4px 62px;
+  border-bottom:1px solid var(--rule);
+}
+.claims .claim:first-child{border-top:1px solid var(--rule)}
+.claims .claim::before{
+  content:counter(clm);
+  position:absolute;left:8px;top:16px;
+  font-family:'Fraunces',serif;
+  font-weight:900;
+  font-size:26px;
+  color:var(--oxblood);
+  opacity:.85;
+}
+.claims .claim h4{
+  font-family:'Fraunces',serif;font-weight:600;font-size:17.5px;margin-bottom:5px;
+}
+.claims .claim p{font-size:15.5px;color:var(--ink-soft);margin-bottom:14px}
+/* ---------- big stat ---------- */
+.pilot{
+  margin:34px 0;
+  background:linear-gradient(135deg,var(--oxblood-deep),var(--oxblood));
+  color:#f3ead9;
+  border-radius:6px;
+  padding:38px 40px;
+  display:grid;
+  grid-template-columns:auto 1fr;
+  gap:8px 44px;
+  align-items:center;
+  box-shadow:0 14px 40px rgba(94,33,28,.35);
+}
+@media(max-width:640px){.pilot{grid-template-columns:1fr}}
+.pilot .big{
+  font-family:'Fraunces',serif;
+  font-weight:900;
+  font-size:clamp(44px,7vw,64px);
+  line-height:1;
+  white-space:nowrap;
+}
+.pilot .big span{font-weight:300;font-style:italic;font-size:.55em;opacity:.8}
+.pilot .cap{font-size:15.5px;line-height:1.6;opacity:.94}
+.pilot .cap b{color:#f2d9a4}
+/* ---------- references ---------- */
+.refs{font-size:15px;color:var(--ink-soft)}
+.refs li{margin-bottom:12px;padding-left:8px}
+.refs ol{padding-left:26px}
+/* ---------- footer ---------- */
+footer{
+  border-top:3px double var(--rule);
+  margin-top:70px;
+  padding:38px 24px 60px;
+  text-align:center;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:12px;
+  color:var(--ink-soft);
+  line-height:2;
+}
+footer .dnc{
+  display:inline-block;
+  border:1px solid var(--oxblood);
+  color:var(--oxblood);
+  border-radius:999px;
+  padding:4px 18px;
+  margin-bottom:14px;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  font-size:10.5px;
+}
+/* ---------- toc ---------- */
+nav.toc{
+  max-width:660px;margin:44px auto 0;padding:0 24px;
+}
+nav.toc ol{
+  list-style:none;
+  columns:2;column-gap:40px;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:13px;
+}
+@media(max-width:640px){nav.toc ol{columns:1}}
+nav.toc li{margin-bottom:9px;break-inside:avoid}
+nav.toc a{text-decoration:none;color:var(--ink);border-bottom:1px dotted var(--rule)}
+nav.toc a:hover{color:var(--oxblood);border-color:var(--oxblood)}
+nav.toc .n{color:var(--gold);margin-right:10px}
+/* reveal */
+@media(prefers-reduced-motion:no-preference){
+  section{opacity:0;transform:translateY(14px);animation:rise .7s ease forwards}
+  @keyframes rise{to{opacity:1;transform:none}}
+  section:nth-of-type(1){animation-delay:.05s}
+  section:nth-of-type(2){animation-delay:.1s}
+}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="eyebrow">CW-Unified · Working Paper · v0.1</div>
+  <h1>The Carrier-Weighted <span class="thin">Method</span></h1>
+  <p class="sub">A label-free, edge-level estimator of carrier coherence — who holds a network together, not merely how strongly.</p>
+  <div class="meta">
+    <div><b>Yong Wook Shin</b>, MD PhD</div>
+    <div>Draft of <b>2026-07-21</b></div>
+    <div>For discussion — not for citation</div>
+  </div>
+  <div class="companions">
+    <a href="index.html"><span>↳</span>Education page: ten prior landmarks</a>
+    <a href="simulation.html"><span>↳</span>Simulation 1: can a minority carry a network?</a>
+  </div>
+</header>
+
+<nav class="toc">
+  <ol>
+    <li><span class="n">§1</span><a href="#s1">The object of study</a></li>
+    <li><span class="n">§2</span><a href="#s2">Why the pooled mean is not enough</a></li>
+    <li><span class="n">§3</span><a href="#s3">The carrier</a></li>
+    <li><span class="n">§4</span><a href="#s4">The carrier-weighted edge weight</a></li>
+    <li><span class="n">§5</span><a href="#s5">Decomposition: aligned and residual</a></li>
+    <li><span class="n">§6</span><a href="#s6">The algorithm</a></li>
+    <li><span class="n">§7</span><a href="#s7">Validation and the pilot result</a></li>
+    <li><span class="n">§8</span><a href="#s8">What CW is not</a></li>
+    <li><span class="n">§9</span><a href="#s9">References</a></li>
+  </ol>
+</nav>
+
+<main class="wrap">
+
+<!-- ======================= §1 ======================= -->
+<section id="s1">
+  <div class="secnum">§ 1</div>
+  <h2>The object of study</h2>
+  <p class="lede">Every psychometric or connectomic network reduces a stack of individual data to one number per edge. The carrier-weighted (CW) method asks what that reduction throws away — and keeps exactly the part that matters for community structure.</p>
+
+  <p>Let \(V=\{1,\dots,n\}\) be a finite set of items, alternatives, or ROIs, and let \(G=(V,E)\) be the complete comparison graph, so \(m=|E|=\binom{n}{2}\). For each edge \(e=(i,j)\), \(i&lt;j\), and each observation unit \(k\) (a subject, a trial, a scan), we record a raw edge signal</p>
+  \[ x^{(k)}_{ij}\in\mathbb{R}. \]
+  <p>The physical meaning of \(x^{(k)}_{ij}\) is domain-specific:</p>
+
+  <table>
+    <tr><th>Domain</th><th>Unit \(k\)</th><th>Raw edge signal \(x^{(k)}_{ij}\)</th></tr>
+    <tr><td>Typology items (GW)</td><td>subject</td><td>\(\pm 1\) key endorsement, paired via correlation</td></tr>
+    <tr><td>Preference / intransitivity</td><td>subject × domain</td><td>\(+1\) if \(i\succ j\), \(-1\) if \(j\succ i\)</td></tr>
+    <tr><td>Brain functional connectivity</td><td>subject</td><td>Fisher-\(z\) FC between ROI \(i\) and ROI \(j\)</td></tr>
+  </table>
+
+  <p>Two structural properties must be tracked from the start. <strong>Symmetry</strong>: similarity-type signals satisfy \(x^{(k)}_{ij}=x^{(k)}_{ji}\) (GW, brain FC) and live on the undirected graph; preference signals satisfy \(x^{(k)}_{ij}=-x^{(k)}_{ji}\) and live on the oriented complete graph, which admits a combinatorial Hodge decomposition (§5). <strong>Directedness</strong>: whether an edge carries an orientation or only a magnitude.</p>
+
+  <aside class="note">
+    <span class="tag">Where CW sits</span>
+    <p>CW does <em>not</em> invent a new pipeline. It is a drop-in replacement for the edge weight consumed by the standard EGA → sparsifier (EBICglasso or TMFG) → Walktrap chain, evaluated by bootEGA.</p>
+    <p>Everything downstream — sparsification, community detection, bootstrap stability — stays exactly as the field already runs it.</p>
+  </aside>
+</section>
+
+<!-- ======================= §2 ======================= -->
+<section id="s2">
+  <div class="secnum">§ 2</div>
+  <h2>Why the pooled mean is not enough</h2>
+
+  <p>The classical group-level edge weight is the pooled mean</p>
+  \[ \bar{x}_{ij}=\frac{1}{N}\sum_{k=1}^{N}x^{(k)}_{ij}. \]
+  <p>This single number is blind to <em>who</em> produced it. An edge carried evenly by the whole sample and an edge carried intensely by a small minority — with everyone else at zero — can produce the same \(\bar{x}_{ij}\). Yet these are structurally different objects: the first is a population-shared relation; the second is a subgroup's signature, invisible once pooled.</p>
+
+  <p>The theoretical warrant comes from non-ergodicity. Molenaar (2004) and Fisher, Medaglia &amp; Jeronimus (2018) showed that group-level statistical structure does not, in general, transfer to the within-individual level. CW is a <em>structural</em> (not temporal) application of that insight: instead of asking whether the group mean generalizes over time, it asks whether the group edge generalizes over people — and quantifies the answer edge by edge.</p>
+
+  <p>Existing heterogeneity-aware network methods (subgroup similarity, moderated networks, latent-class networks) all require <strong>pre-defined subgroup labels</strong> or estimate one network per latent class of respondents. CW requires neither. Its primitive is not the respondent but the <strong>(respondent, edge) pair</strong>: the same person may help carry one edge and be irrelevant to another. Cross-cutting carrier structure of this kind cannot be expressed as a subject-level mixture at all (§8).</p>
+
+  <aside class="note">
+    <span class="tag">One question</span>
+    <p>Correlation tells us how strong an edge is.</p>
+    <p><em>It does not tell us who made it strong.</em></p>
+    <p>CW is an estimator for the second question, computed without ever being told the groups.</p>
+  </aside>
+</section>
+
+<!-- ======================= §3 ======================= -->
+<section id="s3">
+  <div class="secnum">§ 3</div>
+  <h2>The carrier</h2>
+
+  <p>The <strong>carrier</strong> \(c_{ij}\in[0,1]\) of an edge is its group-level support as a shared, non-accidental relation. Two canonical constructions cover the symmetric and antisymmetric cases.</p>
+
+  <h3>3.1 Symmetric case (items, brain FC)</h3>
+  <p>A trustworthy symmetric edge should be penalized for two failure modes: (a) contribution concentrated in a few subjects, and (b) contribution inconsistent with the edge's structural neighbours. One component for each.</p>
+
+  <p><strong>Even-support component.</strong> Define the subject-level co-contribution</p>
+  \[ S^{(k)}_{ij}=(x^{(k)}_{i}-\bar{x}_{i})(x^{(k)}_{j}-\bar{x}_{j}),
+     \qquad \text{Gini}_{ij}=\text{Gini}\!\bigl(\{\,|S^{(k)}_{ij}|\,\}_{k=1}^{N}\bigr). \]
+  <p>Low \(\text{Gini}_{ij}\): many subjects contribute. High \(\text{Gini}_{ij}\): a few dominate. The even-support component is \(1-\text{Gini}_{ij}\).</p>
+
+  <p><strong>Neighbour-alignment component.</strong> Let \(\mathbf{s}_e=\bigl(S^{(1)}_{ij},\dots,S^{(N)}_{ij}\bigr)/\|\cdot\|_2\) be the normalized subject-vector of edge \(e=(i,j)\). For every edge \(e'\) sharing a vertex with \(e\), compute \(\cos(\mathbf{s}_e,\mathbf{s}_{e'})\), and average:</p>
+  \[ \bar{O}_{ij}=\operatorname{mean}_{e'\sim e}\cos(\mathbf{s}_e,\mathbf{s}_{e'}). \]
+  <p>High \(\bar{O}_{ij}\) means the subjects who carry this edge also carry its neighbours — the footprint of a shared latent factor rather than an accident of sampling.</p>
+
+  <div class="defbox">
+    <div class="dtag">Definition · Symmetric carrier</div>
+    \[ c^{\text{sym}}_{ij}=\bigl(1-\text{Gini}_{ij}\bigr)\cdot\max\!\bigl(\bar{O}_{ij},\,0\bigr) \]
+    <p>Both components live in \([0,1]\); the product is the carrier. This is the exact form used in the GW CW-TMFG pipeline.</p>
+  </div>
+
+  <h3>3.2 Antisymmetric case (preference flows)</h3>
+  <p>Let \(P_{ij}=P\bigl(x^{(k)}_{ij}&gt;0\bigr)\) be the fraction of units preferring \(i\succ j\). Then</p>
+  <div class="defbox">
+    <div class="dtag">Definition · Antisymmetric carrier</div>
+    \[ c_{ij}=\bigl|\,2P_{ij}-1\,\bigr|\in[0,1],
+       \qquad
+       \sigma_{ij}=\operatorname{sign}\bigl(2P_{ij}-1\bigr)\in\{-1,0,+1\}. \]
+    <p>\(c_{ij}\) is the majority strength on the directed edge — 1 if everyone agrees on the direction, 0 if the group splits 50/50 — and \(\sigma_{ij}\) records which direction the majority takes.</p>
+  </div>
+
+  <aside class="note">
+    <span class="tag">Reading the product</span>
+    <p>The two symmetric components answer different questions:</p>
+    <p><b>1 − Gini</b>: is the support broad, or hoarded by a few?</p>
+    <p><b>max(Ō, 0)</b>: do the same people show up on adjacent edges?</p>
+    <p>An edge must pass <em>both</em> tests to keep its weight.</p>
+  </aside>
+</section>
+
+<!-- ======================= §4 ======================= -->
+<section id="s4">
+  <div class="secnum">§ 4</div>
+  <h2>The carrier-weighted edge weight</h2>
+
+  <div class="defbox">
+    <div class="dtag">Definition · CW weight</div>
+    \[ w^{*}_{ij}=c_{ij}\cdot g\bigl(\bar{x}_{ij}\bigr) \]
+    <p>where \(g\) is a domain-appropriate magnitude transform. The carrier multiplies the pooled magnitude — it never replaces it.</p>
+  </div>
+
+  <table>
+    <tr><th>Domain</th><th>\(g(\bar{x}_{ij})\)</th><th>Restriction</th></tr>
+    <tr><td>GW items</td><td>\(|\rho_{ij}|\) (absolute tetrachoric correlation)</td><td>Walktrap on positive \(w^{*}\) only</td></tr>
+    <tr><td>Intransitivity</td><td>\(\sigma_{ij}\cdot|\bar{x}_{ij}|\) (majority-signed magnitude)</td><td>antisymmetric flow, sign retained</td></tr>
+    <tr><td>Brain FC</td><td>\(|\bar{r}_{ij}|\) (absolute mean Fisher-\(z\))</td><td>Walktrap on positive \(w^{*}\); sign tracked separately</td></tr>
+  </table>
+
+  <p>The full symmetric CW weight is therefore</p>
+  \[ w^{*}_{ij}
+     =c^{\text{sym}}_{ij}\cdot|\rho_{ij}|
+     =\bigl(1-\text{Gini}_{ij}\bigr)\cdot\max\!\bigl(\bar{O}_{ij},0\bigr)\cdot|\rho_{ij}|. \]
+
+  <div class="warnbox">
+    <div class="dtag">Rule · Positive-part truncation is mandatory</div>
+    <p>Walktrap and modularity-based detectors interpret positive edge weight as <em>intra-community attraction</em>. Taking \(|w^{*}|\) on a signed weight silently converts an anti-correlation into a strong attraction and produces spurious cluster migrations — a bug class we have observed in practice. Whenever the downstream detector is Walktrap or modularity, use \(\max(w^{*},0)\), never \(|w^{*}|\).</p>
+    <p>The antisymmetric case keeps its sign, because Hodge decomposition (§5) is defined on oriented flows, not similarity weights.</p>
+  </div>
+</section>
+
+<!-- ======================= §5 ======================= -->
+<section id="s5">
+  <div class="secnum">§ 5</div>
+  <h2>Decomposition: aligned and residual</h2>
+
+  <p>Every CW-weighted edge signal admits a decomposition</p>
+  \[ w^{*}=w^{*}_{\text{align}}+w^{*}_{\text{res}} \]
+  <p>into a component consistent with a low-dimensional structural hypothesis and an orthogonal residual. The hypothesis is domain-specific:</p>
+
+  <table>
+    <tr><th>Domain</th><th>Aligned component</th><th>Residual</th></tr>
+    <tr><td>GW items</td><td>edges within a Walktrap community</td><td>cross-axis edges</td></tr>
+    <tr><td>Intransitivity</td><td>\(w^{*}_{\text{grad}}=A\hat{s}\) — Hodge gradient of item scores</td><td>\(w^{*}_{\text{cyc}}\in\ker(A^{\top})\) — cyclic flow</td></tr>
+    <tr><td>Brain FC</td><td>intra-hemispheric edges (LL, RR)</td><td>cross-hemispheric edges (LR)</td></tr>
+  </table>
+
+  <h3>5.1 CW-Hodge decomposition (antisymmetric case)</h3>
+  <p>Let \(A\in\mathbb{R}^{m\times n}\) be the oriented incidence matrix of the complete graph, rows indexed by directed edges \(i\to j\) (\(i&lt;j\)), with \(A_{(ij),k}=+1\) if \(k=i\), \(-1\) if \(k=j\), else 0. Given the CW flow \(w^{*}\in\mathbb{R}^{m}\):</p>
+  \[ \hat{s}=(A^{\top}A)^{\dagger}A^{\top}w^{*},\qquad \mathbf{1}^{\top}\hat{s}=0, \]
+  \[ w^{*}_{\text{grad}}=A\hat{s},\qquad w^{*}_{\text{cyc}}=w^{*}-w^{*}_{\text{grad}},\qquad A^{\top}w^{*}_{\text{cyc}}=0. \]
+  <p>This is the ordinary combinatorial Hodge decomposition of Jiang, Lim, Yao &amp; Ye (2011) — <strong>the novelty is not the decomposition but the flow it is applied to</strong>. The raw flow \(\bar{x}\) mixes group-mean magnitude with individual noise; the CW flow suppresses accidental agreement (low \(c_{ij}\)) and preserves structurally shared cycles (high \(c_{ij}\) with cyclic component).</p>
+
+  <div class="warnbox">
+    <div class="dtag">Rule · One norm convention, asserted every run</div>
+    <p>All Hodge norms use the vector of the \(m=\binom{n}{2}\) uniquely oriented edges: \(\|w\|_E=\bigl(\sum_{i&lt;j}w_{ij}^2\bigr)^{1/2}\). Never mix this with the Frobenius norm of the full antisymmetric matrix — since \(W_{ji}=-W_{ij}\), \(\|W\|_F=\sqrt{2}\,\|w\|_E\), and mixing the two inflates curl and cyclicity ratios by exactly \(\sqrt{2}\). (We caught precisely this error in a July 2026 teaching-page computation; it is now an automated assertion.) Every run must check</p>
+    \[ \Bigl|\;\|w^{*}\|_E^{2}-\|w^{*}_{\text{grad}}\|_E^{2}-\|w^{*}_{\text{cyc}}\|_E^{2}\;\Bigr|&lt;10^{-10}. \]
+  </div>
+
+  <aside class="note">
+    <span class="tag">Summary statistics</span>
+    <p>Per unit \(k\): alignment \(G^{(k)}=\|w^{*(k)}_{\text{grad}}\|_2\); residual magnitude \(R^{(k)}=\|w^{*(k)}_{\text{res}}\|_2\); residual energy fraction \(\rho^{(k)}_{\text{res}}\); and carrier-weighted residual survival \(S^{(k)}=\|w^{*(k)}_{\text{res}}\|_E/\|\bar{x}^{(k)}_{\text{res}}\|_E\).</p>
+    <p>\(S^{(k)}\approx 1\) shows attenuation resistance — but by itself does not distinguish structure from sampling variation. That requires the permutation null of §7.</p>
+  </aside>
+</section>
+
+<!-- ======================= §6 ======================= -->
+<section id="s6">
+  <div class="secnum">§ 6</div>
+  <h2>The algorithm</h2>
+
+  <p>The symmetric pipeline, end to end. Everything before step 07 is the CW contribution; everything from step 07 on is the standard EGA/bootEGA machinery, untouched.</p>
+
+  <div class="algo">
+    <div class="ahead">
+      <span class="aname">CW-EGA (symmetric)</span>
+      <span class="aio">in: X ∈ ℝ^{N×n} &nbsp;·&nbsp; out: communities, P(k), τ</span>
+    </div>
+    <ol>
+      <li><span class="kw">standardize</span> columns of X → Z <span class="cm">// z_ki per item</span></li>
+      <li><span class="kw">for each</span> edge (i,j), i&lt;j: <span class="cm">// m = n(n−1)/2 edges</span></li>
+      <li class="indent">S[k,ij] ← (z_ki − z̄_i)(z_kj − z̄_j) <span class="cm">// co-contribution, all k</span></li>
+      <li class="indent">gini[ij] ← <span class="fn">Gini</span>(|S[·,ij]|) <span class="cm">// support concentration</span></li>
+      <li class="indent">s_e ← S[·,ij] / ‖S[·,ij]‖₂ <span class="cm">// normalized subject-vector</span></li>
+      <li><span class="kw">for each</span> edge e: Ō[e] ← <span class="fn">mean</span>{ cos(s_e, s_e′) : e′ shares a vertex with e } <span class="cm">// 2(n−2) neighbours</span></li>
+      <li>c[ij] ← (1 − gini[ij]) · <span class="fn">max</span>(Ō[ij], 0) <span class="cm">// carrier, §3.1</span></li>
+      <li>w*[ij] ← c[ij] · |ρ[ij]| <span class="cm">// CW weight, §4 (ρ = tetrachoric/Pearson)</span></li>
+      <li>w*[ij] ← <span class="fn">max</span>(w*[ij], 0) <span class="cm">// positive-part rule (Walktrap downstream)</span></li>
+      <li>net ← <span class="fn">sparsify</span>(w*) <span class="cm">// TMFG or EBICglasso — unchanged</span></li>
+      <li>communities ← <span class="fn">walktrap</span>(net) <span class="cm">// unchanged</span></li>
+      <li><span class="kw">bootstrap</span> b = 1…B: <span class="cm">// B = 200 resamples of units</span></li>
+      <li class="indent">recompute steps 01–11 <span class="kw">inside</span> resample b <span class="cm">// carrier included — no shortcuts</span></li>
+      <li class="indent">record k(b), τ[ij] += 1[edge survives in b]</li>
+      <li><span class="kw">report</span> P(k = k*), τ/B, ARI vs. reference <span class="cm">// bootEGA stability</span></li>
+    </ol>
+  </div>
+
+  <p>The antisymmetric variant replaces steps 02–09 with \(c_{ij}=|2P_{ij}-1|\), \(w^{*}_{ij}=c_{ij}\,\sigma_{ij}\,|\bar{x}_{ij}|\), then applies the Hodge decomposition of §5.1 to \(w^{*}\) — and the bootstrap of steps 12–15 must recompute \(P^{(b)}\), the carrier, \(w^{*(b)}\) <em>and</em> its Hodge decomposition inside every resample, reporting percentile or BCa intervals for the cyclicity ratio.</p>
+
+  <div class="rulebox">
+    <div class="dtag">Cost</div>
+    <p>The carrier adds \(O(N\,m)\) for co-contributions and \(O(N\,m\,(n-2))\) for neighbour alignment — for item banks (\(n\le 60\)) this is seconds, and the \(B=200\) bootstrap dominates wall-time exactly as it does in plain bootEGA.</p>
+  </div>
+</section>
+
+<!-- ======================= §7 ======================= -->
+<section id="s7">
+  <div class="secnum">§ 7</div>
+  <h2>Validation and the pilot result</h2>
+
+  <p>CW is evaluated with the field's own yardstick: the bootEGA stability distribution \(P(k=k^{*})\) over \(B=200\) resamples, plus adjusted Rand index against ground truth where truth is known. The baseline table is the community-detection bake-off of Christensen et al. (2024): GLASSO+UVA with Louvain, Fast-greedy, Walktrap, and parallel analysis. The claim CW must win is specific: <em>the minority-carried scenario</em> — where a real subcommunity's structure is carried by a fraction of the sample and pooled methods dissolve it.</p>
+
+  <div class="pilot">
+    <div class="big">3% <span>→</span> 19%</div>
+    <div class="cap">
+      <b>Pilot, GW-43 item bank (n = 605).</b> Probability that bootEGA recovers the theoretically expected three-community solution, \(P(k=3)\): pooled correlation weight ≈ 3%; carrier-weighted ≈ 19%. Same sparsifier, same detector, same bootstrap — only the edge weight changed. This bootEGA-defined effect is the empirical hook of the preprint; Simulation 1 (companion page) tests whether it survives a world where truth is known.
+    </div>
+  </div>
+
+  <p>Two inferential guardrails. First, all bootstrap inference recomputes the <em>entire</em> pipeline — carrier included — inside every resample; reusing the full-sample carrier across resamples silently understates uncertainty. Second, a permutation null must break coherent carrier structure while preserving every edge's marginal rate: a non-zero cyclicity or survival statistic is descriptive until it beats that null.</p>
+</section>
+
+<!-- ======================= §8 ======================= -->
+<section id="s8">
+  <div class="secnum">§ 8</div>
+  <h2>What CW is not</h2>
+
+  <div class="claims">
+    <div class="claim">
+      <h4>Not subgroup-similarity analysis.</h4>
+      <p>Methods in the Christensen (2023) line compare networks <em>between pre-defined groups</em>. CW extends the question from "do these labeled groups differ?" to edge-level, label-free carrier discovery: the groups, if any, are an output, never an input.</p>
+    </div>
+    <div class="claim">
+      <h4>Not a mixture or latent-class network model.</h4>
+      <p>Mixtures partition respondents into classes and fit one network per class. CW's primitive is the (respondent, edge) pair: the same respondent can carry edge A, oppose edge B, and be silent on edge C. Cross-cutting carrier structure of this kind has no representation as a subject-level mixture — this is a difference in kind, not in resolution.</p>
+    </div>
+    <div class="claim">
+      <h4>Not a new community detector, and not sparsifier-specific.</h4>
+      <p>CW changes only the weight; Walktrap, TMFG, EBICglasso and bootEGA run unmodified. A TMFG-sparsified sensitivity run is part of the evaluation precisely to show the effect is not an artifact of one sparsifier.</p>
+    </div>
+    <div class="claim">
+      <h4>Not a claim that curl or residual is "real" by existence.</h4>
+      <p>Carrier weighting cannot by itself establish that surviving structure exceeds sampling variation. Every headline statistic ships with a respondent-level bootstrap interval and a carrier-breaking permutation null (§7).</p>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= §9 ======================= -->
+<section id="s9">
+  <div class="secnum">§ 9</div>
+  <h2>References</h2>
+  <div class="refs">
+    <ol>
+      <li>Golino, H., &amp; Epskamp, S. (2017). Exploratory graph analysis: A new approach for estimating the number of dimensions in psychological research. <em>PLoS ONE</em>, 12(6), e0174035.</li>
+      <li>Christensen, A. P., &amp; Golino, H. (2021). Estimating the stability of psychological dimensions via bootstrap exploratory graph analysis. <em>Psych</em>, 3(3), 479–500.</li>
+      <li>Molenaar, P. C. M. (2004). A manifesto on psychology as idiographic science. <em>Measurement</em>, 2(4), 201–218.</li>
+      <li>Fisher, A. J., Medaglia, J. D., &amp; Jeronimus, B. F. (2018). Lack of group-to-individual generalizability is a threat to human subjects research. <em>PNAS</em>, 115(27), E6106–E6115.</li>
+      <li>Jiang, X., Lim, L.-H., Yao, Y., &amp; Ye, Y. (2011). Statistical ranking and combinatorial Hodge theory. <em>Mathematical Programming</em>, 127(1), 203–244.</li>
+      <li>Christensen, A. P. (2023). Comparing community detection algorithms in psychometric networks: A Monte Carlo simulation. <em>Behavior Research Methods</em> (and related subpopulation-similarity line).</li>
+      <li>Christensen, A. P., et al. (2024). Community detection baseline table. <em>Behavior Research Methods</em>.</li>
+    </ol>
+  </div>
+  <p style="margin-top:26px">Companion pages: <a href="index.html">the education page</a> walks through the ten prior landmarks this method stands on (§0–§7, ~3-hour reading path); <a href="simulation.html">Simulation 1</a> pre-registers the controlled test of the minority-carrier claim.</p>
+</section>
+
+</main>
+
+<footer>
+  <div class="dnc">Working draft · please do not circulate</div><br>
+  CW-Unified working paper v0.1 · drafted 2026-07-21 · Yong Wook Shin<br>
+  Comments welcome — this page exists to be argued with.
+</footer>
+
+</body>
+</html>

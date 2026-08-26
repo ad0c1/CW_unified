@@ -1,0 +1,16 @@
+== Run 1 (strict all-cosines-negative, 20k seeds, n=8-14) ==
+n 8 : no acceptance
+n 9 : no acceptance
+n 10 : no acceptance
+n 11 : no acceptance
+n 12 : no acceptance
+n 14 : no acceptance
+
+== Run 2 (locked-estimator criterion o_bar<=0, 30k seeds, n=8-16) ==
+n 8 : no acceptance
+n 9 : no acceptance
+n 10 : no acceptance
+n 11 : no acceptance
+n 12 : no acceptance
+n 14 : no acceptance
+n 16 : no acceptance

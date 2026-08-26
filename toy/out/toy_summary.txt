@@ -1,0 +1,13 @@
+Toy example — accepted construction
+winning seed: 5325  | rho spread: 0.0535 
+broad group rows: 2 4 6 8 9 10 11 14 
+minority carriers: 15 16 17 18 19 20 
+cross endorsers: 5 12 13 
+
+    rho  gini  o_bar w_star
+1 0.614 0.050  0.102  0.059
+4 0.661 0.431  0.146  0.055
+7 0.627 0.293 -0.542  0.000
+
+verdicts: E1 w* = 0.059 | E2 w* = 0.055 | E3 w* = 0 
+sessionInfo R: R version 4.5.1 (2025-06-13) | psych: 2.6.5 

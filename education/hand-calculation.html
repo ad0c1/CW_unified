@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>The Triangle Toy, Entirely by Hand — Carrier-Weighted Networks</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600;9..144,700;9..144,900&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script>
+MathJax = {
+  tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']], tags: 'none' },
+  chtml: { scale: 0.98 }
+};
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+<style>
+:root{
+  --paper:#f6f1e3; --paper-deep:#efe7d2; --card:#fdfaf1;
+  --ink:#221e17; --ink-soft:#5c5546; --rule:#cfc4a6;
+  --oxblood:#7c2d26; --oxblood-deep:#5e211c; --slate:#3c5266;
+  --gold:#a8842c; --gold-wash:#f5e9c9; --shadow:rgba(60,48,25,.14);
+  --blue:#1a56a8;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--paper); color:var(--ink);
+  font-family:'Spectral',Georgia,serif; font-weight:400;
+  font-size:17.5px; line-height:1.72;
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(168,132,44,.07), transparent 60%),
+    repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(60,48,25,.012) 3px, rgba(60,48,25,.012) 4px);
+}
+.masthead{border-bottom:3px double var(--rule);padding:64px 24px 40px;text-align:center}
+.masthead .eyebrow{
+  font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.32em;
+  text-transform:uppercase;color:var(--oxblood);margin-bottom:26px}
+.masthead .eyebrow::before,.masthead .eyebrow::after{content:"—";color:var(--rule);margin:0 14px}
+.masthead h1{
+  font-family:'Fraunces',serif;font-weight:900;
+  font-size:clamp(34px,5.6vw,60px);line-height:1.06;letter-spacing:-.015em;
+  max-width:820px;margin:0 auto 10px}
+.masthead h1 .thin{font-weight:300;font-style:italic}
+.masthead .sub{
+  font-family:'Fraunces',serif;font-style:italic;font-weight:300;
+  font-size:clamp(16px,2.2vw,21px);color:var(--ink-soft);
+  max-width:660px;margin:14px auto 0;line-height:1.5}
+.companions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:28px}
+.companions a{
+  font-family:'IBM Plex Mono',monospace;font-size:12px;text-decoration:none;
+  color:var(--slate);border:1px solid var(--rule);background:var(--card);
+  padding:7px 16px;border-radius:999px;transition:all .18s ease}
+.companions a:hover{border-color:var(--slate);background:#fff;transform:translateY(-1px)}
+.companions a span{color:var(--oxblood);margin-right:6px}
+.wrap{max-width:760px;margin:0 auto;padding:0 24px 80px}
+section{padding:52px 0 4px}
+h2{
+  font-family:'Fraunces',serif;font-weight:700;font-size:27px;line-height:1.25;
+  margin-bottom:8px}
+h2 .no{
+  font-family:'IBM Plex Mono',monospace;font-weight:500;font-size:15px;
+  color:var(--oxblood);margin-right:12px;vertical-align:2px}
+p{margin:14px 0}
+.figure{margin:34px 0;text-align:center}
+.figure img{max-width:100%;border:1px solid var(--rule);background:#fff;
+  box-shadow:0 2px 14px var(--shadow);border-radius:4px}
+.figure .cap{
+  font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--ink-soft);
+  margin-top:12px;line-height:1.6}
+table{
+  border-collapse:collapse;margin:20px auto;
+  font-family:'IBM Plex Mono',monospace;font-size:13.5px}
+th,td{border:1px solid var(--rule);padding:6px 14px;text-align:center}
+th{background:var(--paper-deep);font-weight:600}
+td.hl{background:var(--gold-wash);font-weight:600}
+td.blue{color:var(--blue);font-weight:600}
+td.neg{color:var(--oxblood)}
+.box{
+  background:var(--card);border:1px solid var(--rule);border-left:4px solid var(--gold);
+  border-radius:4px;padding:18px 24px;margin:24px 0;box-shadow:0 1px 8px var(--shadow)}
+.box.result{border-left-color:var(--oxblood)}
+.box .label{
+  font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+.box.result .label{color:var(--oxblood)}
+.aside{
+  font-size:15.5px;color:var(--ink-soft);border-top:1px solid var(--rule);
+  border-bottom:1px solid var(--rule);padding:14px 4px;margin:26px 0;font-style:italic}
+code{font-family:'IBM Plex Mono',monospace;font-size:14px;background:var(--paper-deep);
+  padding:1px 6px;border-radius:3px}
+footer{
+  border-top:3px double var(--rule);margin-top:70px;padding:28px 4px 0;
+  display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;
+  font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--ink-soft)}
+footer a{color:var(--slate)}
+@media (max-width:640px){ th,td{padding:5px 8px;font-size:12px} }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="eyebrow">Carrier-Weighted Networks · Worked Example</div>
+  <h1>The Triangle Toy,<br><span class="thin">entirely by hand</span></h1>
+  <p class="sub">Figure 1 of the preprint claims every number in it can be verified
+  with pencil and paper in a few minutes. This page is that verification —
+  no software, no seeds, nothing hidden.</p>
+  <div class="companions">
+    <a href="index.html"><span>→</span>overview</a>
+    <a href="theory.html"><span>→</span>theory &amp; algorithm</a>
+    <a href="simulation.html"><span>→</span>simulation 1</a>
+  </div>
+</header>
+
+<div class="wrap">
+
+<section id="setup">
+<h2><span class="no">§1</span>The design</h2>
+<p>Eighteen respondents answer three yes/no items \(i, j, k\). Every pair of
+items is an edge: \(e_1=(i,j)\), \(e_2=(j,k)\), \(e_3=(i,k)\) — one closed
+triangle. Two scenarios produce the data:</p>
+<table>
+<tr><th></th><th>rows</th><th>Scenario A (coherent)</th><th>rows</th><th>Scenario B (incoherent)</th></tr>
+<tr><td><b>minorities</b></td>
+    <td>1–3</td><td>endorse <i>all three</i> items (M)</td>
+    <td>1–3<br>4–6<br>7–9</td><td>M₁ endorses {i, j} only<br>M₂ endorses {j, k} only<br>M₃ endorses {i, k} only</td></tr>
+<tr><td><b>singletons</b></td>
+    <td>4–6<br>7–9<br>10–12</td><td>i only<br>j only<br>k only</td>
+    <td>—</td><td>—</td></tr>
+<tr><td><b>background</b></td>
+    <td>13–18</td><td>endorse nothing</td>
+    <td>10–18</td><td>endorse nothing</td></tr>
+</table>
+<div class="figure">
+  <img src="fig1_triangle.png" alt="Figure 1: the triangle toy, n=18, scenarios A and B">
+  <div class="cap">Figure 1 of the preprint. Each respondent is one dotted triangle;
+  filled nodes = endorsed items; a solid edge means the respondent endorses both
+  of its endpoints — they <i>carry</i> that edge.</div>
+</div>
+</section>
+
+<section id="table">
+<h2><span class="no">§2</span>One table to rule them all</h2>
+<p>Pick any edge — say \(e_1=(i,j)\) — and any scenario, and count the four cells.</p>
+<p><b>Scenario A:</b> who endorses both \(i\) and \(j\)? Only M (3 people).
+Who endorses \(i\) alone? The i-singletons (3). \(j\) alone? The j-singletons (3).
+Neither? The k-singletons and the background: \(3+6=9\).</p>
+<p><b>Scenario B:</b> both \(i\) and \(j\)? Only M₁ (3). \(i\) alone? M₃ (3, since
+they endorse \(i,k\) but not \(j\)). \(j\) alone? M₂ (3). Neither? \(9\).</p>
+<div class="box result">
+<div class="label">The identity</div>
+<table>
+<tr><th></th><th>j = 1</th><th>j = 0</th></tr>
+<tr><th>i = 1</th><td class="hl">3</td><td>3</td></tr>
+<tr><th>i = 0</th><td>3</td><td>9</td></tr>
+</table>
+<p style="margin-bottom:0">The same four cells appear for <b>every edge, in both
+scenarios</b> — six identical tables. Any statistic computed from this table
+(or from the marginals \(6/18 = 1/3\)) is therefore identical across all six
+edge–scenario combinations. This is an arithmetic identity, not an approximation.</p>
+</div>
+</section>
+
+<section id="phi">
+<h2><span class="no">§3</span>The observed association: φ = .25</h2>
+<p>The φ coefficient is just Pearson's correlation applied to 0/1 data, and it has
+a closed form in the cell counts \(n_{11}=3,\; n_{10}=3,\; n_{01}=3,\; n_{00}=9\):</p>
+\[
+\phi \;=\; \frac{n_{11}n_{00}-n_{10}n_{01}}
+{\sqrt{n_{1\cdot}\,n_{0\cdot}\,n_{\cdot 1}\,n_{\cdot 0}}}
+\;=\; \frac{3\cdot 9-3\cdot 3}{\sqrt{6\cdot 12\cdot 6\cdot 12}}
+\;=\; \frac{27-9}{72} \;=\; \frac{18}{72} \;=\; .25
+\]
+<p>Sanity check: under independence the expected \((1,1)\) count is
+\(18\times\frac13\times\frac13=2\); we observe \(3\). The association is real
+but modest.</p>
+</section>
+
+<section id="tetra">
+<h2><span class="no">§4</span>The tetrachoric: ρ<sub>tet</sub> = .40</h2>
+<p>The tetrachoric correlation answers a different question: <i>if</i> each yes/no
+answer were a dichotomized continuous trait — two latent standard-normal variables
+\(Z_i, Z_j\), each cut at a threshold — what correlation \(\rho\) between them
+would reproduce this table?</p>
+<p>The marginals fix the thresholds: each item is endorsed by \(1/3\) of the
+sample, so</p>
+\[
+\tau \;=\; \Phi^{-1}\!\left(\tfrac{2}{3}\right) \;=\; 0.431 .
+\]
+<p>Then \(\rho\) is chosen so that the bivariate-normal mass above both thresholds
+matches the observed \((1,1)\) proportion:</p>
+\[
+\Pr\!\left(Z_i > \tau,\; Z_j > \tau \;\middle|\; \rho\right) \;=\; \frac{3}{18} \;=\; \frac16 .
+\]
+<p>This equation has no closed form — a computer solves it numerically and finds
+\(\rho = .3967\). But there is a classical pencil-and-paper approximation
+(Pearson's cosine formula) that gets remarkably close:</p>
+\[
+\rho \;\approx\; \cos\!\left(\frac{\pi}{1+\sqrt{n_{11}n_{00}/(n_{10}n_{01})}}\right)
+\;=\; \cos\!\left(\frac{\pi}{1+\sqrt{27/9}}\right)
+\;=\; \cos\!\left(\frac{\pi}{1+\sqrt3}\right)
+\;=\; \cos(65.9^\circ) \;\approx\; .41 .
+\]
+<div class="aside">Why is the tetrachoric (.40) larger than φ (.25)? Dichotomizing
+a continuous trait throws information away and attenuates the correlation; the
+tetrachoric back-projects to the latent continuous scale, undoing that attenuation
+under its normality assumption. In small discrete samples this inflation is well
+known — which is why the figure reports both values, the observed φ first.</div>
+</section>
+
+<section id="centering">
+<h2><span class="no">§5</span>Centering: +2/3 and −1/3</h2>
+<p>Every correlation is built from <i>centered</i> values — each observation minus
+its item mean. Each item's mean (endorsement rate) is \(6/18=1/3\), so:</p>
+\[
+\text{endorse: } 1-\tfrac13=+\tfrac23
+\qquad\qquad
+\text{not: } 0-\tfrac13=-\tfrac13
+\]
+<p>Centering is what gives signs their meaning. A respondent on the <i>same side</i>
+of the mean on both items — cells \((1,1)\) or \((0,0)\) — contributes positively
+to their covariance; a respondent on opposite sides contributes negatively.
+Without centering, \(0\times 0 = 0\) and the "neither" respondents would vanish
+from the arithmetic entirely.</p>
+</section>
+
+<section id="S">
+<h2><span class="no">§6</span>The carrier matrix S</h2>
+<p>The matrix \(S\) is the ledger of <i>who carries each edge</i>. For edge
+\(e=(i,j)\) and respondent \(r\), the entry is the product of the two centered
+scores:</p>
+\[
+S_{re} \;=\; (x_{ri}-\bar{x}_i)(x_{rj}-\bar{x}_j)
+\;\in\;\left\{\tfrac{2}{3}\cdot\tfrac{2}{3},\;\; \tfrac{2}{3}\cdot\!\left(-\tfrac13\right),\;\;
+\left(-\tfrac13\right)\!\cdot\!\left(-\tfrac13\right)\right\}
+=\left\{\tfrac49,\; -\tfrac29,\; \tfrac19\right\}
+\]
+<p>Multiplying everything by 9 turns \(S\) into small integers. Row groups
+(each group is 3 or 6 identical rows):</p>
+<table>
+<tr><th colspan="4">Scenario A × 9</th><th style="border:none"></th><th colspan="4">Scenario B × 9</th></tr>
+<tr><th>rows</th><th>e₁(i,j)</th><th>e₂(j,k)</th><th>e₃(i,k)</th><th style="border:none"></th>
+    <th>rows</th><th>e₁(i,j)</th><th>e₂(j,k)</th><th>e₃(i,k)</th></tr>
+<tr><td>M 1–3</td><td class="blue">4</td><td class="blue">4</td><td class="blue">4</td><td style="border:none"></td>
+    <td>M₁ 1–3</td><td class="blue">4</td><td class="neg">−2</td><td class="neg">−2</td></tr>
+<tr><td>i 4–6</td><td class="neg">−2</td><td>1</td><td class="neg">−2</td><td style="border:none"></td>
+    <td>M₂ 4–6</td><td class="neg">−2</td><td class="blue">4</td><td class="neg">−2</td></tr>
+<tr><td>j 7–9</td><td class="neg">−2</td><td class="neg">−2</td><td>1</td><td style="border:none"></td>
+    <td>M₃ 7–9</td><td class="neg">−2</td><td class="neg">−2</td><td class="blue">4</td></tr>
+<tr><td>k 10–12</td><td>1</td><td class="neg">−2</td><td class="neg">−2</td><td style="border:none"></td>
+    <td>bg 10–18</td><td>1</td><td>1</td><td>1</td></tr>
+<tr><td>bg 13–18</td><td>1</td><td>1</td><td>1</td><td style="border:none"></td>
+    <td></td><td></td><td></td><td></td></tr>
+</table>
+<p>One identity worth pausing on: <b>the column mean of \(S_{\cdot e}\) is exactly
+the covariance of the edge's two items.</b> The pooled correlation collapses each
+column to that single mean; the carrier-weighted method keeps the whole column —
+the edge's <i>fingerprint</i> across the eighteen respondents — and asks whether
+two edges' fingerprints come from the same people.</p>
+</section>
+
+<section id="cosine">
+<h2><span class="no">§7</span>Carrier cosines: +2/3 vs −1/3</h2>
+<p>The fingerprint comparison is a plain cosine between two columns of \(S\).
+Working in units of \(\tfrac{1}{81}\) (so we can use the ×9 integers), take
+\(e_1\cdot e_2\) in scenario A:</p>
+<table>
+<tr><th>row group</th><th>product</th><th>× count</th><th>subtotal</th></tr>
+<tr><td>M 1–3</td><td>4 × 4</td><td>× 3</td><td>+48</td></tr>
+<tr><td>i 4–6</td><td>−2 × 1</td><td>× 3</td><td>−6</td></tr>
+<tr><td>j 7–9</td><td>−2 × −2</td><td>× 3</td><td>+12</td></tr>
+<tr><td>k 10–12</td><td>1 × −2</td><td>× 3</td><td>−6</td></tr>
+<tr><td>bg 13–18</td><td>1 × 1</td><td>× 6</td><td>+6</td></tr>
+<tr><td colspan="3"><b>dot product</b></td><td class="blue"><b>54</b></td></tr>
+</table>
+<p>Each column's squared norm is
+\(16\cdot3+4\cdot3+4\cdot3+1\cdot3+1\cdot6=81\), so</p>
+\[
+\cos_A(e_1,e_2) \;=\; \frac{54}{\sqrt{81}\sqrt{81}} \;=\; \frac{54}{81} \;=\; +\frac23 .
+\]
+<p>Scenario B, same computation: M₁ rows give \(4\times(-2)\times3=-24\),
+M₂ rows \((-2)\times 4\times3=-24\), M₃ rows \((-2)\times(-2)\times3=+12\),
+background \(1\times1\times9=+9\); total \(-27\):</p>
+\[
+\cos_B(e_1,e_2) \;=\; \frac{-27}{81} \;=\; -\frac13 .
+\]
+<p>By the symmetry of the construction, all three edge pairs give the same value
+within each scenario.</p>
+</section>
+
+<section id="obar">
+<h2><span class="no">§8</span>The coherence score Ō</h2>
+<p>For each edge, \(\bar{O}_e\) is the mean cosine with its <i>node-sharing
+neighbours</i>. In a triangle every edge has exactly two neighbours, and all
+cosines are equal, so the mean changes nothing:</p>
+\[
+\bar{O}^{A} = +\tfrac23 \quad\text{(every edge)}
+\qquad\qquad
+\bar{O}^{B} = -\tfrac13 \quad\text{(every edge)}
+\]
+<p>The sign is the whole story: in A, neighbouring edges are carried by the
+<i>same</i> people (the fingerprints align); in B, each edge's carriers are
+exactly the people who <i>fail</i> to carry the neighbouring edges (the
+fingerprints oppose).</p>
+</section>
+
+<section id="gini">
+<h2><span class="no">§9</span>The concentration penalty: G = 19/66</h2>
+<p>The Gini coefficient — the same one used for income inequality — measures how
+unequally the magnitudes \(|S_{re}|\) are spread across respondents. Sort the
+eighteen values ascending: nine of \(\tfrac19\), six of \(\tfrac29\), three of
+\(\tfrac49\). With ranks \(r = 1,\dots,18\):</p>
+\[
+G \;=\; \frac{2\sum_r r\,v_r}{n\sum_r v_r}-\frac{n+1}{n}
+\;=\; \frac{2\cdot\frac{399}{9}}{18\cdot\frac{33}{9}}-\frac{19}{18}
+\;=\; \frac{266}{198}-\frac{209}{198}
+\;=\; \frac{57}{198} \;=\; \frac{19}{66} \;=\; .2879
+\]
+<p>so \(1-G = \frac{47}{66} = .7121\). The top three respondents (17% of the
+sample) hold \(12/33 \approx 36\%\) of the total contribution — a modest
+concentration, hence the modest value.</p>
+<div class="aside">Note that A and B have <i>identical</i> multisets of
+\(|S|\) values, hence identical \(G\). The magnitude of involvement cannot
+separate the scenarios; only its <i>direction</i> (the sign structure that Ō
+reads) can. The honest reading goes further: G is direction-blind by
+construction, so it can do no detection work at all — and the concentration
+information that matters in the network context is already priced,
+<i>conditionally</i>, by Ō (misaligned concentration depresses the carrier
+cosines through their normalization; aligned concentration is precisely the
+signal). What \((1-G)\) adds beyond Ō is an <i>unconditional</i> penalty on
+minority-ness itself — in tension with the method's motivation. It stays in
+the formula because the preregistration locked it; that is discipline, not
+endorsement.</div>
+<p>The tension becomes concrete if you hold the three carriers of scenario A
+fixed and grow only the all-zero background — every value below is an exact
+pencil computation from the same construction:</p>
+<div class="box">
+<div class="label">Dilution: same three carriers, larger background</div>
+<table>
+<tr><th>carriers</th><th>\(\rho_{\mathrm{tet}}\)</th><th>Ō</th>
+<th>\(1-G\)</th><th>w* (CW-full)</th><th>\(|\rho|\max(\bar{O},0)\)</th></tr>
+<tr><td>3/18 (16.7%)</td><td>.397</td><td>+.667</td><td>.712</td>
+<td>.188</td><td>.265</td></tr>
+<tr><td>3/36 (8.3%)</td><td>.651</td><td>+.947</td><td>.379</td>
+<td>.234</td><td>.617</td></tr>
+<tr><td>3/60 (5.0%)</td><td>.737</td><td>+.985</td><td>.234</td>
+<td>.170</td><td>.726</td></tr>
+<tr><td>3/120 (2.5%)</td><td class="hl">.804</td><td class="hl">+.997</td>
+<td class="hl">.121</td><td class="hl">.097</td><td>.802</td></tr>
+</table>
+<p style="margin-bottom:0">Both evidence terms strengthen monotonically as the
+coherent minority gets rarer, yet the CW-full weight is <b>lowest exactly where
+the evidence is strongest</b> — the \((1-G)\) collapse outruns both evidence
+terms, and \(w^*\to 0\) in the rare-syndrome limit the method was built to
+detect. The last column shows the Gini-free product, which is monotone in the
+evidence. Whether that variant (or a credibility-weighted one) should replace
+the locked formula is a question for the <i>next</i> preregistration.</p>
+</div>
+</section>
+
+<section id="wstar">
+<h2><span class="no">§10</span>Assembling w*</h2>
+<p>The locked estimator multiplies the three ingredients:</p>
+\[
+w^{*}_e \;=\; |\rho_e|\,(1-G_e)\,\max(\bar{O}_e,\,0)
+\]
+<div class="box result">
+<div class="label">Scenario A — every edge</div>
+\[
+w^{*} = .3967 \times .7121 \times \tfrac23 = .1883 \;\approx\; .19
+\quad\Rightarrow\quad \text{survives}
+\]
+</div>
+<div class="box result">
+<div class="label">Scenario B — every edge</div>
+\[
+w^{*} = .3967 \times .7121 \times \max(-\tfrac13,0) = .3967 \times .7121 \times 0 = 0
+\quad\Rightarrow\quad \text{removed}
+\]
+</div>
+<p>The first two factors are <i>literally identical</i> in A and B — they are
+functions of the pooled table, and the pooled tables are the same. Survival is
+decided entirely by the coherence gate.</p>
+</section>
+
+<section id="moral">
+<h2><span class="no">§11</span>The moral, and one honest caveat</h2>
+<p>Every pooled pairwise quantity — φ, the tetrachoric, the Gini, the marginals,
+and any function of them, including triadic closure across the three edges —
+is identical between the two scenarios. Yet in A the triangle is one coherent
+community carried by one minority, and in B it is three accidental fragments
+that no single respondent connects. The eighteen carrier profiles distinguish
+the scenarios; no pooled statistic can.</p>
+<p>The honest caveat: the full three-way \(2\times2\times2\) table <i>does</i>
+differ — A has three respondents in the \((1,1,1)\) cell, B has none. The claim
+is identity at the <b>pairwise</b> level, which is the level at which
+correlation networks are built. The estimator recovers exactly that
+respondent-level information from pairwise objects, without ever forming the
+higher-order table.</p>
+</section>
+
+<footer>
+  <span>CW_unified · educational page · every number above is exact</span>
+  <span><a href="index.html">overview</a> · <a href="theory.html">theory</a> ·
+  <a href="simulation.html">simulation 1</a><br>
+  Signed: Y. W. Shin · 2026-08-26 ·
+  <a href="https://www.sogum.com/log/cw-method.html">project log</a></span>
+</footer>
+
+</div>
+</body>
+</html>

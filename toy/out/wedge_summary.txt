@@ -1,0 +1,16 @@
+Wedge toy — accepted construction (SMALLEST feasible n)
+n = 8  | carrier size m = 3  | seed = 780 
+rho spread = 0  | mean-Gini diff A vs B = 0 
+
+Scenario A (coherent — M = rows 1..3 carries both edges):
+    rho  gini o_bar w_star
+1 0.403 0.125     1  0.352
+2 0.403 0.125     1  0.352
+
+Scenario B (incoherent — M1 rows 1..3 carries e1, M2 rows 4..6 carries e2):
+    rho  gini o_bar w_star
+1 0.403 0.125  -0.6      0
+2 0.403 0.125  -0.6      0
+
+verdicts: A both survive (w* 0.352 / 0.352) | B both removed (w* = 0, O-bar = -0.6)
+sessionInfo R: R version 4.5.2 (2025-10-31) | psych: 2.6.5 

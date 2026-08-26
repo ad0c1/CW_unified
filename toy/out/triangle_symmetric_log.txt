@@ -1,0 +1,394 @@
+== triangle_symmetric.R — deterministic grid ==
+analytic B-negativity condition: (n-2m)^2 > 4m^3
+
+n=11 m=2 mA=2 s=1 | rhoA=0.771 rhoB=0.339 spread=0.432 dGini=0.202 | obA=0.89 obB=-0.29 | -
+n=11 m=2 mA=2 s=2 | rhoA=0.339 rhoB=0.339 spread=0.000 dGini=0.000 | obA=0.58 obB=-0.29 | ACCEPT
+n=11 m=2 mA=3 s=1 | rhoA=0.821 rhoB=0.339 spread=0.482 dGini=0.031 | obA=0.81 obB=-0.29 | -
+n=11 m=2 mA=3 s=2 | rhoA=0.408 rhoB=0.339 spread=0.069 dGini=0.153 | obA=0.39 obB=-0.29 | -
+n=11 m=2 mA=4 s=1 | rhoA=0.839 rhoB=0.339 spread=0.500 dGini=0.143 | obA=0.70 obB=-0.29 | -
+n=11 m=2 mA=4 s=2 | rhoA=0.408 rhoB=0.339 spread=0.069 dGini=0.153 | obA=0.13 obB=-0.29 | -
+n=11 m=2 mA=5 s=1 | rhoA=0.839 rhoB=0.339 spread=0.500 dGini=0.143 | obA=0.57 obB=-0.29 | -
+n=11 m=2 mA=5 s=2 | rhoA=0.339 rhoB=0.339 spread=0.000 dGini=0.000 | obA=-0.29 obB=-0.29 | -
+n=11 m=2 mA=6 s=1 | rhoA=0.821 rhoB=0.339 spread=0.482 dGini=0.031 | obA=0.42 obB=-0.29 | -
+n=12 m=2 mA=2 s=1 | rhoA=0.788 rhoB=0.397 spread=0.391 dGini=0.191 | obA=0.91 obB=-0.33 | -
+n=12 m=2 mA=2 s=2 | rhoA=0.397 rhoB=0.397 spread=0.000 dGini=0.000 | obA=0.67 obB=-0.33 | ACCEPT
+n=12 m=2 mA=3 s=1 | rhoA=0.839 rhoB=0.397 spread=0.442 dGini=0.035 | obA=0.86 obB=-0.33 | -
+n=12 m=2 mA=3 s=2 | rhoA=0.477 rhoB=0.397 spread=0.081 dGini=0.141 | obA=0.53 obB=-0.33 | -
+n=12 m=2 mA=4 s=1 | rhoA=0.860 rhoB=0.397 spread=0.463 dGini=0.126 | obA=0.77 obB=-0.33 | -
+n=12 m=2 mA=4 s=2 | rhoA=0.500 rhoB=0.397 spread=0.103 dGini=0.288 | obA=0.33 obB=-0.33 | -
+n=12 m=2 mA=5 s=1 | rhoA=0.866 rhoB=0.397 spread=0.469 dGini=0.288 | obA=0.67 obB=-0.33 | -
+n=12 m=2 mA=5 s=2 | rhoA=0.477 rhoB=0.397 spread=0.081 dGini=0.141 | obA=0.07 obB=-0.33 | -
+n=12 m=2 mA=6 s=1 | rhoA=0.860 rhoB=0.397 spread=0.463 dGini=0.126 | obA=0.55 obB=-0.33 | -
+n=12 m=2 mA=6 s=2 | rhoA=0.397 rhoB=0.397 spread=0.000 dGini=0.000 | obA=-0.33 obB=-0.33 | -
+n=13 m=2 mA=2 s=1 | rhoA=0.802 rhoB=0.442 spread=0.360 dGini=0.181 | obA=0.93 obB=-0.36 | -
+n=13 m=2 mA=2 s=2 | rhoA=0.442 rhoB=0.442 spread=0.000 dGini=0.000 | obA=0.73 obB=-0.36 | ACCEPT
+n=13 m=2 mA=3 s=1 | rhoA=0.852 rhoB=0.442 spread=0.410 dGini=0.037 | obA=0.89 obB=-0.36 | -
+n=13 m=2 mA=3 s=2 | rhoA=0.529 rhoB=0.442 spread=0.087 dGini=0.130 | obA=0.62 obB=-0.36 | -
+n=13 m=2 mA=4 s=1 | rhoA=0.875 rhoB=0.442 spread=0.433 dGini=0.112 | obA=0.82 obB=-0.36 | -
+n=13 m=2 mA=4 s=2 | rhoA=0.564 rhoB=0.442 spread=0.122 dGini=0.267 | obA=0.47 obB=-0.36 | -
+n=13 m=2 mA=5 s=1 | rhoA=0.884 rhoB=0.442 spread=0.442 dGini=0.262 | obA=0.74 obB=-0.36 | -
+n=13 m=2 mA=5 s=2 | rhoA=0.564 rhoB=0.442 spread=0.122 dGini=0.267 | obA=0.28 obB=-0.36 | -
+n=13 m=2 mA=6 s=1 | rhoA=0.884 rhoB=0.442 spread=0.442 dGini=0.262 | obA=0.64 obB=-0.36 | -
+n=13 m=2 mA=6 s=2 | rhoA=0.529 rhoB=0.442 spread=0.087 dGini=0.130 | obA=0.04 obB=-0.36 | -
+n=14 m=2 mA=2 s=1 | rhoA=0.814 rhoB=0.479 spread=0.335 dGini=0.172 | obA=0.95 obB=-0.38 | -
+n=14 m=2 mA=2 s=2 | rhoA=0.479 rhoB=0.479 spread=0.000 dGini=0.000 | obA=0.78 obB=-0.38 | ACCEPT
+n=14 m=2 mA=3 s=1 | rhoA=0.863 rhoB=0.479 spread=0.385 dGini=0.038 | obA=0.91 obB=-0.38 | -
+n=14 m=2 mA=3 s=2 | rhoA=0.569 rhoB=0.479 spread=0.091 dGini=0.120 | obA=0.70 obB=-0.38 | -
+n=14 m=2 mA=4 s=1 | rhoA=0.887 rhoB=0.479 spread=0.408 dGini=0.100 | obA=0.86 obB=-0.38 | -
+n=14 m=2 mA=4 s=2 | rhoA=0.611 rhoB=0.479 spread=0.132 dGini=0.249 | obA=0.58 obB=-0.38 | -
+n=14 m=2 mA=5 s=1 | rhoA=0.898 rhoB=0.479 spread=0.419 dGini=0.240 | obA=0.79 obB=-0.38 | -
+n=14 m=2 mA=5 s=2 | rhoA=0.623 rhoB=0.479 spread=0.145 dGini=0.379 | obA=0.43 obB=-0.38 | -
+n=14 m=2 mA=6 s=2 | rhoA=0.611 rhoB=0.479 spread=0.132 dGini=0.249 | obA=0.25 obB=-0.38 | -
+n=15 m=2 mA=2 s=1 | rhoA=0.823 rhoB=0.509 spread=0.315 dGini=0.164 | obA=0.95 obB=-0.38 | -
+n=15 m=2 mA=2 s=2 | rhoA=0.509 rhoB=0.509 spread=0.000 dGini=0.000 | obA=0.82 obB=-0.38 | ACCEPT
+n=15 m=2 mA=3 s=1 | rhoA=0.872 rhoB=0.509 spread=0.364 dGini=0.038 | obA=0.93 obB=-0.38 | -
+n=15 m=2 mA=3 s=2 | rhoA=0.601 rhoB=0.509 spread=0.092 dGini=0.112 | obA=0.75 obB=-0.38 | -
+n=15 m=2 mA=4 s=1 | rhoA=0.896 rhoB=0.509 spread=0.387 dGini=0.090 | obA=0.89 obB=-0.38 | -
+n=15 m=2 mA=4 s=2 | rhoA=0.647 rhoB=0.509 spread=0.138 dGini=0.232 | obA=0.66 obB=-0.38 | -
+n=15 m=2 mA=4 s=3 | rhoA=0.304 rhoB=0.509 spread=0.205 dGini=0.361 | obA=0.30 obB=-0.38 | -
+n=15 m=2 mA=5 s=2 | rhoA=0.667 rhoB=0.509 spread=0.158 dGini=0.355 | obA=0.54 obB=-0.38 | -
+n=15 m=2 mA=5 s=3 | rhoA=0.304 rhoB=0.509 spread=0.205 dGini=0.361 | obA=0.08 obB=-0.38 | -
+n=15 m=2 mA=6 s=2 | rhoA=0.667 rhoB=0.509 spread=0.158 dGini=0.355 | obA=0.39 obB=-0.38 | -
+n=16 m=2 mA=2 s=1 | rhoA=0.832 rhoB=0.534 spread=0.297 dGini=0.156 | obA=0.96 obB=-0.38 | -
+n=16 m=2 mA=2 s=2 | rhoA=0.534 rhoB=0.534 spread=0.000 dGini=0.000 | obA=0.85 obB=-0.38 | ACCEPT
+n=16 m=2 mA=3 s=1 | rhoA=0.880 rhoB=0.534 spread=0.345 dGini=0.039 | obA=0.94 obB=-0.38 | -
+n=16 m=2 mA=3 s=2 | rhoA=0.627 rhoB=0.534 spread=0.093 dGini=0.105 | obA=0.79 obB=-0.38 | -
+n=16 m=2 mA=3 s=3 | rhoA=0.316 rhoB=0.534 spread=0.218 dGini=0.239 | obA=0.54 obB=-0.38 | -
+n=16 m=2 mA=4 s=2 | rhoA=0.676 rhoB=0.534 spread=0.141 dGini=0.217 | obA=0.72 obB=-0.38 | -
+n=16 m=2 mA=4 s=3 | rhoA=0.367 rhoB=0.534 spread=0.167 dGini=0.343 | obA=0.42 obB=-0.38 | -
+n=16 m=2 mA=5 s=2 | rhoA=0.700 rhoB=0.534 spread=0.165 dGini=0.333 | obA=0.62 obB=-0.38 | -
+n=16 m=2 mA=5 s=3 | rhoA=0.383 rhoB=0.534 spread=0.152 dGini=0.450 | obA=0.25 obB=-0.38 | -
+n=16 m=2 mA=6 s=2 | rhoA=0.707 rhoB=0.534 spread=0.173 dGini=0.450 | obA=0.50 obB=-0.38 | -
+n=16 m=2 mA=6 s=3 | rhoA=0.367 rhoB=0.534 spread=0.167 dGini=0.343 | obA=0.03 obB=-0.38 | -
+n=17 m=2 mA=2 s=1 | rhoA=0.839 rhoB=0.556 spread=0.283 dGini=0.149 | obA=0.97 obB=-0.38 | -
+n=17 m=2 mA=2 s=2 | rhoA=0.556 rhoB=0.556 spread=0.000 dGini=0.000 | obA=0.87 obB=-0.38 | ACCEPT
+n=17 m=2 mA=3 s=1 | rhoA=0.886 rhoB=0.556 spread=0.330 dGini=0.039 | obA=0.95 obB=-0.38 | -
+n=17 m=2 mA=3 s=2 | rhoA=0.649 rhoB=0.556 spread=0.093 dGini=0.098 | obA=0.83 obB=-0.38 | -
+n=17 m=2 mA=3 s=3 | rhoA=0.360 rhoB=0.556 spread=0.196 dGini=0.228 | obA=0.61 obB=-0.38 | -
+n=17 m=2 mA=4 s=2 | rhoA=0.699 rhoB=0.556 spread=0.143 dGini=0.204 | obA=0.76 obB=-0.38 | -
+n=17 m=2 mA=4 s=3 | rhoA=0.417 rhoB=0.556 spread=0.139 dGini=0.326 | obA=0.51 obB=-0.38 | -
+n=17 m=2 mA=5 s=2 | rhoA=0.726 rhoB=0.556 spread=0.170 dGini=0.313 | obA=0.68 obB=-0.38 | -
+n=17 m=2 mA=5 s=3 | rhoA=0.443 rhoB=0.556 spread=0.113 dGini=0.428 | obA=0.37 obB=-0.38 | -
+n=17 m=2 mA=6 s=2 | rhoA=0.738 rhoB=0.556 spread=0.182 dGini=0.424 | obA=0.58 obB=-0.38 | -
+n=17 m=2 mA=6 s=3 | rhoA=0.443 rhoB=0.556 spread=0.113 dGini=0.428 | obA=0.21 obB=-0.38 | -
+n=17 m=3 mA=2 s=1 | rhoA=0.839 rhoB=0.360 spread=0.479 dGini=0.377 | obA=0.97 obB=-0.30 | -
+n=17 m=3 mA=2 s=2 | rhoA=0.556 rhoB=0.360 spread=0.196 dGini=0.228 | obA=0.87 obB=-0.30 | -
+n=17 m=3 mA=3 s=1 | rhoA=0.886 rhoB=0.360 spread=0.526 dGini=0.267 | obA=0.95 obB=-0.30 | -
+n=17 m=3 mA=3 s=2 | rhoA=0.649 rhoB=0.360 spread=0.289 dGini=0.130 | obA=0.83 obB=-0.30 | -
+n=17 m=3 mA=3 s=3 | rhoA=0.360 rhoB=0.360 spread=0.000 dGini=0.000 | obA=0.61 obB=-0.30 | ACCEPT
+n=17 m=3 mA=4 s=2 | rhoA=0.699 rhoB=0.360 spread=0.339 dGini=0.024 | obA=0.76 obB=-0.30 | -
+n=17 m=3 mA=4 s=3 | rhoA=0.417 rhoB=0.360 spread=0.057 dGini=0.098 | obA=0.51 obB=-0.30 | -
+n=17 m=3 mA=5 s=2 | rhoA=0.726 rhoB=0.360 spread=0.366 dGini=0.085 | obA=0.68 obB=-0.30 | -
+n=17 m=3 mA=5 s=3 | rhoA=0.443 rhoB=0.360 spread=0.083 dGini=0.200 | obA=0.37 obB=-0.30 | -
+n=17 m=3 mA=6 s=2 | rhoA=0.738 rhoB=0.360 spread=0.378 dGini=0.196 | obA=0.58 obB=-0.30 | -
+n=17 m=3 mA=6 s=3 | rhoA=0.443 rhoB=0.360 spread=0.083 dGini=0.200 | obA=0.21 obB=-0.30 | -
+n=18 m=2 mA=2 s=1 | rhoA=0.845 rhoB=0.575 spread=0.270 dGini=0.143 | obA=0.97 obB=-0.37 | -
+n=18 m=2 mA=2 s=2 | rhoA=0.575 rhoB=0.575 spread=0.000 dGini=0.000 | obA=0.89 obB=-0.37 | ACCEPT
+n=18 m=2 mA=3 s=1 | rhoA=0.891 rhoB=0.575 spread=0.317 dGini=0.038 | obA=0.96 obB=-0.37 | -
+n=18 m=2 mA=3 s=2 | rhoA=0.668 rhoB=0.575 spread=0.093 dGini=0.092 | obA=0.85 obB=-0.37 | -
+n=18 m=2 mA=3 s=3 | rhoA=0.397 rhoB=0.575 spread=0.178 dGini=0.218 | obA=0.67 obB=-0.37 | -
+n=18 m=2 mA=4 s=2 | rhoA=0.718 rhoB=0.575 spread=0.143 dGini=0.192 | obA=0.80 obB=-0.37 | -
+n=18 m=2 mA=4 s=3 | rhoA=0.458 rhoB=0.575 spread=0.117 dGini=0.311 | obA=0.58 obB=-0.37 | -
+n=18 m=2 mA=5 s=2 | rhoA=0.747 rhoB=0.575 spread=0.172 dGini=0.296 | obA=0.73 obB=-0.37 | -
+n=18 m=2 mA=5 s=3 | rhoA=0.490 rhoB=0.575 spread=0.085 dGini=0.408 | obA=0.47 obB=-0.37 | -
+n=18 m=2 mA=6 s=2 | rhoA=0.761 rhoB=0.575 spread=0.187 dGini=0.401 | obA=0.65 obB=-0.37 | -
+n=18 m=2 mA=6 s=3 | rhoA=0.500 rhoB=0.575 spread=0.075 dGini=0.506 | obA=0.33 obB=-0.37 | -
+n=18 m=3 mA=2 s=1 | rhoA=0.845 rhoB=0.397 spread=0.448 dGini=0.361 | obA=0.97 obB=-0.33 | -
+n=18 m=3 mA=2 s=2 | rhoA=0.575 rhoB=0.397 spread=0.178 dGini=0.218 | obA=0.89 obB=-0.33 | -
+n=18 m=3 mA=3 s=1 | rhoA=0.891 rhoB=0.397 spread=0.495 dGini=0.257 | obA=0.96 obB=-0.33 | -
+n=18 m=3 mA=3 s=2 | rhoA=0.668 rhoB=0.397 spread=0.271 dGini=0.126 | obA=0.85 obB=-0.33 | -
+n=18 m=3 mA=3 s=3 | rhoA=0.397 rhoB=0.397 spread=0.000 dGini=0.000 | obA=0.67 obB=-0.33 | ACCEPT
+n=18 m=3 mA=4 s=2 | rhoA=0.718 rhoB=0.397 spread=0.321 dGini=0.026 | obA=0.80 obB=-0.33 | -
+n=18 m=3 mA=4 s=3 | rhoA=0.458 rhoB=0.397 spread=0.062 dGini=0.093 | obA=0.58 obB=-0.33 | -
+n=18 m=3 mA=5 s=2 | rhoA=0.747 rhoB=0.397 spread=0.350 dGini=0.077 | obA=0.73 obB=-0.33 | -
+n=18 m=3 mA=5 s=3 | rhoA=0.490 rhoB=0.397 spread=0.093 dGini=0.189 | obA=0.47 obB=-0.33 | -
+n=18 m=3 mA=6 s=2 | rhoA=0.761 rhoB=0.397 spread=0.365 dGini=0.182 | obA=0.65 obB=-0.33 | -
+n=18 m=3 mA=6 s=3 | rhoA=0.500 rhoB=0.397 spread=0.103 dGini=0.288 | obA=0.33 obB=-0.33 | -
+n=19 m=2 mA=2 s=1 | rhoA=0.850 rhoB=0.591 spread=0.259 dGini=0.137 | obA=0.98 obB=-0.37 | -
+n=19 m=2 mA=2 s=2 | rhoA=0.591 rhoB=0.591 spread=0.000 dGini=0.000 | obA=0.90 obB=-0.37 | ACCEPT
+n=19 m=2 mA=2 s=3 | rhoA=0.315 rhoB=0.591 spread=0.276 dGini=0.131 | obA=0.76 obB=-0.37 | -
+n=19 m=2 mA=3 s=1 | rhoA=0.896 rhoB=0.591 spread=0.305 dGini=0.038 | obA=0.96 obB=-0.37 | -
+n=19 m=2 mA=3 s=2 | rhoA=0.684 rhoB=0.591 spread=0.092 dGini=0.087 | obA=0.87 obB=-0.37 | -
+n=19 m=2 mA=3 s=3 | rhoA=0.428 rhoB=0.591 spread=0.163 dGini=0.209 | obA=0.71 obB=-0.37 | -
+n=19 m=2 mA=4 s=2 | rhoA=0.734 rhoB=0.591 spread=0.143 dGini=0.182 | obA=0.83 obB=-0.37 | -
+n=19 m=2 mA=4 s=3 | rhoA=0.492 rhoB=0.591 spread=0.099 dGini=0.296 | obA=0.64 obB=-0.37 | -
+n=19 m=2 mA=5 s=2 | rhoA=0.764 rhoB=0.591 spread=0.172 dGini=0.280 | obA=0.77 obB=-0.37 | -
+n=19 m=2 mA=5 s=3 | rhoA=0.529 rhoB=0.591 spread=0.063 dGini=0.388 | obA=0.55 obB=-0.37 | -
+n=19 m=2 mA=6 s=2 | rhoA=0.781 rhoB=0.591 spread=0.189 dGini=0.379 | obA=0.70 obB=-0.37 | -
+n=19 m=2 mA=6 s=3 | rhoA=0.545 rhoB=0.591 spread=0.046 dGini=0.483 | obA=0.43 obB=-0.37 | -
+n=19 m=3 mA=2 s=1 | rhoA=0.850 rhoB=0.428 spread=0.422 dGini=0.345 | obA=0.98 obB=-0.35 | -
+n=19 m=3 mA=2 s=2 | rhoA=0.591 rhoB=0.428 spread=0.163 dGini=0.209 | obA=0.90 obB=-0.35 | -
+n=19 m=3 mA=2 s=3 | rhoA=0.315 rhoB=0.428 spread=0.113 dGini=0.078 | obA=0.76 obB=-0.35 | -
+n=19 m=3 mA=3 s=1 | rhoA=0.896 rhoB=0.428 spread=0.468 dGini=0.247 | obA=0.96 obB=-0.35 | -
+n=19 m=3 mA=3 s=2 | rhoA=0.684 rhoB=0.428 spread=0.256 dGini=0.122 | obA=0.87 obB=-0.35 | -
+n=19 m=3 mA=3 s=3 | rhoA=0.428 rhoB=0.428 spread=0.000 dGini=0.000 | obA=0.71 obB=-0.35 | ACCEPT
+n=19 m=3 mA=4 s=2 | rhoA=0.734 rhoB=0.428 spread=0.306 dGini=0.027 | obA=0.83 obB=-0.35 | -
+n=19 m=3 mA=4 s=3 | rhoA=0.492 rhoB=0.428 spread=0.064 dGini=0.088 | obA=0.64 obB=-0.35 | -
+n=19 m=3 mA=5 s=2 | rhoA=0.764 rhoB=0.428 spread=0.336 dGini=0.071 | obA=0.77 obB=-0.35 | -
+n=19 m=3 mA=5 s=3 | rhoA=0.529 rhoB=0.428 spread=0.101 dGini=0.180 | obA=0.55 obB=-0.35 | -
+n=19 m=3 mA=6 s=2 | rhoA=0.781 rhoB=0.428 spread=0.353 dGini=0.171 | obA=0.70 obB=-0.35 | -
+n=19 m=3 mA=6 s=3 | rhoA=0.545 rhoB=0.428 spread=0.117 dGini=0.274 | obA=0.43 obB=-0.35 | -
+n=20 m=2 mA=2 s=1 | rhoA=0.855 rhoB=0.606 spread=0.249 dGini=0.131 | obA=0.98 obB=-0.36 | -
+n=20 m=2 mA=2 s=2 | rhoA=0.606 rhoB=0.606 spread=0.000 dGini=0.000 | obA=0.92 obB=-0.36 | ACCEPT
+n=20 m=2 mA=2 s=3 | rhoA=0.341 rhoB=0.606 spread=0.265 dGini=0.127 | obA=0.79 obB=-0.36 | -
+n=20 m=2 mA=3 s=2 | rhoA=0.697 rhoB=0.606 spread=0.091 dGini=0.082 | obA=0.89 obB=-0.36 | -
+n=20 m=2 mA=3 s=3 | rhoA=0.455 rhoB=0.606 spread=0.151 dGini=0.200 | obA=0.75 obB=-0.36 | -
+n=20 m=2 mA=4 s=2 | rhoA=0.748 rhoB=0.606 spread=0.142 dGini=0.172 | obA=0.85 obB=-0.36 | -
+n=20 m=2 mA=4 s=3 | rhoA=0.521 rhoB=0.606 spread=0.085 dGini=0.283 | obA=0.69 obB=-0.36 | -
+n=20 m=2 mA=5 s=2 | rhoA=0.778 rhoB=0.606 spread=0.172 dGini=0.265 | obA=0.81 obB=-0.36 | -
+n=20 m=2 mA=5 s=3 | rhoA=0.560 rhoB=0.606 spread=0.046 dGini=0.371 | obA=0.61 obB=-0.36 | -
+n=20 m=2 mA=6 s=2 | rhoA=0.796 rhoB=0.606 spread=0.190 dGini=0.360 | obA=0.75 obB=-0.36 | -
+n=20 m=2 mA=6 s=3 | rhoA=0.581 rhoB=0.606 spread=0.025 dGini=0.461 | obA=0.51 obB=-0.36 | -
+n=20 m=3 mA=2 s=1 | rhoA=0.855 rhoB=0.455 spread=0.400 dGini=0.331 | obA=0.98 obB=-0.37 | -
+n=20 m=3 mA=2 s=2 | rhoA=0.606 rhoB=0.455 spread=0.151 dGini=0.200 | obA=0.92 obB=-0.37 | -
+n=20 m=3 mA=2 s=3 | rhoA=0.341 rhoB=0.455 spread=0.114 dGini=0.073 | obA=0.79 obB=-0.37 | -
+n=20 m=3 mA=3 s=2 | rhoA=0.697 rhoB=0.455 spread=0.242 dGini=0.118 | obA=0.89 obB=-0.37 | -
+n=20 m=3 mA=3 s=3 | rhoA=0.455 rhoB=0.455 spread=0.000 dGini=0.000 | obA=0.75 obB=-0.37 | ACCEPT
+n=20 m=3 mA=4 s=2 | rhoA=0.748 rhoB=0.455 spread=0.293 dGini=0.028 | obA=0.85 obB=-0.37 | -
+n=20 m=3 mA=4 s=3 | rhoA=0.521 rhoB=0.455 spread=0.066 dGini=0.083 | obA=0.69 obB=-0.37 | -
+n=20 m=3 mA=5 s=2 | rhoA=0.778 rhoB=0.455 spread=0.323 dGini=0.065 | obA=0.81 obB=-0.37 | -
+n=20 m=3 mA=5 s=3 | rhoA=0.560 rhoB=0.455 spread=0.105 dGini=0.171 | obA=0.61 obB=-0.37 | -
+n=20 m=3 mA=6 s=2 | rhoA=0.796 rhoB=0.455 spread=0.341 dGini=0.160 | obA=0.75 obB=-0.37 | -
+n=20 m=3 mA=6 s=3 | rhoA=0.581 rhoB=0.455 spread=0.126 dGini=0.261 | obA=0.51 obB=-0.37 | -
+n=21 m=2 mA=2 s=1 | rhoA=0.860 rhoB=0.619 spread=0.241 dGini=0.126 | obA=0.98 obB=-0.35 | -
+n=21 m=2 mA=2 s=2 | rhoA=0.619 rhoB=0.619 spread=0.000 dGini=0.000 | obA=0.93 obB=-0.35 | ACCEPT
+n=21 m=2 mA=2 s=3 | rhoA=0.364 rhoB=0.619 spread=0.255 dGini=0.123 | obA=0.81 obB=-0.35 | -
+n=21 m=2 mA=3 s=2 | rhoA=0.710 rhoB=0.619 spread=0.091 dGini=0.078 | obA=0.90 obB=-0.35 | -
+n=21 m=2 mA=3 s=3 | rhoA=0.479 rhoB=0.619 spread=0.140 dGini=0.192 | obA=0.78 obB=-0.35 | -
+n=21 m=2 mA=4 s=2 | rhoA=0.760 rhoB=0.619 spread=0.141 dGini=0.164 | obA=0.87 obB=-0.35 | -
+n=21 m=2 mA=4 s=3 | rhoA=0.546 rhoB=0.619 spread=0.073 dGini=0.271 | obA=0.73 obB=-0.35 | -
+n=21 m=2 mA=5 s=2 | rhoA=0.791 rhoB=0.619 spread=0.172 dGini=0.252 | obA=0.83 obB=-0.35 | -
+n=21 m=2 mA=5 s=3 | rhoA=0.587 rhoB=0.619 spread=0.032 dGini=0.355 | obA=0.66 obB=-0.35 | -
+n=21 m=2 mA=6 s=2 | rhoA=0.810 rhoB=0.619 spread=0.191 dGini=0.343 | obA=0.78 obB=-0.35 | -
+n=21 m=2 mA=6 s=3 | rhoA=0.611 rhoB=0.619 spread=0.008 dGini=0.441 | obA=0.58 obB=-0.35 | -
+n=21 m=3 mA=2 s=1 | rhoA=0.860 rhoB=0.479 spread=0.381 dGini=0.318 | obA=0.98 obB=-0.38 | -
+n=21 m=3 mA=2 s=2 | rhoA=0.619 rhoB=0.479 spread=0.140 dGini=0.192 | obA=0.93 obB=-0.38 | -
+n=21 m=3 mA=2 s=3 | rhoA=0.364 rhoB=0.479 spread=0.114 dGini=0.069 | obA=0.81 obB=-0.38 | -
+n=21 m=3 mA=3 s=2 | rhoA=0.710 rhoB=0.479 spread=0.231 dGini=0.114 | obA=0.90 obB=-0.38 | -
+n=21 m=3 mA=3 s=3 | rhoA=0.479 rhoB=0.479 spread=0.000 dGini=0.000 | obA=0.78 obB=-0.38 | ACCEPT
+n=21 m=3 mA=4 s=2 | rhoA=0.760 rhoB=0.479 spread=0.282 dGini=0.028 | obA=0.87 obB=-0.38 | -
+n=21 m=3 mA=4 s=3 | rhoA=0.546 rhoB=0.479 spread=0.067 dGini=0.079 | obA=0.73 obB=-0.38 | ACCEPT
+n=21 m=3 mA=5 s=2 | rhoA=0.791 rhoB=0.479 spread=0.312 dGini=0.060 | obA=0.83 obB=-0.38 | -
+n=21 m=3 mA=5 s=3 | rhoA=0.587 rhoB=0.479 spread=0.109 dGini=0.163 | obA=0.66 obB=-0.38 | -
+n=21 m=3 mA=6 s=2 | rhoA=0.810 rhoB=0.479 spread=0.331 dGini=0.151 | obA=0.78 obB=-0.38 | -
+n=21 m=3 mA=6 s=3 | rhoA=0.611 rhoB=0.479 spread=0.132 dGini=0.249 | obA=0.58 obB=-0.38 | -
+n=22 m=2 mA=2 s=1 | rhoA=0.863 rhoB=0.631 spread=0.233 dGini=0.122 | obA=0.98 obB=-0.34 | -
+n=22 m=2 mA=2 s=2 | rhoA=0.631 rhoB=0.631 spread=0.000 dGini=0.000 | obA=0.93 obB=-0.34 | ACCEPT
+n=22 m=2 mA=2 s=3 | rhoA=0.385 rhoB=0.631 spread=0.246 dGini=0.119 | obA=0.83 obB=-0.34 | -
+n=22 m=2 mA=3 s=2 | rhoA=0.720 rhoB=0.631 spread=0.090 dGini=0.074 | obA=0.92 obB=-0.34 | ACCEPT
+n=22 m=2 mA=3 s=3 | rhoA=0.499 rhoB=0.631 spread=0.131 dGini=0.185 | obA=0.81 obB=-0.34 | -
+n=22 m=2 mA=4 s=2 | rhoA=0.771 rhoB=0.631 spread=0.140 dGini=0.156 | obA=0.89 obB=-0.34 | -
+n=22 m=2 mA=4 s=3 | rhoA=0.568 rhoB=0.631 spread=0.063 dGini=0.260 | obA=0.76 obB=-0.34 | -
+n=22 m=2 mA=5 s=2 | rhoA=0.801 rhoB=0.631 spread=0.171 dGini=0.240 | obA=0.86 obB=-0.34 | -
+n=22 m=2 mA=5 s=3 | rhoA=0.610 rhoB=0.631 spread=0.021 dGini=0.340 | obA=0.70 obB=-0.34 | -
+n=22 m=2 mA=6 s=2 | rhoA=0.821 rhoB=0.631 spread=0.190 dGini=0.327 | obA=0.81 obB=-0.34 | -
+n=22 m=2 mA=6 s=3 | rhoA=0.636 rhoB=0.631 spread=0.005 dGini=0.422 | obA=0.63 obB=-0.34 | -
+n=22 m=3 mA=2 s=1 | rhoA=0.863 rhoB=0.499 spread=0.364 dGini=0.306 | obA=0.98 obB=-0.38 | -
+n=22 m=3 mA=2 s=2 | rhoA=0.631 rhoB=0.499 spread=0.131 dGini=0.185 | obA=0.93 obB=-0.38 | -
+n=22 m=3 mA=2 s=3 | rhoA=0.385 rhoB=0.499 spread=0.114 dGini=0.065 | obA=0.83 obB=-0.38 | -
+n=22 m=3 mA=3 s=2 | rhoA=0.720 rhoB=0.499 spread=0.221 dGini=0.110 | obA=0.92 obB=-0.38 | -
+n=22 m=3 mA=3 s=3 | rhoA=0.499 rhoB=0.499 spread=0.000 dGini=0.000 | obA=0.81 obB=-0.38 | ACCEPT
+n=22 m=3 mA=4 s=2 | rhoA=0.771 rhoB=0.499 spread=0.271 dGini=0.029 | obA=0.89 obB=-0.38 | -
+n=22 m=3 mA=4 s=3 | rhoA=0.568 rhoB=0.499 spread=0.068 dGini=0.075 | obA=0.76 obB=-0.38 | ACCEPT
+n=22 m=3 mA=5 s=2 | rhoA=0.801 rhoB=0.499 spread=0.302 dGini=0.056 | obA=0.86 obB=-0.38 | -
+n=22 m=3 mA=5 s=3 | rhoA=0.610 rhoB=0.499 spread=0.111 dGini=0.155 | obA=0.70 obB=-0.38 | -
+n=22 m=3 mA=6 s=2 | rhoA=0.821 rhoB=0.499 spread=0.321 dGini=0.142 | obA=0.81 obB=-0.38 | -
+n=22 m=3 mA=6 s=3 | rhoA=0.636 rhoB=0.499 spread=0.137 dGini=0.237 | obA=0.63 obB=-0.38 | -
+n=23 m=2 mA=2 s=1 | rhoA=0.867 rhoB=0.641 spread=0.226 dGini=0.118 | obA=0.99 obB=-0.33 | -
+n=23 m=2 mA=2 s=2 | rhoA=0.641 rhoB=0.641 spread=0.000 dGini=0.000 | obA=0.94 obB=-0.33 | ACCEPT
+n=23 m=2 mA=2 s=3 | rhoA=0.404 rhoB=0.641 spread=0.238 dGini=0.116 | obA=0.85 obB=-0.33 | -
+n=23 m=2 mA=3 s=2 | rhoA=0.730 rhoB=0.641 spread=0.089 dGini=0.071 | obA=0.93 obB=-0.33 | ACCEPT
+n=23 m=2 mA=3 s=3 | rhoA=0.518 rhoB=0.641 spread=0.123 dGini=0.178 | obA=0.83 obB=-0.33 | -
+n=23 m=2 mA=4 s=2 | rhoA=0.780 rhoB=0.641 spread=0.139 dGini=0.149 | obA=0.90 obB=-0.33 | -
+n=23 m=2 mA=4 s=3 | rhoA=0.586 rhoB=0.641 spread=0.055 dGini=0.249 | obA=0.79 obB=-0.33 | -
+n=23 m=2 mA=5 s=2 | rhoA=0.811 rhoB=0.641 spread=0.169 dGini=0.230 | obA=0.87 obB=-0.33 | -
+n=23 m=2 mA=5 s=3 | rhoA=0.630 rhoB=0.641 spread=0.011 dGini=0.326 | obA=0.74 obB=-0.33 | -
+n=23 m=2 mA=6 s=2 | rhoA=0.830 rhoB=0.641 spread=0.189 dGini=0.312 | obA=0.84 obB=-0.33 | -
+n=23 m=2 mA=6 s=3 | rhoA=0.657 rhoB=0.641 spread=0.016 dGini=0.404 | obA=0.68 obB=-0.33 | -
+n=23 m=3 mA=2 s=1 | rhoA=0.867 rhoB=0.518 spread=0.349 dGini=0.295 | obA=0.99 obB=-0.39 | -
+n=23 m=3 mA=2 s=2 | rhoA=0.641 rhoB=0.518 spread=0.123 dGini=0.178 | obA=0.94 obB=-0.39 | -
+n=23 m=3 mA=2 s=3 | rhoA=0.404 rhoB=0.518 spread=0.114 dGini=0.062 | obA=0.85 obB=-0.39 | -
+n=23 m=3 mA=3 s=2 | rhoA=0.730 rhoB=0.518 spread=0.212 dGini=0.107 | obA=0.93 obB=-0.39 | -
+n=23 m=3 mA=3 s=3 | rhoA=0.518 rhoB=0.518 spread=0.000 dGini=0.000 | obA=0.83 obB=-0.39 | ACCEPT
+n=23 m=3 mA=4 s=2 | rhoA=0.780 rhoB=0.518 spread=0.262 dGini=0.029 | obA=0.90 obB=-0.39 | -
+n=23 m=3 mA=4 s=3 | rhoA=0.586 rhoB=0.518 spread=0.069 dGini=0.072 | obA=0.79 obB=-0.39 | ACCEPT
+n=23 m=3 mA=5 s=2 | rhoA=0.811 rhoB=0.518 spread=0.293 dGini=0.052 | obA=0.87 obB=-0.39 | -
+n=23 m=3 mA=5 s=3 | rhoA=0.630 rhoB=0.518 spread=0.112 dGini=0.148 | obA=0.74 obB=-0.39 | -
+n=23 m=3 mA=6 s=2 | rhoA=0.830 rhoB=0.518 spread=0.312 dGini=0.135 | obA=0.84 obB=-0.39 | -
+n=23 m=3 mA=6 s=3 | rhoA=0.657 rhoB=0.518 spread=0.140 dGini=0.227 | obA=0.68 obB=-0.39 | -
+n=24 m=2 mA=2 s=1 | rhoA=0.870 rhoB=0.651 spread=0.220 dGini=0.114 | obA=0.99 obB=-0.32 | -
+n=24 m=2 mA=2 s=2 | rhoA=0.651 rhoB=0.651 spread=0.000 dGini=0.000 | obA=0.95 obB=-0.32 | ACCEPT
+n=24 m=2 mA=2 s=3 | rhoA=0.420 rhoB=0.651 spread=0.230 dGini=0.112 | obA=0.87 obB=-0.32 | -
+n=24 m=2 mA=3 s=2 | rhoA=0.739 rhoB=0.651 spread=0.088 dGini=0.068 | obA=0.93 obB=-0.32 | ACCEPT
+n=24 m=2 mA=3 s=3 | rhoA=0.534 rhoB=0.651 spread=0.116 dGini=0.171 | obA=0.85 obB=-0.32 | -
+n=24 m=2 mA=4 s=2 | rhoA=0.788 rhoB=0.651 spread=0.137 dGini=0.142 | obA=0.91 obB=-0.32 | -
+n=24 m=2 mA=4 s=3 | rhoA=0.603 rhoB=0.651 spread=0.048 dGini=0.240 | obA=0.81 obB=-0.32 | -
+n=24 m=2 mA=5 s=2 | rhoA=0.819 rhoB=0.651 spread=0.168 dGini=0.220 | obA=0.89 obB=-0.32 | -
+n=24 m=2 mA=5 s=3 | rhoA=0.647 rhoB=0.651 spread=0.004 dGini=0.313 | obA=0.77 obB=-0.32 | -
+n=24 m=2 mA=6 s=2 | rhoA=0.839 rhoB=0.651 spread=0.188 dGini=0.299 | obA=0.86 obB=-0.32 | -
+n=24 m=2 mA=6 s=3 | rhoA=0.676 rhoB=0.651 spread=0.025 dGini=0.388 | obA=0.72 obB=-0.32 | -
+n=24 m=3 mA=2 s=1 | rhoA=0.870 rhoB=0.534 spread=0.336 dGini=0.285 | obA=0.99 obB=-0.38 | -
+n=24 m=3 mA=2 s=2 | rhoA=0.651 rhoB=0.534 spread=0.116 dGini=0.171 | obA=0.95 obB=-0.38 | -
+n=24 m=3 mA=2 s=3 | rhoA=0.420 rhoB=0.534 spread=0.114 dGini=0.059 | obA=0.87 obB=-0.38 | -
+n=24 m=3 mA=3 s=2 | rhoA=0.739 rhoB=0.534 spread=0.204 dGini=0.104 | obA=0.93 obB=-0.38 | -
+n=24 m=3 mA=3 s=3 | rhoA=0.534 rhoB=0.534 spread=0.000 dGini=0.000 | obA=0.85 obB=-0.38 | ACCEPT
+n=24 m=3 mA=4 s=2 | rhoA=0.788 rhoB=0.534 spread=0.254 dGini=0.029 | obA=0.91 obB=-0.38 | -
+n=24 m=3 mA=4 s=3 | rhoA=0.603 rhoB=0.534 spread=0.069 dGini=0.069 | obA=0.81 obB=-0.38 | ACCEPT
+n=24 m=3 mA=5 s=2 | rhoA=0.819 rhoB=0.534 spread=0.284 dGini=0.048 | obA=0.89 obB=-0.38 | -
+n=24 m=3 mA=5 s=3 | rhoA=0.647 rhoB=0.534 spread=0.113 dGini=0.142 | obA=0.77 obB=-0.38 | -
+n=24 m=3 mA=6 s=2 | rhoA=0.839 rhoB=0.534 spread=0.304 dGini=0.128 | obA=0.86 obB=-0.38 | -
+n=24 m=3 mA=6 s=3 | rhoA=0.676 rhoB=0.534 spread=0.141 dGini=0.217 | obA=0.72 obB=-0.38 | -
+n=25 m=2 mA=2 s=1 | rhoA=0.873 rhoB=0.659 spread=0.214 dGini=0.110 | obA=0.99 obB=-0.31 | -
+n=25 m=2 mA=2 s=2 | rhoA=0.659 rhoB=0.659 spread=0.000 dGini=0.000 | obA=0.95 obB=-0.31 | ACCEPT
+n=25 m=2 mA=2 s=3 | rhoA=0.436 rhoB=0.659 spread=0.224 dGini=0.109 | obA=0.88 obB=-0.31 | -
+n=25 m=2 mA=3 s=2 | rhoA=0.746 rhoB=0.659 spread=0.087 dGini=0.065 | obA=0.94 obB=-0.31 | ACCEPT
+n=25 m=2 mA=3 s=3 | rhoA=0.549 rhoB=0.659 spread=0.110 dGini=0.165 | obA=0.86 obB=-0.31 | -
+n=25 m=2 mA=4 s=2 | rhoA=0.795 rhoB=0.659 spread=0.136 dGini=0.136 | obA=0.92 obB=-0.31 | -
+n=25 m=2 mA=4 s=3 | rhoA=0.618 rhoB=0.659 spread=0.042 dGini=0.231 | obA=0.83 obB=-0.31 | -
+n=25 m=2 mA=5 s=2 | rhoA=0.826 rhoB=0.659 spread=0.167 dGini=0.210 | obA=0.90 obB=-0.31 | -
+n=25 m=2 mA=5 s=3 | rhoA=0.662 rhoB=0.659 spread=0.003 dGini=0.301 | obA=0.80 obB=-0.31 | -
+n=25 m=2 mA=6 s=2 | rhoA=0.846 rhoB=0.659 spread=0.187 dGini=0.286 | obA=0.87 obB=-0.31 | -
+n=25 m=2 mA=6 s=3 | rhoA=0.692 rhoB=0.659 spread=0.032 dGini=0.374 | obA=0.75 obB=-0.31 | -
+n=25 m=3 mA=2 s=1 | rhoA=0.873 rhoB=0.549 spread=0.324 dGini=0.275 | obA=0.99 obB=-0.38 | -
+n=25 m=3 mA=2 s=2 | rhoA=0.659 rhoB=0.549 spread=0.110 dGini=0.165 | obA=0.95 obB=-0.38 | -
+n=25 m=3 mA=2 s=3 | rhoA=0.436 rhoB=0.549 spread=0.113 dGini=0.056 | obA=0.88 obB=-0.38 | -
+n=25 m=3 mA=3 s=2 | rhoA=0.746 rhoB=0.549 spread=0.197 dGini=0.101 | obA=0.94 obB=-0.38 | -
+n=25 m=3 mA=3 s=3 | rhoA=0.549 rhoB=0.549 spread=0.000 dGini=0.000 | obA=0.86 obB=-0.38 | ACCEPT
+n=25 m=3 mA=4 s=2 | rhoA=0.795 rhoB=0.549 spread=0.246 dGini=0.029 | obA=0.92 obB=-0.38 | -
+n=25 m=3 mA=4 s=3 | rhoA=0.618 rhoB=0.549 spread=0.069 dGini=0.066 | obA=0.83 obB=-0.38 | ACCEPT
+n=25 m=3 mA=5 s=2 | rhoA=0.826 rhoB=0.549 spread=0.277 dGini=0.045 | obA=0.90 obB=-0.38 | -
+n=25 m=3 mA=5 s=3 | rhoA=0.662 rhoB=0.549 spread=0.113 dGini=0.136 | obA=0.80 obB=-0.38 | -
+n=25 m=3 mA=6 s=2 | rhoA=0.846 rhoB=0.549 spread=0.297 dGini=0.121 | obA=0.87 obB=-0.38 | -
+n=25 m=3 mA=6 s=3 | rhoA=0.692 rhoB=0.549 spread=0.143 dGini=0.208 | obA=0.75 obB=-0.38 | -
+n=26 m=2 mA=2 s=1 | rhoA=0.876 rhoB=0.667 spread=0.209 dGini=0.106 | obA=0.99 obB=-0.30 | -
+n=26 m=2 mA=2 s=2 | rhoA=0.667 rhoB=0.667 spread=0.000 dGini=0.000 | obA=0.96 obB=-0.30 | ACCEPT
+n=26 m=2 mA=2 s=3 | rhoA=0.450 rhoB=0.667 spread=0.218 dGini=0.106 | obA=0.89 obB=-0.30 | -
+n=26 m=2 mA=3 s=2 | rhoA=0.754 rhoB=0.667 spread=0.086 dGini=0.062 | obA=0.95 obB=-0.30 | ACCEPT
+n=26 m=2 mA=3 s=3 | rhoA=0.563 rhoB=0.667 spread=0.105 dGini=0.160 | obA=0.88 obB=-0.30 | -
+n=26 m=2 mA=4 s=2 | rhoA=0.802 rhoB=0.667 spread=0.135 dGini=0.130 | obA=0.93 obB=-0.30 | -
+n=26 m=2 mA=4 s=3 | rhoA=0.631 rhoB=0.667 spread=0.036 dGini=0.223 | obA=0.85 obB=-0.30 | -
+n=26 m=2 mA=5 s=2 | rhoA=0.832 rhoB=0.667 spread=0.165 dGini=0.202 | obA=0.91 obB=-0.30 | -
+n=26 m=2 mA=5 s=3 | rhoA=0.676 rhoB=0.667 spread=0.008 dGini=0.290 | obA=0.82 obB=-0.30 | -
+n=26 m=2 mA=6 s=2 | rhoA=0.852 rhoB=0.667 spread=0.185 dGini=0.275 | obA=0.89 obB=-0.30 | -
+n=26 m=2 mA=6 s=3 | rhoA=0.706 rhoB=0.667 spread=0.038 dGini=0.360 | obA=0.78 obB=-0.30 | -
+n=26 m=3 mA=2 s=1 | rhoA=0.876 rhoB=0.563 spread=0.313 dGini=0.266 | obA=0.99 obB=-0.38 | -
+n=26 m=3 mA=2 s=2 | rhoA=0.667 rhoB=0.563 spread=0.105 dGini=0.160 | obA=0.96 obB=-0.38 | -
+n=26 m=3 mA=2 s=3 | rhoA=0.450 rhoB=0.563 spread=0.113 dGini=0.053 | obA=0.89 obB=-0.38 | -
+n=26 m=3 mA=3 s=2 | rhoA=0.754 rhoB=0.563 spread=0.191 dGini=0.098 | obA=0.95 obB=-0.38 | -
+n=26 m=3 mA=3 s=3 | rhoA=0.563 rhoB=0.563 spread=0.000 dGini=0.000 | obA=0.88 obB=-0.38 | ACCEPT
+n=26 m=3 mA=4 s=2 | rhoA=0.802 rhoB=0.563 spread=0.240 dGini=0.029 | obA=0.93 obB=-0.38 | -
+n=26 m=3 mA=4 s=3 | rhoA=0.631 rhoB=0.563 spread=0.068 dGini=0.063 | obA=0.85 obB=-0.38 | ACCEPT
+n=26 m=3 mA=5 s=2 | rhoA=0.832 rhoB=0.563 spread=0.270 dGini=0.042 | obA=0.91 obB=-0.38 | -
+n=26 m=3 mA=5 s=3 | rhoA=0.676 rhoB=0.563 spread=0.113 dGini=0.130 | obA=0.82 obB=-0.38 | -
+n=26 m=3 mA=6 s=2 | rhoA=0.852 rhoB=0.563 spread=0.290 dGini=0.115 | obA=0.89 obB=-0.38 | -
+n=26 m=3 mA=6 s=3 | rhoA=0.706 rhoB=0.563 spread=0.143 dGini=0.200 | obA=0.78 obB=-0.38 | -
+n=27 m=2 mA=2 s=1 | rhoA=0.879 rhoB=0.675 spread=0.204 dGini=0.103 | obA=0.99 obB=-0.29 | -
+n=27 m=2 mA=2 s=2 | rhoA=0.675 rhoB=0.675 spread=0.000 dGini=0.000 | obA=0.96 obB=-0.29 | ACCEPT
+n=27 m=2 mA=2 s=3 | rhoA=0.463 rhoB=0.675 spread=0.212 dGini=0.104 | obA=0.90 obB=-0.29 | -
+n=27 m=2 mA=3 s=2 | rhoA=0.760 rhoB=0.675 spread=0.085 dGini=0.059 | obA=0.95 obB=-0.29 | ACCEPT
+n=27 m=2 mA=3 s=3 | rhoA=0.575 rhoB=0.675 spread=0.100 dGini=0.155 | obA=0.89 obB=-0.29 | -
+n=27 m=2 mA=4 s=2 | rhoA=0.808 rhoB=0.675 spread=0.133 dGini=0.125 | obA=0.94 obB=-0.29 | -
+n=27 m=2 mA=4 s=3 | rhoA=0.643 rhoB=0.675 spread=0.032 dGini=0.215 | obA=0.87 obB=-0.29 | -
+n=27 m=2 mA=5 s=2 | rhoA=0.838 rhoB=0.675 spread=0.163 dGini=0.194 | obA=0.92 obB=-0.29 | -
+n=27 m=2 mA=5 s=3 | rhoA=0.688 rhoB=0.675 spread=0.013 dGini=0.280 | obA=0.84 obB=-0.29 | -
+n=27 m=2 mA=6 s=2 | rhoA=0.858 rhoB=0.675 spread=0.183 dGini=0.265 | obA=0.90 obB=-0.29 | -
+n=27 m=2 mA=6 s=3 | rhoA=0.718 rhoB=0.675 spread=0.043 dGini=0.347 | obA=0.80 obB=-0.29 | -
+n=27 m=3 mA=2 s=1 | rhoA=0.879 rhoB=0.575 spread=0.304 dGini=0.258 | obA=0.99 obB=-0.37 | -
+n=27 m=3 mA=2 s=2 | rhoA=0.675 rhoB=0.575 spread=0.100 dGini=0.155 | obA=0.96 obB=-0.37 | -
+n=27 m=3 mA=2 s=3 | rhoA=0.463 rhoB=0.575 spread=0.112 dGini=0.051 | obA=0.90 obB=-0.37 | -
+n=27 m=3 mA=3 s=2 | rhoA=0.760 rhoB=0.575 spread=0.185 dGini=0.095 | obA=0.95 obB=-0.37 | -
+n=27 m=3 mA=3 s=3 | rhoA=0.575 rhoB=0.575 spread=0.000 dGini=0.000 | obA=0.89 obB=-0.37 | ACCEPT
+n=27 m=3 mA=4 s=2 | rhoA=0.808 rhoB=0.575 spread=0.233 dGini=0.029 | obA=0.94 obB=-0.37 | -
+n=27 m=3 mA=4 s=3 | rhoA=0.643 rhoB=0.575 spread=0.068 dGini=0.060 | obA=0.87 obB=-0.37 | ACCEPT
+n=27 m=3 mA=5 s=2 | rhoA=0.838 rhoB=0.575 spread=0.263 dGini=0.040 | obA=0.92 obB=-0.37 | -
+n=27 m=3 mA=5 s=3 | rhoA=0.688 rhoB=0.575 spread=0.113 dGini=0.125 | obA=0.84 obB=-0.37 | -
+n=27 m=3 mA=6 s=2 | rhoA=0.858 rhoB=0.575 spread=0.283 dGini=0.110 | obA=0.90 obB=-0.37 | -
+n=27 m=3 mA=6 s=3 | rhoA=0.718 rhoB=0.575 spread=0.143 dGini=0.192 | obA=0.80 obB=-0.37 | -
+n=28 m=2 mA=2 s=1 | rhoA=0.881 rhoB=0.682 spread=0.199 dGini=0.100 | obA=0.99 obB=-0.28 | -
+n=28 m=2 mA=2 s=2 | rhoA=0.682 rhoB=0.682 spread=0.000 dGini=0.000 | obA=0.96 obB=-0.28 | ACCEPT
+n=28 m=2 mA=2 s=3 | rhoA=0.475 rhoB=0.682 spread=0.207 dGini=0.101 | obA=0.91 obB=-0.28 | -
+n=28 m=2 mA=3 s=2 | rhoA=0.766 rhoB=0.682 spread=0.084 dGini=0.057 | obA=0.96 obB=-0.28 | ACCEPT
+n=28 m=2 mA=3 s=3 | rhoA=0.586 rhoB=0.682 spread=0.096 dGini=0.150 | obA=0.90 obB=-0.28 | -
+n=28 m=2 mA=4 s=2 | rhoA=0.814 rhoB=0.682 spread=0.132 dGini=0.121 | obA=0.95 obB=-0.28 | -
+n=28 m=2 mA=4 s=3 | rhoA=0.654 rhoB=0.682 spread=0.028 dGini=0.208 | obA=0.88 obB=-0.28 | -
+n=28 m=2 mA=5 s=2 | rhoA=0.844 rhoB=0.682 spread=0.162 dGini=0.187 | obA=0.93 obB=-0.28 | -
+n=28 m=2 mA=5 s=3 | rhoA=0.699 rhoB=0.682 spread=0.017 dGini=0.270 | obA=0.85 obB=-0.28 | -
+n=28 m=2 mA=6 s=2 | rhoA=0.863 rhoB=0.682 spread=0.182 dGini=0.255 | obA=0.91 obB=-0.28 | -
+n=28 m=2 mA=6 s=3 | rhoA=0.729 rhoB=0.682 spread=0.048 dGini=0.335 | obA=0.82 obB=-0.28 | -
+n=28 m=3 mA=2 s=1 | rhoA=0.881 rhoB=0.586 spread=0.295 dGini=0.250 | obA=0.99 obB=-0.37 | -
+n=28 m=3 mA=2 s=2 | rhoA=0.682 rhoB=0.586 spread=0.096 dGini=0.150 | obA=0.96 obB=-0.37 | -
+n=28 m=3 mA=2 s=3 | rhoA=0.475 rhoB=0.586 spread=0.112 dGini=0.049 | obA=0.91 obB=-0.37 | -
+n=28 m=3 mA=3 s=2 | rhoA=0.766 rhoB=0.586 spread=0.180 dGini=0.093 | obA=0.96 obB=-0.37 | -
+n=28 m=3 mA=3 s=3 | rhoA=0.586 rhoB=0.586 spread=0.000 dGini=0.000 | obA=0.90 obB=-0.37 | ACCEPT
+n=28 m=3 mA=4 s=2 | rhoA=0.814 rhoB=0.586 spread=0.228 dGini=0.029 | obA=0.95 obB=-0.37 | -
+n=28 m=3 mA=4 s=3 | rhoA=0.654 rhoB=0.586 spread=0.068 dGini=0.058 | obA=0.88 obB=-0.37 | ACCEPT
+n=28 m=3 mA=5 s=2 | rhoA=0.844 rhoB=0.586 spread=0.257 dGini=0.037 | obA=0.93 obB=-0.37 | -
+n=28 m=3 mA=5 s=3 | rhoA=0.699 rhoB=0.586 spread=0.113 dGini=0.120 | obA=0.85 obB=-0.37 | -
+n=28 m=3 mA=6 s=2 | rhoA=0.863 rhoB=0.586 spread=0.277 dGini=0.105 | obA=0.91 obB=-0.37 | -
+n=28 m=3 mA=6 s=3 | rhoA=0.729 rhoB=0.586 spread=0.143 dGini=0.185 | obA=0.82 obB=-0.37 | -
+
+== BEST ACCEPTED: n 21  m 2  mA 2  s 2  score 1.271  ( 45 accepted total )
+
+-- A (one minority carries all 3) --
+    rho  gini o_bar w_star
+1 0.619 0.571 0.925  0.246
+2 0.619 0.571 0.925  0.246
+3 0.619 0.571 0.925  0.246
+ A cosines: 0.925 0.925 0.925 
+
+-- B (three disjoint pair-carriers) --
+    rho  gini  o_bar w_star
+1 0.619 0.571 -0.346      0
+2 0.619 0.571 -0.346      0
+3 0.619 0.571 -0.346      0
+ B cosines: -0.346 -0.346 -0.346 
+
+-- XA --
+      i j k
+ [1,] 1 1 1
+ [2,] 1 1 1
+ [3,] 1 0 0
+ [4,] 1 0 0
+ [5,] 0 1 0
+ [6,] 0 1 0
+ [7,] 0 0 1
+ [8,] 0 0 1
+ [9,] 0 0 0
+[10,] 0 0 0
+[11,] 0 0 0
+[12,] 0 0 0
+[13,] 0 0 0
+[14,] 0 0 0
+[15,] 0 0 0
+[16,] 0 0 0
+[17,] 0 0 0
+[18,] 0 0 0
+[19,] 0 0 0
+[20,] 0 0 0
+[21,] 0 0 0
+
+-- XB --
+      i j k
+ [1,] 1 1 0
+ [2,] 1 1 0
+ [3,] 0 1 1
+ [4,] 0 1 1
+ [5,] 1 0 1
+ [6,] 1 0 1
+ [7,] 0 0 0
+ [8,] 0 0 0
+ [9,] 0 0 0
+[10,] 0 0 0
+[11,] 0 0 0
+[12,] 0 0 0
+[13,] 0 0 0
+[14,] 0 0 0
+[15,] 0 0 0
+[16,] 0 0 0
+[17,] 0 0 0
+[18,] 0 0 0
+[19,] 0 0 0
+[20,] 0 0 0
+[21,] 0 0 0
+
+matrices written: out/triangle_X_A.csv, out/triangle_X_B.csv

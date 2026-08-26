@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="An interactive guide to Simulation 1 for carrier-weighted networks.">
+  <title>Can a minority carry a real network? — CW Simulation 1</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,600;6..96,700&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --paper:#f2ead8; --paper2:#e9ddc4; --ink:#17201c; --muted:#667068;
+      --rule:#c7b997; --a:#315f52; --b:#a34b2b; --c:#295a87; --noise:#b69134;
+      --white:#fffdf7; --shadow:rgba(42,35,20,.12);
+    }
+    *{box-sizing:border-box} html{scroll-behavior:smooth}
+    body{margin:0;color:var(--ink);background:
+      linear-gradient(rgba(35,32,22,.025) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(35,32,22,.018) 1px,transparent 1px),var(--paper);
+      background-size:26px 26px;font-family:"IBM Plex Sans",sans-serif;line-height:1.65}
+    body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.18;z-index:20;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.12'/%3E%3C/svg%3E")}
+    a{color:var(--a);text-underline-offset:3px}.shell{max-width:1160px;margin:auto;padding:0 34px}
+    .mast{min-height:92vh;display:grid;grid-template-columns:1.2fr .8fr;gap:70px;align-items:center;padding-top:70px;padding-bottom:70px}
+    .eyebrow,.label{font:600 11px/1.2 "IBM Plex Sans";letter-spacing:.19em;text-transform:uppercase;color:var(--muted)}
+    h1,h2,.big-serif{font-family:"Bodoni Moda",serif;font-weight:600;letter-spacing:-.035em}
+    h1{font-size:clamp(54px,7vw,104px);line-height:.91;margin:22px 0 28px;max-width:850px}
+    h1 i{color:var(--b);font-weight:400}.deck{font:400 clamp(19px,2vw,25px)/1.5 "Bodoni Moda",serif;max-width:650px;color:#3d453f}
+    .meta{display:flex;gap:24px;flex-wrap:wrap;margin-top:38px;font:500 12px "IBM Plex Mono";color:var(--muted)}
+    .hero-plate{position:relative;min-height:540px;border:1px solid var(--rule);background:rgba(255,253,247,.52);box-shadow:18px 22px 0 var(--paper2)}
+    .hero-plate svg{width:100%;height:auto;display:block}.stamp{position:absolute;right:-22px;top:-24px;width:116px;height:116px;border:1px solid var(--b);border-radius:50%;display:grid;place-items:center;text-align:center;color:var(--b);font:600 11px/1.35 "IBM Plex Sans";letter-spacing:.12em;text-transform:uppercase;transform:rotate(8deg);background:var(--paper)}
+    nav{position:sticky;top:0;z-index:10;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);background:rgba(242,234,216,.93);backdrop-filter:blur(12px)}
+    nav .shell{display:flex;gap:30px;overflow:auto;padding-top:14px;padding-bottom:14px}nav a{white-space:nowrap;text-decoration:none;font:600 11px "IBM Plex Sans";letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}nav a:hover{color:var(--b)}
+    section{padding:100px 0;border-bottom:1px solid var(--rule)}
+    .section-head{display:grid;grid-template-columns:130px 1fr;gap:32px;margin-bottom:48px}.section-no{font:500 13px "IBM Plex Mono";color:var(--b);padding-top:14px}
+    h2{font-size:clamp(40px,5vw,66px);line-height:1.02;margin:0;max-width:850px}.lead{font:400 23px/1.5 "Bodoni Moda",serif;max-width:780px;margin:24px 0 0;color:#3c453f}
+    .grid2{display:grid;grid-template-columns:1fr 1fr;gap:28px}.card{background:rgba(255,253,247,.55);border:1px solid var(--rule);padding:28px;box-shadow:0 10px 25px var(--shadow)}
+    .card h3{font:600 18px "Bodoni Moda",serif;margin:7px 0 12px}.card p{font-size:14px;color:#465049;margin:0}
+    .blocks{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:40px 0}.block{padding:26px;border:1px solid currentColor;background:rgba(255,253,247,.5);min-height:160px}.block.a{color:var(--a)}.block.b{color:var(--b)}.block.c{color:var(--c)}.block strong{font:600 40px "Bodoni Moda";display:block}.block span{font-size:13px;color:var(--ink)}
+    .lab{background:#16201b;color:#e9e4d7;padding:42px;margin-top:42px;box-shadow:16px 18px 0 #b9aa86}.lab .label{color:#aeb9b2}.controls{display:grid;grid-template-columns:160px 1fr 70px;gap:16px;align-items:center;margin:22px 0}.controls label{font-size:13px}.controls output{font:500 13px "IBM Plex Mono";color:#e7ba57;text-align:right}.controls input{accent-color:#d7a83a;width:100%}
+    .people{display:grid;grid-template-columns:repeat(20,1fr);gap:5px;margin:26px 0 8px}.person{aspect-ratio:1;border-radius:50%;background:#53615a;opacity:.35;transition:.3s transform,.3s background,.3s opacity}.person.minority{background:#5ca4dc;opacity:1;transform:scale(1.08)}.person.distractor{box-shadow:0 0 0 2px #e7ba57 inset;opacity:.9}
+    .legend{display:flex;gap:20px;flex-wrap:wrap;font-size:11px;color:#aeb9b2}.key:before{content:"";display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:7px;background:#53615a}.key.min:before{background:#5ca4dc}.key.dis:before{background:transparent;box-shadow:0 0 0 2px #e7ba57 inset}
+    .equation{font:500 clamp(15px,2vw,21px)/1.8 "IBM Plex Mono";padding:28px 30px;background:var(--ink);color:var(--white);overflow:auto;margin:34px 0}.equation .rho{color:#e5c061}.equation .g{color:#77b69e}.equation .o{color:#77a9d2}
+    .tension{display:grid;grid-template-columns:1fr 80px 1fr;align-items:stretch;margin-top:44px}.tension .side{padding:32px;border:1px solid var(--rule);background:rgba(255,253,247,.55)}.tension .versus{display:grid;place-items:center;font:600 20px "Bodoni Moda";color:var(--b)}.meter{height:10px;background:#d8ceb7;margin:16px 0;overflow:hidden}.meter i{display:block;height:100%;background:currentColor}.side.gini{color:var(--a)}.side.overlap{color:var(--c)}.side p{font-size:14px;color:var(--ink)}
+    .fork{display:grid;grid-template-columns:1fr 1fr;gap:0;margin:38px 0}.fork article{position:relative;padding:34px;border:1px solid var(--rule);background:rgba(255,253,247,.55)}.fork article+article{border-left:0}.fork .tag{font:500 11px "IBM Plex Mono";color:var(--b)}.fork h3{font:600 27px "Bodoni Moda";margin:10px 0}.fork ul{font-size:14px;padding-left:19px;color:#465049}
+    .toy-graph{margin:38px 0;border:1px solid var(--rule);background:rgba(255,253,247,.66);box-shadow:0 10px 25px var(--shadow);overflow:hidden}.toy-graph header{display:flex;justify-content:space-between;gap:24px;align-items:flex-end;padding:25px 28px 20px;border-bottom:1px solid var(--rule)}.toy-graph header h3{font:600 25px "Bodoni Moda";margin:5px 0 0}.toy-graph header p{max-width:480px;margin:0;font-size:13px;color:var(--muted)}.toy-graph svg{display:block;width:100%;height:auto}.toy-graph .caption{display:grid;grid-template-columns:1fr 1fr;gap:20px;padding:20px 28px;border-top:1px solid var(--rule);font-size:13px}.toy-graph .caption strong{font-family:"IBM Plex Mono"}.toy-graph .caption span:first-child strong{color:var(--c)}.toy-graph .caption span:last-child strong{color:var(--noise)}
+    .methods{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.method{border-top:5px solid var(--rule);padding:24px 18px;background:rgba(255,253,247,.6);min-height:220px}.method:nth-child(1){border-color:#555}.method:nth-child(2){border-color:var(--a)}.method:nth-child(3){border-color:var(--c)}.method:nth-child(4){border-color:var(--b)}.method code{font:500 12px "IBM Plex Mono"}.method h3{font:600 18px "Bodoni Moda"}.method p{font-size:13px;color:var(--muted)}
+    .decision{display:grid;grid-template-columns:70px 1fr;gap:18px;padding:24px 0;border-bottom:1px solid var(--rule)}.decision .mark{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--b);font:500 14px "IBM Plex Mono";color:var(--b)}.decision h3{font:600 21px "Bodoni Moda";margin:0 0 4px}.decision p{margin:0;font-size:14px;color:var(--muted)}
+    .matrix{overflow:auto;margin-top:35px}.matrix table{width:100%;border-collapse:collapse;font-size:13px;background:rgba(255,253,247,.5)}th,td{padding:14px;border-bottom:1px solid var(--rule);text-align:left}th{font:600 10px "IBM Plex Sans";letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}td code{font:500 12px "IBM Plex Mono"}.yes{color:var(--a);font-weight:600}.limit{color:var(--b);font-weight:600}
+    footer{padding:70px 0 100px}.foot{display:flex;justify-content:space-between;gap:30px;align-items:flex-end}.foot .big-serif{font-size:32px;max-width:620px}.foot small{font-size:11px;color:var(--muted)}
+    .reveal{opacity:0;transform:translateY(18px);transition:.7s ease}.reveal.on{opacity:1;transform:none}
+    @media(max-width:800px){.mast{grid-template-columns:1fr;min-height:auto}.hero-plate{min-height:0}.section-head{grid-template-columns:1fr}.grid2,.fork{grid-template-columns:1fr}.fork article+article{border-left:1px solid var(--rule);border-top:0}.toy-graph header,.toy-graph .caption{display:block}.toy-graph header p,.toy-graph .caption span{display:block;margin-top:12px}.methods{grid-template-columns:1fr 1fr}.blocks{grid-template-columns:1fr}.tension{grid-template-columns:1fr}.tension .versus{height:60px}.foot{display:block}.foot small{display:block;margin-top:30px}.shell{padding-left:22px;padding-right:22px}}
+    @media(max-width:520px){h1{font-size:52px}.methods{grid-template-columns:1fr}.people{grid-template-columns:repeat(10,1fr)}.controls{grid-template-columns:1fr 60px}.controls input{grid-column:1/-1}.mast{padding-top:40px}.stamp{right:-6px}}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.reveal{opacity:1;transform:none;transition:none}.person{transition:none}}
+  </style>
+</head>
+<body>
+  <header class="shell mast">
+    <div>
+      <div class="eyebrow">Carrier-weighted networks · Simulation 1</div>
+      <h1>Can a <i>minority</i><br>carry a real network?</h1>
+      <p class="deck">A simulation designed to tell coherent hidden structure from equally strong—but mechanically unrelated—noise.</p>
+      <div class="meta"><span>15 ITEMS</span><span>600 PEOPLE</span><span>3 TRUE BLOCKS</span><span>1,000 REPLICATES</span></div>
+    </div>
+    <div class="hero-plate" aria-label="Three-block network with a minority-carried blue community and gold distractor edges">
+      <div class="stamp">Design<br>locked<br>before results</div>
+      <svg viewBox="0 0 500 560" role="img">
+        <g fill="none" stroke="#c3b99f" stroke-width="2" opacity=".7">
+          <path d="M92 142L165 102L170 182L92 142L104 230L170 182"/><path d="M335 105L412 145L330 184L335 105L400 228L330 184L412 145"/><path d="M170 387L250 342L330 390L289 475L205 474L170 387L330 390"/>
+        </g>
+        <g stroke="#b69134" stroke-width="4" stroke-dasharray="7 8" opacity=".9">
+          <path d="M165 102L412 145"/><path d="M104 230L330 184"/><path d="M170 182L250 342"/><path d="M335 105L330 390"/>
+        </g>
+        <g fill="#315f52"><circle cx="92" cy="142" r="17"/><circle cx="165" cy="102" r="17"/><circle cx="170" cy="182" r="17"/><circle cx="104" cy="230" r="17"/><circle cx="68" cy="198" r="17"/></g>
+        <g fill="#a34b2b"><circle cx="335" cy="105" r="17"/><circle cx="412" cy="145" r="17"/><circle cx="330" cy="184" r="17"/><circle cx="400" cy="228" r="17"/><circle cx="438" cy="195" r="17"/></g>
+        <g fill="#295a87"><circle cx="170" cy="387" r="19"/><circle cx="250" cy="342" r="19"/><circle cx="330" cy="390" r="19"/><circle cx="289" cy="475" r="19"/><circle cx="205" cy="474" r="19"/></g>
+        <text x="62" y="69" font-family="IBM Plex Mono" font-size="12" fill="#315f52">A · EVERYONE</text>
+        <text x="325" y="68" font-family="IBM Plex Mono" font-size="12" fill="#a34b2b">B · EVERYONE</text>
+        <text x="185" y="535" font-family="IBM Plex Mono" font-size="12" fill="#295a87">C · SAME 30%</text>
+        <text x="178" y="260" font-family="IBM Plex Mono" font-size="11" fill="#927326">MATCHED DISTRACTORS</text>
+      </svg>
+    </div>
+  </header>
+
+  <nav><div class="shell"><a href="#problem">The problem</a><a href="#world">Synthetic world</a><a href="#tension">Gini tension</a><a href="#two-tests">Two tests</a><a href="#methods">Methods</a><a href="#verdicts">Verdicts</a></div></nav>
+
+  <main>
+    <section id="problem"><div class="shell reveal">
+      <div class="section-head"><div class="section-no">01 / QUESTION</div><div><h2>Correlation tells us how strong an edge is. Not who made it strong.</h2><p class="lead">Two edges can have the same pooled correlation and represent completely different realities.</p></div></div>
+      <div class="grid2">
+        <div class="card"><div class="label">Real minority structure</div><h3>One group carries a whole community</h3><p>The same 30% of respondents supports every edge inside block C. Their shared carrier profile is a mechanism.</p></div>
+        <div class="card"><div class="label">Distractor structure</div><h3>Different people create every edge</h3><p>Each cross-block edge is supported by its own unrelated 10%. The pooled magnitude looks real; the carriers do not cohere.</p></div>
+      </div>
+      <div class="equation"><span class="rho">same |ρ|</span> &nbsp;≠&nbsp; same mechanism &nbsp;→&nbsp; inspect the respondent × edge contribution</div>
+    </div></section>
+
+    <section id="world"><div class="shell reveal">
+      <div class="section-head"><div class="section-no">02 / GENERATOR</div><div><h2>A controlled world where the truth is known.</h2><p class="lead">Three blocks, five binary items each. A and B exist across the population. C is real—but visible only within one coherent minority.</p></div></div>
+      <div class="blocks"><div class="block a"><strong>A</strong><span>Items 1–5<br>population-wide latent factor</span></div><div class="block b"><strong>B</strong><span>Items 6–10<br>population-wide latent factor</span></div><div class="block c"><strong>C</strong><span>Items 11–15<br>same minority latent factor</span></div></div>
+      <div class="lab">
+        <div class="label">Interactive carrier map · 100 representative respondents</div>
+        <div class="controls"><label for="minority">C carrier prevalence</label><input id="minority" type="range" min="10" max="50" value="30" step="5"><output id="minorityOut">30%</output></div>
+        <div class="controls"><label for="distractor">Each distractor subset</label><input id="distractor" type="range" min="5" max="25" value="10" step="5"><output id="distractorOut">10%</output></div>
+        <div class="people" id="people" aria-live="polite"></div>
+        <div class="legend"><span class="key min">same people carry all C edges</span><span class="key dis">one example distractor subset</span><span class="key">other respondents</span></div>
+      </div>
+    </div></section>
+
+    <section id="tension"><div class="shell reveal">
+      <div class="section-head"><div class="section-no">03 / ESTIMATOR</div><div><h2>The simulation must confront the formula’s internal tension.</h2><p class="lead">Minority support is concentrated. Yet the current Gini factor rewards diffuse support. The overlap term must rescue coherent minorities—or the product formula is wrong.</p></div></div>
+      <div class="equation"><span class="rho">w* = |ρ|</span> × <span class="g">(1 − Gini)</span> × <span class="o">max(Ō, 0)</span></div>
+      <div class="tension">
+        <div class="side gini"><div class="label">Concentration penalty</div><h3 class="big-serif">1 − Gini</h3><div class="meter"><i style="width:38%"></i></div><p>A coherent 30% minority may have high Gini. This term can shrink exactly the structure we want to recover.</p></div>
+        <div class="versus">×</div>
+        <div class="side overlap"><div class="label">Coherence rescue</div><h3 class="big-serif">Ō overlap</h3><div class="meter"><i style="width:88%"></i></div><p>All C edges share the same carriers, so their contribution profiles align. Distractor profiles should not.</p></div>
+      </div>
+    </div></section>
+
+    <section id="two-tests"><div class="shell reveal">
+      <div class="section-head"><div class="section-no">04 / IDENTIFICATION</div><div><h2>One experiment would confound two possible failures. So we run two.</h2></div></div>
+      <div class="fork">
+        <article><div class="tag">PRIMARY · ESTIMATOR LEVEL</div><h3>Can the score tell mechanisms apart?</h3><ul><li>Keep every true C and distractor edge available.</li><li>Rank C edges above matched distractors.</li><li>Measure AUROC and score separation.</li></ul></article>
+        <article><div class="tag">CO-PRIMARY · END TO END</div><h3>Can the deployed pipeline recover C?</h3><ul><li>TMFG selects edges using raw |ρ| first.</li><li>CW reweights only surviving edges.</li><li>Walktrap recovers the partition—or not.</li></ul></article>
+      </div>
+      <figure class="toy-graph" aria-labelledby="toy-title">
+        <header><div><div class="label">Toy graph · same |ρ|, different carrier structure</div><h3 id="toy-title">What CW actually sees</h3></div><p>Top of each panel: <b>four edges</b> with identical pooled correlation. Bottom of each panel: the <b>respondent-by-edge carrier grid</b> — the object CW's overlap term <em>Ō</em> computes on. The left grid shows one vertical stripe; the right grid shows a scattered staircase.</p></header>
+        <svg viewBox="0 0 1000 500" role="img" aria-label="Comparison of coherent minority community with matched distractor edges, showing carrier profile matrices">
+<defs><filter id="soft2" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#17201c" flood-opacity=".12"/></filter></defs>
+<rect x="0" y="0" width="500" height="500" fill="#edf0eb"/>
+<rect x="500" y="0" width="500" height="500" fill="#f3ecda"/>
+<path d="M500 30V470" stroke="#c7b997" stroke-width="1"/>
+
+<!-- LEFT panel: TRUE C -->
+<text x="30" y="42" fill="#295a87" font-family="IBM Plex Mono" font-size="15" font-weight="600">TRUE C EDGES</text>
+<text x="30" y="63" fill="#667068" font-family="IBM Plex Sans" font-size="13">one shared 30% subgroup carries all four edges</text>
+
+<!-- Node/edge diagram: 4-cycle diamond -->
+<g stroke="#295a87" stroke-width="6" stroke-linecap="round">
+  <line x1="250" y1="90" x2="390" y2="175"/>
+  <line x1="390" y1="175" x2="250" y2="260"/>
+  <line x1="250" y1="260" x2="110" y2="175"/>
+  <line x1="110" y1="175" x2="250" y2="90"/>
+</g>
+<g fill="#fffdf7" stroke="#295a87" stroke-width="4" filter="url(#soft2)">
+  <circle cx="250" cy="90" r="22"/>
+  <circle cx="390" cy="175" r="22"/>
+  <circle cx="250" cy="260" r="22"/>
+  <circle cx="110" cy="175" r="22"/>
+</g>
+<g fill="#295a87" font-family="IBM Plex Mono" font-size="13" text-anchor="middle" dominant-baseline="central">
+  <text x="250" y="91">C1</text>
+  <text x="390" y="176">C2</text>
+  <text x="250" y="261">C3</text>
+  <text x="110" y="176">C4</text>
+</g>
+<g fill="#5a6b60" font-family="IBM Plex Mono" font-size="11" text-anchor="middle">
+  <text x="332" y="126">e1</text>
+  <text x="332" y="228">e2</text>
+  <text x="168" y="228">e3</text>
+  <text x="168" y="126">e4</text>
+</g>
+
+<!-- Left grid label + row labels -->
+<text x="30" y="288" fill="#5a6b60" font-family="IBM Plex Mono" font-size="11">CARRIER PROFILE   ·   row = edge   ·   column = respondent (1..20)</text>
+<g font-family="IBM Plex Mono" font-size="10" fill="#5a6b60" text-anchor="end">
+  <text x="24" y="315">e1</text>
+  <text x="24" y="333">e2</text>
+  <text x="24" y="351">e3</text>
+  <text x="24" y="369">e4</text>
+</g>
+<g fill="#d0d9d0"><rect x="30" y="302" width="18" height="16" rx="2"/><rect x="50" y="302" width="18" height="16" rx="2"/><rect x="70" y="302" width="18" height="16" rx="2"/><rect x="90" y="302" width="18" height="16" rx="2"/><rect x="230" y="302" width="18" height="16" rx="2"/><rect x="250" y="302" width="18" height="16" rx="2"/><rect x="270" y="302" width="18" height="16" rx="2"/><rect x="290" y="302" width="18" height="16" rx="2"/><rect x="310" y="302" width="18" height="16" rx="2"/><rect x="330" y="302" width="18" height="16" rx="2"/><rect x="350" y="302" width="18" height="16" rx="2"/><rect x="370" y="302" width="18" height="16" rx="2"/><rect x="390" y="302" width="18" height="16" rx="2"/><rect x="410" y="302" width="18" height="16" rx="2"/><rect x="30" y="320" width="18" height="16" rx="2"/><rect x="50" y="320" width="18" height="16" rx="2"/><rect x="70" y="320" width="18" height="16" rx="2"/><rect x="90" y="320" width="18" height="16" rx="2"/><rect x="230" y="320" width="18" height="16" rx="2"/><rect x="250" y="320" width="18" height="16" rx="2"/><rect x="270" y="320" width="18" height="16" rx="2"/><rect x="290" y="320" width="18" height="16" rx="2"/><rect x="310" y="320" width="18" height="16" rx="2"/><rect x="330" y="320" width="18" height="16" rx="2"/><rect x="350" y="320" width="18" height="16" rx="2"/><rect x="370" y="320" width="18" height="16" rx="2"/><rect x="390" y="320" width="18" height="16" rx="2"/><rect x="410" y="320" width="18" height="16" rx="2"/><rect x="30" y="338" width="18" height="16" rx="2"/><rect x="50" y="338" width="18" height="16" rx="2"/><rect x="70" y="338" width="18" height="16" rx="2"/><rect x="90" y="338" width="18" height="16" rx="2"/><rect x="230" y="338" width="18" height="16" rx="2"/><rect x="250" y="338" width="18" height="16" rx="2"/><rect x="270" y="338" width="18" height="16" rx="2"/><rect x="290" y="338" width="18" height="16" rx="2"/><rect x="310" y="338" width="18" height="16" rx="2"/><rect x="330" y="338" width="18" height="16" rx="2"/><rect x="350" y="338" width="18" height="16" rx="2"/><rect x="370" y="338" width="18" height="16" rx="2"/><rect x="390" y="338" width="18" height="16" rx="2"/><rect x="410" y="338" width="18" height="16" rx="2"/><rect x="30" y="356" width="18" height="16" rx="2"/><rect x="50" y="356" width="18" height="16" rx="2"/><rect x="70" y="356" width="18" height="16" rx="2"/><rect x="90" y="356" width="18" height="16" rx="2"/><rect x="230" y="356" width="18" height="16" rx="2"/><rect x="250" y="356" width="18" height="16" rx="2"/><rect x="270" y="356" width="18" height="16" rx="2"/><rect x="290" y="356" width="18" height="16" rx="2"/><rect x="310" y="356" width="18" height="16" rx="2"/><rect x="330" y="356" width="18" height="16" rx="2"/><rect x="350" y="356" width="18" height="16" rx="2"/><rect x="370" y="356" width="18" height="16" rx="2"/><rect x="390" y="356" width="18" height="16" rx="2"/><rect x="410" y="356" width="18" height="16" rx="2"/></g><g fill="#295a87"><rect x="110" y="302" width="18" height="16" rx="2"/><rect x="130" y="302" width="18" height="16" rx="2"/><rect x="150" y="302" width="18" height="16" rx="2"/><rect x="170" y="302" width="18" height="16" rx="2"/><rect x="190" y="302" width="18" height="16" rx="2"/><rect x="210" y="302" width="18" height="16" rx="2"/><rect x="110" y="320" width="18" height="16" rx="2"/><rect x="130" y="320" width="18" height="16" rx="2"/><rect x="150" y="320" width="18" height="16" rx="2"/><rect x="170" y="320" width="18" height="16" rx="2"/><rect x="190" y="320" width="18" height="16" rx="2"/><rect x="210" y="320" width="18" height="16" rx="2"/><rect x="110" y="338" width="18" height="16" rx="2"/><rect x="130" y="338" width="18" height="16" rx="2"/><rect x="150" y="338" width="18" height="16" rx="2"/><rect x="170" y="338" width="18" height="16" rx="2"/><rect x="190" y="338" width="18" height="16" rx="2"/><rect x="210" y="338" width="18" height="16" rx="2"/><rect x="110" y="356" width="18" height="16" rx="2"/><rect x="130" y="356" width="18" height="16" rx="2"/><rect x="150" y="356" width="18" height="16" rx="2"/><rect x="170" y="356" width="18" height="16" rx="2"/><rect x="190" y="356" width="18" height="16" rx="2"/><rect x="210" y="356" width="18" height="16" rx="2"/></g>
+
+<!-- LEFT bottom callout -->
+<rect x="30" y="410" width="398" height="60" rx="4" fill="#dbe4dc" stroke="#a8b6ac" stroke-width="1"/>
+<text x="229" y="435" fill="#295a87" font-family="IBM Plex Mono" font-size="13" text-anchor="middle" font-weight="600">ONE VERTICAL STRIPE</text>
+<text x="229" y="455" fill="#5a6b60" font-family="IBM Plex Sans" font-size="12" text-anchor="middle">pairwise overlap Ō ≈ 1  →  CW keeps every edge</text>
+
+<!-- RIGHT panel: MATCHED DISTRACTORS -->
+<text x="530" y="42" fill="#927326" font-family="IBM Plex Mono" font-size="15" font-weight="600">MATCHED DISTRACTORS</text>
+<text x="530" y="63" fill="#667068" font-family="IBM Plex Sans" font-size="13">a different 10% subgroup for each edge</text>
+
+<!-- 8 nodes, 4 disconnected edges arranged 2x2 -->
+<g stroke="#b69134" stroke-width="6" stroke-linecap="round">
+  <line x1="588" y1="105" x2="700" y2="105"/>
+  <line x1="820" y1="105" x2="932" y2="105"/>
+  <line x1="588" y1="235" x2="700" y2="235"/>
+  <line x1="820" y1="235" x2="932" y2="235"/>
+</g>
+<g fill="#fffdf7" stroke="#b69134" stroke-width="4" filter="url(#soft2)">
+  <circle cx="588" cy="105" r="19"/><circle cx="700" cy="105" r="19"/>
+  <circle cx="820" cy="105" r="19"/><circle cx="932" cy="105" r="19"/>
+  <circle cx="588" cy="235" r="19"/><circle cx="700" cy="235" r="19"/>
+  <circle cx="820" cy="235" r="19"/><circle cx="932" cy="235" r="19"/>
+</g>
+<g fill="#927326" font-family="IBM Plex Mono" font-size="11" text-anchor="middle" dominant-baseline="central">
+  <text x="588" y="105">a</text><text x="700" y="105">b</text>
+  <text x="820" y="105">c</text><text x="932" y="105">d</text>
+  <text x="588" y="235">e</text><text x="700" y="235">f</text>
+  <text x="820" y="235">g</text><text x="932" y="235">h</text>
+</g>
+<g fill="#5a6b60" font-family="IBM Plex Mono" font-size="11" text-anchor="middle">
+  <text x="644" y="88">e1</text>
+  <text x="876" y="88">e2</text>
+  <text x="644" y="256">e3</text>
+  <text x="876" y="256">e4</text>
+</g>
+
+<!-- Right grid label + row labels -->
+<text x="530" y="288" fill="#5a6b60" font-family="IBM Plex Mono" font-size="11">CARRIER PROFILE   ·   same axes, different pattern</text>
+<g font-family="IBM Plex Mono" font-size="10" fill="#5a6b60" text-anchor="end">
+  <text x="524" y="315">e1</text>
+  <text x="524" y="333">e2</text>
+  <text x="524" y="351">e3</text>
+  <text x="524" y="369">e4</text>
+</g>
+<g fill="#e5dcc0"><rect x="530" y="302" width="18" height="16" rx="2"/><rect x="550" y="302" width="18" height="16" rx="2"/><rect x="610" y="302" width="18" height="16" rx="2"/><rect x="630" y="302" width="18" height="16" rx="2"/><rect x="650" y="302" width="18" height="16" rx="2"/><rect x="670" y="302" width="18" height="16" rx="2"/><rect x="690" y="302" width="18" height="16" rx="2"/><rect x="710" y="302" width="18" height="16" rx="2"/><rect x="730" y="302" width="18" height="16" rx="2"/><rect x="750" y="302" width="18" height="16" rx="2"/><rect x="770" y="302" width="18" height="16" rx="2"/><rect x="790" y="302" width="18" height="16" rx="2"/><rect x="810" y="302" width="18" height="16" rx="2"/><rect x="830" y="302" width="18" height="16" rx="2"/><rect x="850" y="302" width="18" height="16" rx="2"/><rect x="870" y="302" width="18" height="16" rx="2"/><rect x="890" y="302" width="18" height="16" rx="2"/><rect x="910" y="302" width="18" height="16" rx="2"/><rect x="530" y="320" width="18" height="16" rx="2"/><rect x="550" y="320" width="18" height="16" rx="2"/><rect x="570" y="320" width="18" height="16" rx="2"/><rect x="590" y="320" width="18" height="16" rx="2"/><rect x="610" y="320" width="18" height="16" rx="2"/><rect x="630" y="320" width="18" height="16" rx="2"/><rect x="650" y="320" width="18" height="16" rx="2"/><rect x="710" y="320" width="18" height="16" rx="2"/><rect x="730" y="320" width="18" height="16" rx="2"/><rect x="750" y="320" width="18" height="16" rx="2"/><rect x="770" y="320" width="18" height="16" rx="2"/><rect x="790" y="320" width="18" height="16" rx="2"/><rect x="810" y="320" width="18" height="16" rx="2"/><rect x="830" y="320" width="18" height="16" rx="2"/><rect x="850" y="320" width="18" height="16" rx="2"/><rect x="870" y="320" width="18" height="16" rx="2"/><rect x="890" y="320" width="18" height="16" rx="2"/><rect x="910" y="320" width="18" height="16" rx="2"/><rect x="530" y="338" width="18" height="16" rx="2"/><rect x="550" y="338" width="18" height="16" rx="2"/><rect x="570" y="338" width="18" height="16" rx="2"/><rect x="590" y="338" width="18" height="16" rx="2"/><rect x="610" y="338" width="18" height="16" rx="2"/><rect x="630" y="338" width="18" height="16" rx="2"/><rect x="650" y="338" width="18" height="16" rx="2"/><rect x="670" y="338" width="18" height="16" rx="2"/><rect x="690" y="338" width="18" height="16" rx="2"/><rect x="710" y="338" width="18" height="16" rx="2"/><rect x="730" y="338" width="18" height="16" rx="2"/><rect x="750" y="338" width="18" height="16" rx="2"/><rect x="810" y="338" width="18" height="16" rx="2"/><rect x="830" y="338" width="18" height="16" rx="2"/><rect x="850" y="338" width="18" height="16" rx="2"/><rect x="870" y="338" width="18" height="16" rx="2"/><rect x="890" y="338" width="18" height="16" rx="2"/><rect x="910" y="338" width="18" height="16" rx="2"/><rect x="530" y="356" width="18" height="16" rx="2"/><rect x="550" y="356" width="18" height="16" rx="2"/><rect x="570" y="356" width="18" height="16" rx="2"/><rect x="590" y="356" width="18" height="16" rx="2"/><rect x="610" y="356" width="18" height="16" rx="2"/><rect x="630" y="356" width="18" height="16" rx="2"/><rect x="650" y="356" width="18" height="16" rx="2"/><rect x="670" y="356" width="18" height="16" rx="2"/><rect x="690" y="356" width="18" height="16" rx="2"/><rect x="710" y="356" width="18" height="16" rx="2"/><rect x="730" y="356" width="18" height="16" rx="2"/><rect x="750" y="356" width="18" height="16" rx="2"/><rect x="770" y="356" width="18" height="16" rx="2"/><rect x="790" y="356" width="18" height="16" rx="2"/><rect x="810" y="356" width="18" height="16" rx="2"/><rect x="830" y="356" width="18" height="16" rx="2"/><rect x="850" y="356" width="18" height="16" rx="2"/><rect x="910" y="356" width="18" height="16" rx="2"/></g><g fill="#b69134"><rect x="570" y="302" width="18" height="16" rx="2"/><rect x="590" y="302" width="18" height="16" rx="2"/><rect x="670" y="320" width="18" height="16" rx="2"/><rect x="690" y="320" width="18" height="16" rx="2"/><rect x="770" y="338" width="18" height="16" rx="2"/><rect x="790" y="338" width="18" height="16" rx="2"/><rect x="870" y="356" width="18" height="16" rx="2"/><rect x="890" y="356" width="18" height="16" rx="2"/></g>
+
+<!-- RIGHT bottom callout -->
+<rect x="530" y="410" width="398" height="60" rx="4" fill="#ece0bd" stroke="#c7b997" stroke-width="1"/>
+<text x="729" y="435" fill="#927326" font-family="IBM Plex Mono" font-size="13" text-anchor="middle" font-weight="600">SCATTERED STAIRCASE</text>
+<text x="729" y="455" fill="#5a6b60" font-family="IBM Plex Sans" font-size="12" text-anchor="middle">pairwise overlap Ō ≈ 0  →  CW zeros out each edge</text>
+</svg>
+        <figcaption class="caption"><span><strong>C edges (blue):</strong> the same ~30% of respondents show up in every row of the carrier grid → one vertical stripe. Pairwise overlap Ō ≈ 1 → CW keeps every edge.</span><span><strong>Distractors (gold):</strong> each row lights up a different 10% → no shared column. Pairwise overlap Ō ≈ 0 → CW zeros out each edge.</span></figcaption>
+      </figure>
+      <div class="card"><div class="label">Why this split matters</div><h3>If TMFG drops C, CW never gets a chance.</h3><p>A successful estimator with failed end-to-end recovery means candidate-edge selection is the bottleneck. It does not falsify carrier coherence.</p></div>
+    </div></section>
+
+    <section id="methods"><div class="shell reveal">
+      <div class="section-head"><div class="section-no">05 / ABLATIONS</div><div><h2>Four methods reveal which part does the work.</h2></div></div>
+      <div class="methods">
+        <div class="method"><code>01 · RAW</code><h3>|ρ|</h3><p>Sees pooled strength only. The baseline that should confuse matched mechanisms.</p></div>
+        <div class="method"><code>02 · GINI</code><h3>|ρ|(1−G)</h3><p>Tests diffuse support without neighbourhood coherence.</p></div>
+        <div class="method"><code>03 · OVERLAP</code><h3>|ρ|max(Ō,0)</h3><p>Tests shared carriers without penalizing minority concentration.</p></div>
+        <div class="method"><code>04 · CW FULL</code><h3>|ρ|(1−G)max(Ō,0)</h3><p>The locked estimator used in the existing GW implementation.</p></div>
+      </div>
+      <div class="matrix"><table><thead><tr><th>Outcome</th><th>Estimator test</th><th>Pipeline test</th><th>Meaning</th></tr></thead><tbody>
+        <tr><td>Edge discrimination</td><td class="yes">AUROC</td><td>—</td><td>Can C outrank distractors?</td></tr>
+        <tr><td>Community recovery</td><td>—</td><td class="yes">ARI + exact C</td><td>Does the deployable pipeline work?</td></tr>
+        <tr><td>Edge availability</td><td>fixed</td><td class="yes">TMFG retention</td><td>Did CW receive the true edges?</td></tr>
+        <tr><td>False structure</td><td>score separation</td><td class="yes">no-C control</td><td>Does CW invent a third block?</td></tr>
+      </tbody></table></div>
+    </div></section>
+
+    <section id="verdicts"><div class="shell reveal">
+      <div class="section-head"><div class="section-no">06 / VERDICTS</div><div><h2>The result cannot be rescued by storytelling afterward.</h2><p class="lead">Each possible outcome already has a meaning.</p></div></div>
+      <div class="decision"><div class="mark">A</div><div><h3>Full CW wins at both levels</h3><p>Support the estimator and proceed to broader recovery and multiplicity simulations.</p></div></div>
+      <div class="decision"><div class="mark">B</div><div><h3>Overlap-only wins; full CW fails</h3><p>The carrier-coherence idea survives, but the Gini product does not. Revise the formula in a new preregistered Simulation 1b.</p></div></div>
+      <div class="decision"><div class="mark">C</div><div><h3>Estimator wins; pipeline fails</h3><p>Raw-correlation TMFG excluded the minority edges. Candidate-edge selection is the bottleneck.</p></div></div>
+      <div class="decision"><div class="mark">D</div><div><h3>Both levels fail</h3><p>The central coherent-minority recovery claim is falsified in its intended setting.</p></div></div>
+      <div class="equation">1,000 confirmatory replicates · fixed seeds · no post-result tuning</div>
+    </div></section>
+  </main>
+
+  <footer><div class="shell foot"><div class="big-serif">The purpose of a simulation is not to make the method look good. It is to create a world where the method can be wrong.</div><small>CW Simulation 1 · Design locked 18 Jul 2026<br><a href="https://www.sogum.com/log/cw-method.html">Project log + preregistration record</a> · <a href="index.html">CW overview</a></small></div></footer>
+
+  <script>
+    const people=document.getElementById('people'), minority=document.getElementById('minority'), distractor=document.getElementById('distractor');
+    function drawPeople(){
+      const m=+minority.value,d=+distractor.value; people.innerHTML='';
+      for(let i=0;i<100;i++){const dot=document.createElement('span');dot.className='person';if(i<m)dot.classList.add('minority');if(i>=55&&i<55+d)dot.classList.add('distractor');people.appendChild(dot)}
+      document.getElementById('minorityOut').textContent=m+'%';document.getElementById('distractorOut').textContent=d+'%';
+    }
+    minority.addEventListener('input',drawPeople);distractor.addEventListener('input',drawPeople);drawPeople();
+    const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on')}),{threshold:.12});document.querySelectorAll('.reveal').forEach(x=>io.observe(x));
+  </script>
+</body>
+</html>
