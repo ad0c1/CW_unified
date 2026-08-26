@@ -11,6 +11,8 @@
 \usepackage{graphicx}
 \usepackage{booktabs}
 \usepackage{subcaption}
+\captionsetup{font=footnotesize}   % captions two steps below the 11pt body
+\usepackage{placeins}       % \FloatBarrier: keep results figures inside Results
 \usepackage[round]{natbib}
 \usepackage[colorlinks=true,linkcolor=blue!50!black,citecolor=blue!50!black,urlcolor=blue!50!black]{hyperref}
 \usepackage{xcolor}
@@ -18,10 +20,13 @@
 \newcommand{\Obar}{\bar{O}}
 \newcommand{\wstar}{w^{*}}
 
-\title{Carrier-weighted psychometric networks: a label-free edge estimator
-that detects minority-carried structure invisible to pooled networks}
-% PI DECISION 1 (open): author line & affiliation
-\author{\todo{author line / affiliation / ORCID}}
+\title{Carrier-Weighted Networks: Separating Coherent Minority Structure
+from Incoherent Edges with Matched Pooled Correlations}
+% PI DECISION 1 resolved 2026-08-26: sole author, name/affiliation as in
+% JAMA Netw Open 2024;7(7):e2420934 (doi:10.1001/jamanetworkopen.2024.20934)
+\author{Yong-Wook Shin\\[2pt]
+\normalsize Department of Psychiatry, Asan Medical Centre,\\
+\normalsize University of Ulsan College of Medicine, Seoul, Korea}
 \date{\today}
 
 \begin{document}
@@ -258,25 +263,6 @@ respondents from equally strong pooled edges carried by mutually incoherent
 subsets?
 
 \subsection{Design}
-Fifteen binary items form three equal blocks. Blocks A and B are
-population-wide: for $j\in A$, $z_{rj}=\lambda F_{r,A}+\epsilon_{rj}$ with
-$\lambda=.75$ (standardized loading
-$\lambda^{*}=\lambda/\sqrt{\lambda^2+1}=.60$), and analogously for B. Block
-C is minority-carried: a single
-respondent indicator $M_r\sim\mathrm{Bernoulli}(\pi_C)$, $\pi_C=.30$,
-governs every C item, $z_{rj}=\lambda_C M_r F_{r,C}+\epsilon_{rj}$ with
-$\lambda_C=1.10$ (standardized loading $.74$ \emph{within} carriers; the
-unstandardized $\lambda_C>\lambda$ compensates the $\pi_C$ dilution, and the
-pooled within-C correlation nonetheless remains below the within-A/B level),
-so that all ten within-C edges share one carrier subgroup.
-Six distractor pairs, fixed in advance and spanning blocks, each receive a
-pair-specific factor active only in its own disjoint respondent subset ---
-matched pooled correlation with \emph{no} shared carriers. Latent responses
-are dichotomized at fixed, block-balanced thresholds. The distractor loading
-$\delta$ is calibrated in a discarded pilot (seed 20260718) so that the mean
-pooled $|\rho|$ of the distractors matches the within-C mean, then frozen.
-Figure~\ref{fig:simdesign} summarises the design.
-
 \begin{figure}[t]
 \centering
 \includegraphics[width=.95\textwidth]{figs/fig_sim1_design.pdf}
@@ -296,6 +282,24 @@ scenario A (one coherent minority), the distractors are scenario B
 (incoherent minorities), and pooled correlation cannot separate them.}
 \label{fig:simdesign}
 \end{figure}
+Fifteen binary items form three equal blocks. Blocks A and B are
+population-wide: for $j\in A$, $z_{rj}=\lambda F_{r,A}+\epsilon_{rj}$ with
+$\lambda=.75$ (standardized loading
+$\lambda^{*}=\lambda/\sqrt{\lambda^2+1}=.60$), and analogously for B. Block
+C is minority-carried: a single
+respondent indicator $M_r\sim\mathrm{Bernoulli}(\pi_C)$, $\pi_C=.30$,
+governs every C item, $z_{rj}=\lambda_C M_r F_{r,C}+\epsilon_{rj}$ with
+$\lambda_C=1.10$ (standardized loading $.74$ \emph{within} carriers; the
+unstandardized $\lambda_C>\lambda$ compensates the $\pi_C$ dilution, and the
+pooled within-C correlation nonetheless remains below the within-A/B level),
+so that all ten within-C edges share one carrier subgroup.
+Six distractor pairs, fixed in advance and spanning blocks, each receive a
+pair-specific factor active only in its own disjoint respondent subset ---
+matched pooled correlation with \emph{no} shared carriers. Latent responses
+are dichotomized at fixed, block-balanced thresholds. The distractor loading
+$\delta$ is calibrated in a discarded pilot (seed 20260718) so that the mean
+pooled $|\rho|$ of the distractors matches the within-C mean, then frozen.
+Figure~\ref{fig:simdesign} summarises the design.
 
 One amendment was required at the pilot stage. The preregistered zero-mean
 pair factor $D\sim N(0,1)$ saturates under dichotomization: only half of a
@@ -310,6 +314,8 @@ reachable. With these values, $\delta=3.75$ achieved calibration to within
 $.001$ and was frozen. The confirmatory run used $n=600$ and 1{,}000
 replicates (seeds 202608250001--202608251000), with a 1{,}000-replicate
 no-structure control (202608260001--202608261000); no replicate failed.
+
+\FloatBarrier  % Figure 2 (design) must precede Section 3.2 (PI 2026-08-26)
 
 \subsection{Two evaluation levels}
 The production pipeline first selects candidate edges with TMFG on raw
@@ -375,36 +381,7 @@ both mechanisms are perfectly real within their own carriers. Only
 cross-edge coherence distinguishes them --- which is the thesis, so the
 oracle is reported as a diagnostic, not a competitor.
 
-The end-to-end level tells a different and equally preregistered story.
-At $n=600$ and $\pi_C=.30$ the raw pipeline already recovers the
-partition well, leaving little headroom: the per-replicate ARI
-distributions of the two pipelines nearly coincide (mean $.946$ raw
-versus $.949$ CW), and exact-C recovery is likewise indistinguishable
-($.815$ versus $.817$; paired difference $+.0020$, CI spanning zero as
-reported above). The honest reading is a null. The failure map
-(Figure~\ref{fig:failuremap}) locates the constraint precisely: exact-C
-recovery is near-ceiling ($.99$) whenever raw-$|\rho|$ TMFG retains its
-structural maximum of nine C edges, collapses to $.37$ below it, and does
-so \emph{identically for every method} --- overall exact-C ($.817$) tracks
-availability ($.828$) method-independently. Once the raw-correlation
-filter has dropped a true C edge, no reweighting of surviving edges can
-recover it. A post-hoc exploratory diagnostic (not preregistered)
-characterizes \emph{how} availability is lost: regenerating every
-replicate with availability $.5$--$.7$ from its seed shows that in
-$97\%$ of the availability-$.6$ replicates all four missing C edges are
-incident to a single C item, against $2.4\%$ under a random
-missing-edge null. TMFG failure is item-level displacement --- a C item
-expelled from the clique loses its within-C edges together --- which
-produces the bimodal availability distribution visible in the replicate
-counts of Figure~\ref{fig:failuremap} ($.9$ or $\approx.6$, rarely
-between). Under the preregistration's locked interpretation branch, this
-is ``estimator succeeds, pipeline fails with TMFG availability as the
-bottleneck'': the carrier statistic is viable, candidate-edge selection is
-the binding constraint, and carrier-aware edge selection --- at the item
-level, where the failure operates --- is the subject of
-the next preregistered simulation. No post-result tuning was performed.
-
-\begin{figure}[t]
+\begin{figure}[!htb]
 \centering
 \includegraphics[width=.9\textwidth]{figs/fig2_mechanism.pdf}
 \caption{Mechanism check, all 36 structural edge classes (per-replicate
@@ -443,20 +420,36 @@ $.002$, inverted) is reported in the text as a diagnostic.}
 \label{fig:ablation}
 \end{figure}
 
-\begin{figure}[t]
-\centering
-\includegraphics[width=.72\textwidth]{figs/fig5_failuremap.pdf}
-\caption{Failure map. Exact-C recovery as a function of the fraction of
-true C edges retained by the raw-$|\rho|$ TMFG (structural maximum $0.9$;
-$K_5$ is non-planar). Both pipelines share the same TMFG, so availability
-is identical by construction; the two methods are dodged horizontally for
-visibility, and the row beneath the axis gives the number of replicates
-in each availability cell (the leftmost cells are sparse). Recovery is
-near-ceiling at maximal availability and
-collapses below it identically for raw and CW: candidate-edge selection,
-not the carrier statistic, is the binding constraint.}
-\label{fig:failuremap}
-\end{figure}
+\FloatBarrier  % Figures 3-4 must precede the end-to-end/failure-map passage (PI 2026-08-26)
+
+The end-to-end level tells a different and equally preregistered story.
+At $n=600$ and $\pi_C=.30$ the raw pipeline already recovers the
+partition well, leaving little headroom: the per-replicate ARI
+distributions of the two pipelines nearly coincide (mean $.946$ raw
+versus $.949$ CW), and exact-C recovery is likewise indistinguishable
+($.815$ versus $.817$; paired difference $+.0020$, CI spanning zero as
+reported above). The honest reading is a null. The failure map
+(Figure~\ref{fig:failuremap}) locates the constraint precisely: exact-C
+recovery is near-ceiling ($.99$) whenever raw-$|\rho|$ TMFG retains its
+structural maximum of nine C edges, collapses to $.37$ below it, and does
+so \emph{identically for every method} --- overall exact-C ($.817$) tracks
+availability ($.828$) method-independently. Once the raw-correlation
+filter has dropped a true C edge, no reweighting of surviving edges can
+recover it. A post-hoc exploratory diagnostic (not preregistered)
+characterizes \emph{how} availability is lost: regenerating every
+replicate with availability $.5$--$.7$ from its seed shows that in
+$97\%$ of the availability-$.6$ replicates all four missing C edges are
+incident to a single C item, against $2.4\%$ under a random
+missing-edge null. TMFG failure is item-level displacement --- a C item
+expelled from the clique loses its within-C edges together --- which
+produces the bimodal availability distribution visible in the replicate
+counts of Figure~\ref{fig:failuremap} ($.9$ or $\approx.6$, rarely
+between). Under the preregistration's locked interpretation branch, this
+is ``estimator succeeds, pipeline fails with TMFG availability as the
+bottleneck'': the carrier statistic is viable, candidate-edge selection is
+the binding constraint, and carrier-aware edge selection --- at the item
+level, where the failure operates --- is the subject of
+the next preregistered simulation. No post-result tuning was performed.
 
 The preregistered secondary analyses --- the $36$-cell generalization grid
 over sample size, minority prevalence, and loading, and the bootstrap
@@ -466,6 +459,24 @@ ceiling, and the grid's informative region (smaller $n$, lower $\pi_C$) is
 deferred together with the carrier-aware selection study.
 % PI DECISION 2-3 (open): grid appendix vs defer (current text = defer);
 % bootstrap secondary include vs defer (current text = defer).
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=.72\textwidth]{figs/fig5_failuremap.pdf}
+\caption{Failure map. Exact-C recovery as a function of the number of
+true C edges (of ten) retained by the raw-$|\rho|$ TMFG; the structural
+maximum is nine because $K_5$ is non-planar. Both pipelines share the same TMFG, so availability
+is identical by construction; the two methods are dodged horizontally for
+visibility. The lower panel shows how the $1{,}000$ replicates distribute
+over availability --- each bar is the denominator of the recovery
+proportion plotted above it, and the distribution is bimodal (nine, or
+about six when a C item is displaced; retaining exactly two never
+occurred). Recovery is
+near-ceiling at maximal availability and
+collapses below it identically for raw and CW: candidate-edge selection,
+not the carrier statistic, is the binding constraint.}
+\label{fig:failuremap}
+\end{figure}
 
 % =============================================================================
 \section{Empirical illustration}\label{sec:empirical}

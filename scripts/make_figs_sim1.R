@@ -229,22 +229,40 @@ names(cnt)[2] <- "nrep"
 agg$method <- factor(agg$method, levels = c("raw", "cw"),
                      labels = c("raw", "CW-full"))
 agg$x <- agg$tmfg_avail + ifelse(agg$method == "raw", -0.011, 0.011)
-f5 <- ggplot(agg, aes(x, exactC, color = method)) +
+# Two panels (PI 2026-08-26, count row still unclear as bare numbers):
+# TOP  conditional recovery curve  — y = P(exact C | availability cell)
+# BOTTOM marginal histogram        — how the 1,000 replicates distribute
+#   over availability; makes the bimodality (9, or ~6 after an item
+#   displacement) visible instead of numeric, and shows each cell's
+#   denominator as a bar with its count printed above.
+xsc <- scale_x_continuous(breaks = seq(0.1, 0.9, 0.1), labels = 1:9,
+                          limits = c(0.04, 0.96))  # 9 = structural max
+axline <- theme(axis.line.x  = element_line(color = "grey35", linewidth = 0.3),
+                axis.ticks.x = element_line(color = "grey35", linewidth = 0.3),
+                axis.ticks.length.x = unit(2, "pt"))
+p_top <- ggplot(agg, aes(x, exactC, color = method)) +
   geom_line(linewidth = 0.4, alpha = 0.7) +
   geom_point(size = 1.8, alpha = 0.9) +
-  geom_text(data = cnt, aes(tmfg_avail, -0.11, label = nrep),
-            inherit.aes = FALSE, size = 2.2, color = "grey45") +
-  annotate("text", x = 0.045, y = -0.11, hjust = 1, label = "replicates:",
-           size = 2.2, color = "grey45", fontface = "italic") +
   scale_color_manual(values = c("raw" = col_gray, "CW-full" = col_C)) +
-  scale_x_continuous(labels = percent_format(accuracy = 1),
-                     breaks = c(seq(0.2, 0.8, 0.2), 0.9),  # 90% = structural
-                     limits = c(-0.09, 0.95)) +            # max (K5 non-planar)
-  scale_y_continuous(limits = c(-0.15, 1), breaks = seq(0, 1, 0.25)) +
-  labs(x = expression("true C edges retained by raw-"*"|"*rho*"|"*" TMFG (availability)"),
-       y = "P(exact C recovery)") +
-  base_theme
-ggsave("paper/figs/fig5_failuremap.pdf", f5, width = 4.6, height = 2.8,
+  xsc +
+  scale_y_continuous(limits = c(-0.02, 1), breaks = seq(0, 1, 0.25)) +
+  labs(x = NULL, y = "proportion of replicates\nrecovering block C exactly") +
+  base_theme + axline +
+  theme(axis.text.x = element_blank(),
+        legend.position = "inside",
+        legend.position.inside = c(0.15, 0.84))
+p_bot <- ggplot(cnt, aes(tmfg_avail, nrep)) +
+  geom_col(width = 0.052, fill = "grey62") +
+  geom_text(aes(label = nrep, y = nrep + 105), size = 2.1, color = "grey35") +
+  xsc +
+  scale_y_continuous(limits = c(0, 860), breaks = c(0, 400, 800)) +
+  labs(x = expression("true C edges retained by raw-"*"|"*rho*"|"*
+                      " TMFG (of 10; max 9)"),
+       y = "replicates\n(of 1,000)") +
+  base_theme + axline
+f5 <- cowplot::plot_grid(p_top, p_bot, ncol = 1, rel_heights = c(2, 1.05),
+                         align = "v", axis = "lr")
+ggsave("paper/figs/fig5_failuremap.pdf", f5, width = 4.6, height = 3.5,
        device = cairo_pdf)
 
 # ---- console summary ---------------------------------------------------------
