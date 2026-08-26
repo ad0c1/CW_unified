@@ -62,16 +62,29 @@ dispute is about the multiplicative role only.
 
 ## Candidate-edge selection arms (Q2)
 
+**Exploratory diagnostic informing the arm design** (post-hoc on SIM1B
+confirmatory data, labelled as such; `scripts/audit_fig5_avail06.R`,
+2026-08-26): regenerating all availability-$.5$--$.7$ replicates shows
+that in $97.2\%$ of the availability-$.6$ replicates all four missing C
+edges are incident to a **single C item** (random-subset null $2.4\%$).
+TMFG failure is item-level displacement, not edge-level attrition — the
+availability distribution is bimodal ($.9$ or $\approx.6$) because a
+displaced item takes its within-C edges with it. Selection arms should
+therefore rescue **items**, not individual edges. This diagnostic is
+hypothesis-generating only; no SIM2 parameter is tuned on it beyond the
+structural choice of the S2 rescue unit.
+
 `[TO DECIDE — mechanism not yet discussed with PI; two proposals]`
 
 - S0 (incumbent): TMFG on raw $\lvert\rho\rvert$; reweight retained edges.
 - S1 (proposal): TMFG run directly on the candidate score (gate included),
   so coherent minority edges compete with population-wide edges on the
   quantity the pipeline actually believes in.
-- S2 (proposal): TMFG on raw $\lvert\rho\rvert$ with guaranteed inclusion
-  of the top-$q$ edges by candidate score that TMFG dropped
-  ($q$ `[TO DECIDE]`, planarity restored by removing the weakest
-  conflicting edges).
+- S2 (proposal, item-level per the diagnostic above): TMFG on raw
+  $\lvert\rho\rvert$; any item whose within-block candidate-score edges
+  were dropped as a group is re-attached by guaranteed inclusion of its
+  top-$q$ candidate-score edges ($q$ `[TO DECIDE]`, planarity restored
+  by removing the weakest conflicting edges).
 
 Q2 outcomes are evaluated with the winning Q1 candidate and with C0, so
 selection and weighting effects are separable.

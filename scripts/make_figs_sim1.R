@@ -214,24 +214,36 @@ f4 <- ggplot(cnt, aes(as.numeric(method), auroc)) +
 ggsave("paper/figs/fig4_ablation.pdf", f4, width = 4.6, height = 2.6, device = cairo_pdf)
 
 # ---- Fig 5 — failure map: TMFG availability is the bottleneck ---------------
+# Redesign (PI 2026-08-26): availability is IDENTICAL for both pipelines by
+# construction (one shared raw-|rho| TMFG; CW only reweights retained edges),
+# so both curves sit at the same x and the dominant cell (717 replicates at
+# .9) overplotted CW under raw; the size legend (breaks 10/100) omitted the
+# 717 dot entirely, and n = 1/6/19 cells looked as trustworthy as n = 717.
+# Fix: slight horizontal dodge, equal-size dots, and an explicit
+# replicates-per-cell count row under the axis (risk-table style) replacing
+# the size encoding.
 fm <- prim[prim$method %in% c("raw", "cw"), ]
-fm$avail_f <- factor(fm$tmfg_avail)
 agg <- aggregate(exactC ~ tmfg_avail + method, fm, mean)
-cnt <- aggregate(seed ~ tmfg_avail + method, fm, length); names(cnt)[3] <- "nrep"
-agg <- merge(agg, cnt)
+cnt <- aggregate(seed ~ tmfg_avail, fm[fm$method == "raw", ], length)
+names(cnt)[2] <- "nrep"
 agg$method <- factor(agg$method, levels = c("raw", "cw"),
                      labels = c("raw", "CW-full"))
-f5 <- ggplot(agg, aes(tmfg_avail, exactC, color = method)) +
+agg$x <- agg$tmfg_avail + ifelse(agg$method == "raw", -0.011, 0.011)
+f5 <- ggplot(agg, aes(x, exactC, color = method)) +
   geom_line(linewidth = 0.4, alpha = 0.7) +
-  geom_point(aes(size = nrep), alpha = 0.85) +
-  scale_size_area(max_size = 5, breaks = c(10, 100, 800), name = "replicates") +
+  geom_point(size = 1.8, alpha = 0.9) +
+  geom_text(data = cnt, aes(tmfg_avail, -0.11, label = nrep),
+            inherit.aes = FALSE, size = 2.2, color = "grey45") +
+  annotate("text", x = 0.045, y = -0.11, hjust = 1, label = "replicates:",
+           size = 2.2, color = "grey45", fontface = "italic") +
   scale_color_manual(values = c("raw" = col_gray, "CW-full" = col_C)) +
   scale_x_continuous(labels = percent_format(accuracy = 1),
-                     breaks = seq(0.2, 1, 0.2)) +
-  scale_y_continuous(limits = c(0, 1)) +
+                     breaks = c(seq(0.2, 0.8, 0.2), 0.9),  # 90% = structural
+                     limits = c(-0.09, 0.95)) +            # max (K5 non-planar)
+  scale_y_continuous(limits = c(-0.15, 1), breaks = seq(0, 1, 0.25)) +
   labs(x = expression("true C edges retained by raw-"*"|"*rho*"|"*" TMFG (availability)"),
        y = "P(exact C recovery)") +
-  base_theme + theme(legend.title = element_text(size = 8))
+  base_theme
 ggsave("paper/figs/fig5_failuremap.pdf", f5, width = 4.6, height = 2.8,
        device = cairo_pdf)
 

@@ -388,10 +388,20 @@ structural maximum of nine C edges, collapses to $.37$ below it, and does
 so \emph{identically for every method} --- overall exact-C ($.817$) tracks
 availability ($.828$) method-independently. Once the raw-correlation
 filter has dropped a true C edge, no reweighting of surviving edges can
-recover it. Under the preregistration's locked interpretation branch, this
+recover it. A post-hoc exploratory diagnostic (not preregistered)
+characterizes \emph{how} availability is lost: regenerating every
+replicate with availability $.5$--$.7$ from its seed shows that in
+$97\%$ of the availability-$.6$ replicates all four missing C edges are
+incident to a single C item, against $2.4\%$ under a random
+missing-edge null. TMFG failure is item-level displacement --- a C item
+expelled from the clique loses its within-C edges together --- which
+produces the bimodal availability distribution visible in the replicate
+counts of Figure~\ref{fig:failuremap} ($.9$ or $\approx.6$, rarely
+between). Under the preregistration's locked interpretation branch, this
 is ``estimator succeeds, pipeline fails with TMFG availability as the
 bottleneck'': the carrier statistic is viable, candidate-edge selection is
-the binding constraint, and carrier-aware edge selection is the subject of
+the binding constraint, and carrier-aware edge selection --- at the item
+level, where the failure operates --- is the subject of
 the next preregistered simulation. No post-result tuning was performed.
 
 \begin{figure}[t]
@@ -438,7 +448,11 @@ $.002$, inverted) is reported in the text as a diagnostic.}
 \includegraphics[width=.72\textwidth]{figs/fig5_failuremap.pdf}
 \caption{Failure map. Exact-C recovery as a function of the fraction of
 true C edges retained by the raw-$|\rho|$ TMFG (structural maximum $0.9$;
-$K_5$ is non-planar). Recovery is near-ceiling at maximal availability and
+$K_5$ is non-planar). Both pipelines share the same TMFG, so availability
+is identical by construction; the two methods are dodged horizontally for
+visibility, and the row beneath the axis gives the number of replicates
+in each availability cell (the leftmost cells are sparse). Recovery is
+near-ceiling at maximal availability and
 collapses below it identically for raw and CW: candidate-edge selection,
 not the carrier statistic, is the binding constraint.}
 \label{fig:failuremap}
