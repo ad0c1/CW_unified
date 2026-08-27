@@ -11,3 +11,8 @@ gw/
 brain/
 viz/
 paper/cw-method_paper.pdf
+paper/*.aux
+paper/*.log
+paper/*.out
+paper/*.fls
+paper/*.fdb_latexmk
