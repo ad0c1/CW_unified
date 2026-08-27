@@ -1,0 +1,4 @@
+PWD /Users/ad0c1/Library/CloudStorage/Dropbox/gitLab/CW_unified/paper
+INPUT /usr/local/texlive/2025/texmf.cnf
+INPUT /usr/local/texlive/2025/texmf-dist/web2c/texmf.cnf
+INPUT /usr/local/texlive/2025/texmf-var/web2c/pdftex/pdflatex.fmt
